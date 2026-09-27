@@ -1,0 +1,55 @@
+{
+    "benchmark_comparison": {
+        "Ridge Linear Regression": {
+            "mae": 36.76,
+            "rmse": 47.74,
+            "r2": 0.4175,
+            "auc_roc": 0.914,
+            "train_time_sec": 0.04,
+            "latency_ms": 0.0
+        },
+        "Random Forest (n=50)": {
+            "mae": 33.95,
+            "rmse": 46.35,
+            "r2": 0.451,
+            "auc_roc": 0.9068,
+            "train_time_sec": 3.69,
+            "latency_ms": 0.002
+        },
+        "XGBoost": {
+            "mae": 33.8,
+            "rmse": 45.87,
+            "r2": 0.4623,
+            "auc_roc": 0.9148,
+            "train_time_sec": 0.88,
+            "latency_ms": 0.0
+        },
+        "LightGBM": {
+            "mae": 33.65,
+            "rmse": 45.76,
+            "r2": 0.4648,
+            "auc_roc": 0.9153,
+            "train_time_sec": 0.47,
+            "latency_ms": 0.001
+        }
+    },
+    "ablation_study": {
+        "Baseline (Raw Features Only)": {
+            "mae": 34.18,
+            "rmse": 46.61,
+            "r2": 0.4447,
+            "auc_roc": 0.9094
+        },
+        "Full Model (Raw + Cascade Features)": {
+            "mae": 33.65,
+            "rmse": 45.76,
+            "r2": 0.4648,
+            "auc_roc": 0.9153
+        },
+        "Improvement_Delta": {
+            "mae_reduction_minutes": 0.53,
+            "rmse_reduction": 0.85,
+            "auc_gain": 0.0059
+        }
+    }
+}

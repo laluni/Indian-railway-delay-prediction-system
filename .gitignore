@@ -1,0 +1,23 @@
+﻿# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pytest_cache/
+
+# Large Datasets & Databases (Over 50MB-350MB, generated locally via src/etl.py)
+data/ir_train.csv
+data/ir_test.csv
+data/ir_sample_submission.csv
+db/*.duckdb
+db/*.duckdb.wal
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
