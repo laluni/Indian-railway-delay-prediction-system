@@ -45,8 +45,8 @@ Then simply run:
 powershell
 ```
 python src/etl.py
-This will automatically build the db/railway.duckdb database on their machine in ~14 seconds.
 ```
+This will automatically build the db/railway.duckdb database on their machine in ~14 seconds.
 
 
 ### 2. Run Automated Verification Tests
