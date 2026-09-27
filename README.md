@@ -35,13 +35,13 @@ pip install -r requirements.txt
 pip install xgboost
 ```
 ###
-Direct Download from Kaggle (Simplest & Best for Teammates)
-Since the raw CSVs are from a public competition, your teammates can download them directly:
+Direct Download data from Kaggle 
+Since the raw CSVs are from a public competition, download them directly:
 
-Share the official competition link: Kaggle - Indian Railways: Predict Train Delay
+Indian Railways: Predict Train Delay https://www.kaggle.com/competitions/indian-railways-predict-train-delay/data
 .
-Tell them to download the ZIP file and place ir_train.csv and ir_test.csv inside their local Indian railway/data/ folder.
-They simply run:
+download the ZIP file and place ir_train.csv and ir_test.csv inside their local Indian railway/data/ folder.
+Then simply run:
 powershell
 ```
 python src/etl.py
