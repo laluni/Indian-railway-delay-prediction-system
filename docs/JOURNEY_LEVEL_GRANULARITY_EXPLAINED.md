@@ -1,6 +1,6 @@
 # Solving Journey-Level Granularity in Railway Delay Cascades
 
-> **A Plain English, Visual Guide to How We Modeled Cascading Rail Delays Without Intermediate Station GPS Tracking.**
+> *How We Modeled Cascading Rail Delays Without Intermediate Station GPS Tracking.**
 
 ---
 
