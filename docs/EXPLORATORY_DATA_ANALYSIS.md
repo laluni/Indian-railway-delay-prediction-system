@@ -1,137 +1,201 @@
-﻿# 📊 Exploratory Data Analysis (EDA) Report
-## Indian Railway Delay Cascade Analytics (1,500,000 Journeys)
+﻿# 📊 Comprehensive Exploratory Data Analysis (EDA) & Data Audit Report
+## Predictive Intelligence System for Indian Railway Delay Cascade Analytics (1,500,000 Journeys)
 
-> **Dataset Scope:** 1,500,000 historical journey records (2018–2024) across 16 Indian Railway administrative zones, stored in local columnar DuckDB storage.  
-> **Goal:** Statistically uncover the underlying distributions, operational chokepoints, root causes, and cascade dynamics governing train delays in India.
+> **Dataset Scope:** 1,500,000 historical journey records (2018–2024) across all 16 Indian Railway zones, stored and queried in local columnar DuckDB storage.  
+> **Purpose:** Comprehensive technical documentation covering statistical distributions, feature correlations, data quality handling, class imbalance, recommended preprocessing pipelines, and operational limitations.
 
 ---
 
 ## 1. Overall Dataset Summary & Punctuality Landscape
 
-| Metric | Empirical Value | Operational Interpretation |
+The Indian rail network operates as a dense, shared infrastructure system where local disturbances compound non-linearly:
+
+| Metric | Statistical Value | Operational Interpretation |
 | :--- | :--- | :--- |
-| **Total Analyzed Journeys** | **1,500,000** | Massive scale covering 6 full operating years across all Indian zones. |
-| **Mean Arrival Delay** | **45.24 minutes** | The average train in India arrives over 45 minutes behind schedule. |
-| **Median Delay ($P_{50}$)** | **24.00 minutes** | 50% of all trains arrive more than 24 minutes late. |
-| **$75^{\text{th}}$ Percentile ($P_{75}$)** | **68.00 minutes** | 1 in 4 trains arrives over an hour late. |
-| **$90^{\text{th}}$ Percentile ($P_{90}$)** | **118.00 minutes** | The top 10% of journeys experience extreme gridlocks of ~2 hours. |
-| **Network Delay Rate ($>15\text{m}$)**| **71.85%** | **71.85% of all journeys are officially delayed** (> 15 min threshold). |
-| **Rake Sharing Prevalence** | **52.30%** | More than half of all trainsets are reused across multiple routes. |
-| **Incoming Rake Late Rate** | **28.45%** | Nearly **1 in 3 trains departs with a turnaround buffer deficit**. |
+| **Total Analyzed Journeys** | **1,500,000** | Multi-year longitudinal scope (2018–2024) spanning 16 administrative zones. |
+| **Mean Arrival Delay** | **45.24 minutes** | Baseline network latency across all train categories. |
+| **Standard Deviation** | **52.18 minutes** | High dispersion indicating extreme variance between on-time and gridlocked trains. |
+| **Median Delay ($P_{50}$)** | **24.00 minutes** | 50% of all trains arrive with more than 24 minutes of delay. |
+| **$75^{\text{th}}$ Percentile ($P_{75}$)** | **68.00 minutes** | Upper quartile experiences delays exceeding one hour. |
+| **$90^{\text{th}}$ Percentile ($P_{90}$)** | **118.00 minutes** | Extreme tail risk: 1 in 10 journeys suffers a 2+ hour delay. |
+| **Target Rate (`is_delayed > 15m`)**| **71.85%** | **71.85% of all trains in India fail the official punctuality threshold.** |
+| **Rake Sharing Prevalence** | **52.30%** | Over half of all operating rakes are reused across cyclic services. |
+| **Incoming Rake Late Rate** | **28.45%** | **Nearly 1 in 3 trains departs with an initial turnaround buffer deficit.** |
 
-### 📌 Conclusion 1:
-Punctuality in Indian Railways is not normally distributed—it is heavily right-skewed. While the median delay is 24 minutes, the upper quartile suffers catastrophic compounding (up to 118+ minutes), demonstrating that **delay resolution is non-linear and prone to cascading gridlocks**.
-
----
-
-## 2. Root Cause Breakdown (Primary Delay Causes)
-
-| Primary Delay Cause | Record Count | % of Total | Avg Delay (Mins) | Delay Rate (>15m) |
-| :--- | :---: | :---: | :---: | :---: |
-| **On Time** | 422,311 | 28.15% | **3.8 mins** | 0.0% |
-| **Track Congestion** | 285,410 | 19.03% | **61.4 mins** | 94.2% |
-| **Signal / Telecom Failure** | 211,850 | 14.12% | **58.7 mins** | 91.8% |
-| **Late Incoming Rake (Turnaround)** | 194,620 | 12.97% | **78.5 mins** | **98.4%** |
-| **Weather (Winter Fog / Monsoon)** | 182,140 | 12.14% | **84.2 mins** | **98.9%** |
-| **Loco / Mechanical Failure** | 118,420 | 7.90% | **54.1 mins** | 88.6% |
-| **Permanent Speed Restrictions (PSR)**| 85,249 | 5.68% | **42.3 mins** | 82.1% |
-
-### 📌 Conclusion 2:
-* **The Deadliest Delays are Operational Cascades and Weather:** While *Track Congestion* is the most common cause (19.03%), **Weather (84.2 min avg)** and **Late Incoming Rakes (78.5 min avg)** produce the most severe delay magnitudes.
-* When an incoming rake is delayed, **98.4% of the time the subsequent outgoing train is also delayed**, proving that **turnaround buffers are structurally inadequate** to absorb upstream shocks.
+```mermaid
+xychart-beta
+    title "Delay Distribution Percentiles (Minutes)"
+    x-axis ["Min (0m)", "P25 (8m)", "P50 Median (24m)", "Mean (45m)", "P75 (68m)", "P90 (118m)", "Max (480m)"]
+    y-axis "Delay in Minutes" 0 --> 500
+    bar [0, 8, 24, 45, 68, 118, 480]
+```
 
 ---
 
-## 3. Geographical & Zone-Level Disparity (Top Chokepoints)
+## 2. Feature Correlation Heatmap & Linear Dependencies
 
-| Zone Abbreviation | Administrative Zone Name | Trips Analyzed | Avg Delay | Delay Rate (>15m) | Zone Congestion Index |
-| :---: | :--- | :---: | :---: | :---: | :---: |
-| **NR** | Northern Railway (Delhi) | 142,500 | **62.8 mins** | **84.2%** | 0.92 |
-| **NCR** | North Central Railway (Prayagraj) | 128,400 | **59.4 mins** | **81.7%** | 0.94 |
-| **ER** | Eastern Railway (Kolkata) | 115,200 | **55.1 mins** | **78.9%** | 0.88 |
-| **ECR** | East Central Railway (Hajipur) | 98,300 | **53.8 mins** | **77.4%** | 0.86 |
-| **CR** | Central Railway (Mumbai CSMT) | 134,100 | **46.2 mins** | **72.1%** | 0.85 |
-| **WCR** | West Central Railway (Jabalpur) | 88,400 | **44.5 mins** | **70.8%** | 0.79 |
-| **WR** | Western Railway (Mumbai) | 122,800 | **41.3 mins** | **68.2%** | 0.76 |
-| **SCR** | South Central Railway (Secunderabad)| 104,200 | **38.9 mins** | **65.1%** | 0.71 |
-| **SR** | Southern Railway (Chennai) | 112,600 | **34.2 mins** | **59.8%** | 0.65 |
-| **SWR** | South Western Railway (Hubballi) | 78,500 | **29.8 mins** | **52.4%** | **0.54** |
+A Pearson correlation analysis was conducted on 100,000 sampled journeys across 22 operational, weather, cascade, and infrastructure variables:
 
-### 📌 Conclusion 3:
-* **The Gangetic Belt Crisis:** Northern Railway (**NR: 62.8m**) and North Central Railway (**NCR: 59.4m**) suffer nearly double the delay of South Western Railway (**SWR: 29.8m**).
-* **The Chokepoint Driver:** NCR and NR exhibit capacity utilization exceeding **92–94%**, meaning almost zero buffer exists for section dispatchers to recover lost time when an incident occurs.
+![Feature Correlation Heatmap](feature_correlation_heatmap.png)
 
----
+### Summary of Inter-Feature Correlations:
 
-## 4. Seasonal Dynamics & Environmental Vulnerability
+```mermaid
+flowchart LR
+    subgraph Delay_Drivers [Strong Positive Correlates with Arrival Delay]
+        A["Late Incoming Rake (+0.38)"] --> D["Target: delay_minutes"]
+        B["Season Severity Score (+0.38)"] --> D
+        C["Zone Delay Pressure (+0.32)"] --> D
+        E["Zone Congestion Index (+0.23)"] --> D
+    end
 
-| Season | Trips Analyzed | Avg Delay | Delay Rate (>15m) | Avg Fog Risk Score | Weather Severity |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Winter / Fog** (Dec–Feb) | 382,500 | **64.8 mins** | **86.4%** | **0.82** | 0.78 |
-| **Monsoon** (Jun–Sep) | 512,100 | **52.3 mins** | **76.8%** | 0.05 | **0.88** |
-| **Autumn** (Oct–Nov) | 215,400 | **39.4 mins** | **66.2%** | 0.12 | 0.42 |
-| **Summer** (Apr–May) | 245,600 | **35.1 mins** | **62.5%** | 0.00 | 0.35 |
-| **Pre-Monsoon** (March) | 144,400 | **31.2 mins** | **57.1%** | 0.00 | **0.25** |
+    subgraph Protective_Buffers [Protective Negative Correlates]
+        F["Route Historical On-Time % (-0.31)"] -.-> D
+        G["Track Doubled (-0.13)"] -.-> D
+    end
+```
 
-### 📌 Conclusion 4:
-* **Winter Fog is the Single Worst Systemic Shock:** Causes average delays of **64.8 minutes** and an **86.4% delay probability**. Locomotives running at restricted speeds (30–60 km/h) under fog-signal rules congest the entire northern spine.
-* **March is the Golden Month:** Pre-monsoon conditions (post-fog, mild temperatures) yield the lowest average delay (31.2m), proving that weather severity index is an essential predictive feature.
+* **The Dominant Delay Driver ($r = +0.38$):** Both `late_incoming_rake` and `season_severity_score` exhibit the highest linear correlation with final arrival delays.
+* **Corridor Congestion Coupling ($r = +0.72$):** Physical zone capacity utilization (`zone_congestion_index`) correlates strongly with active rolling delay pressure (`zone_delay_pressure`).
+* **The Structural Buffer ($r = -0.13$):** `track_doubled` shows consistent negative correlation with delays, demonstrating that physical multi-tracking prevents crossing halts.
 
 ---
 
-## 5. Train Priority Hierarchy (Precedence Rules)
+## 3. Major Patterns and Relationships
 
-| Train Category | Trips Analyzed | Avg Delay | Delay Rate (>15m) | % Modern LHB Coaches | Avg Travel Time |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Vande Bharat Express** | 42,100 | **14.2 mins** | **28.4%** | **100.0%** | 6.2 hrs |
-| **Rajdhani Express** | 68,400 | **21.5 mins** | **42.1%** | **100.0%** | 18.4 hrs |
-| **Superfast Express** | 485,200 | **38.6 mins** | **68.5%** | 74.2% | 14.8 hrs |
-| **Mail / Express** | 562,100 | **51.2 mins** | **79.4%** | 52.1% | 16.5 hrs |
-| **Passenger Train** | 218,200 | **68.4 mins** | **89.2%** | **12.4%** | 8.9 hrs |
-| **DEMU / MEMU** | 124,000 | **58.7 mins** | **81.5%** | 0.0% | 4.5 hrs |
+### Pattern A: The Turnaround Compounding Effect (The "Smoking Gun")
+When an incoming trainset is delayed, its cleaning and maintenance buffer is breached, creating an immediate departure delay for the next trip:
 
-### 📌 Conclusion 5:
-* **Signal Precedence Governs Punctuality:** Premium high-speed trains (**Vande Bharat: 14.2m**, **Rajdhani: 21.5m**) are granted absolute signal precedence, leaving slower Mail/Express (51.2m) and local Passenger trains (68.4m) stranded in loop lines.
-* **The Freight Implication:** Goods trains have even lower priority than Passenger trains. If passenger trains suffer 51–68 min delays, goods trains are unavoidably sidelined for multi-hour blocks.
+```mermaid
+xychart-beta
+    title "Arrival Delay (Mins) by Rake Turnaround & Sharing Status"
+    x-axis ["On-Time Dedicated", "On-Time Shared", "Late Dedicated", "Late Shared (Cascading)"]
+    y-axis "Average Arrival Delay (Minutes)" 0 --> 100
+    bar [18.2, 22.5, 62.4, 84.9]
+```
 
----
+* **On-time rake turnaround:** Average delay is only **18.2 minutes** (38.4% delayed).
+* **Late incoming shared rake:** Average delay surges to **84.9 minutes (a 366% increase!)**, with **98.6%** of such journeys officially delayed.
 
-## 6. The Rake Turnaround Compounding Proof
+### Pattern B: Geographical Disparity (The Gangetic Chokepoint)
 
-We grouped journeys based on whether the incoming trainset was on time or delayed, and whether the rake was shared:
+```mermaid
+xychart-beta
+    title "Average Delay by Railway Zone (Mins)"
+    x-axis ["NR (Delhi)", "NCR (Prayagraj)", "ER (Kolkata)", "ECR (Hajipur)", "CR (Mumbai)", "WR (Mumbai)", "SR (Chennai)", "SWR (Hubballi)"]
+    y-axis "Average Delay in Minutes" 0 --> 70
+    bar [62.8, 59.4, 55.1, 53.8, 46.2, 41.3, 34.2, 29.8]
+```
 
-| Incoming Rake Delayed? | Rake Shared Across Services? | Journey Count | Avg Departure/Arrival Delay | Delay Rate (>15m) |
-| :---: | :---: | :---: | :---: | :---: |
-| ❌ No (On Time) | ❌ Dedicated Rake | 412,500 | **18.2 mins** | **38.4%** |
-| ❌ No (On Time) | ✅ Shared Rake | 324,800 | **22.5 mins** | **44.8%** |
-| ✅ **Yes (Late)** | ❌ Dedicated Rake | 214,100 | **62.4 mins** | **88.2%** |
-| ✅ **Yes (Late)** | ✅ **Shared Rake** | **548,600** | **84.9 mins** | **98.6%** |
+* **Northern & North Central Railway (NR: 62.8m, NCR: 59.4m):** Suffer from severe track saturation (>92% capacity) and winter fog.
+* **Southern & South Western Railway (SR: 34.2m, SWR: 29.8m):** Operate with lower line saturation and minimal fog, achieving much higher on-time performance.
 
-### 📌 Conclusion 6 (The Smoking Gun of Cascade Delays):
-* When an incoming rake is on time, the average delay is only **18.2 minutes**.
-* But when an incoming rake is delayed **AND** shared across services, the delay skyrockets to **84.9 minutes (a 366% increase!)**.
-* This provides unshakeable empirical proof that **our engineered feature `rake_cascade_chain_length` is capturing the primary mechanism of network delay transmission**.
+### Pattern C: Priority Hierarchy & The Freight Dilemma
 
----
+```mermaid
+xychart-beta
+    title "Average Delay by Train Category (Signal Precedence)"
+    x-axis ["Vande Bharat", "Rajdhani", "Superfast", "Mail / Express", "Passenger"]
+    y-axis "Average Delay in Minutes" 0 --> 80
+    bar [14.2, 21.5, 38.6, 51.2, 68.4]
+```
 
-## 7. Track Infrastructure: Single vs. Doubled Corridors
-
-| Track Layout | High Density Network (HDN)? | Trips Analyzed | Avg Delay | Delay Rate (>15m) |
-| :---: | :---: | :---: | :---: | :---: |
-| **Doubled / Quadrupled** | Standard Route | 482,100 | **28.4 mins** | **51.2%** |
-| **Doubled / Quadrupled** | HDN Corridor | 612,400 | **42.1 mins** | **72.4%** |
-| **Single Track** | Standard Route | 241,200 | **58.2 mins** | **84.5%** |
-| **Single Track** | **HDN Corridor** | **164,300** | **78.6 mins** | **94.8%** |
-
-### 📌 Conclusion 7:
-* Operating a single-track line on a High Density Network corridor is an operational nightmare (**78.6 min avg delay**, 94.8% delay rate).
-* Upgrading to doubled tracks reduces average delay by **over 36 minutes**, confirming our heatmap correlation ($r = -0.13$) that physical track doubling is the most effective structural buffer against cascades.
+* **Signal Precedence Rule:** Premium express trains (**Vande Bharat: 14.2m**, **Rajdhani: 21.5m**) are granted absolute line priority by section dispatchers.
+* **The Freight Implication:** Regular passenger trains average **68.4m delay**. Since un-timetabled goods trains have even lower priority than passenger trains, any delay on an express train forces freight trains onto loop lines for multiple hours.
 
 ---
 
-## 8. Summary of Actionable Insights for Project Presentation
+## 4. Data Quality Issues & How They Were Handled
 
-1. **Delays in India are Structural, Not Random:** Driven by track saturation in the Northern/North Central spine (NR/NCR) and severe winter fog.
-2. **Turnaround Compounding is Quantifiable:** A late incoming shared rake increases downstream delay by **+66.7 minutes** on average.
-3. **Hierarchy Dictates Delay:** Vande Bharat runs on time (14m avg) because Section Controllers force ordinary passenger and goods trains to wait in loop lines.
-4. **Validation of AI Need:** Because delay drivers interact non-linearly (Weather $\times$ Priority $\times$ Turnaround Rakes $\times$ Single Tracks), traditional static timetables fail, fully justifying our **LightGBM Cascade Predictive System**.
+During data profiling of `ir_train.csv`, several quality issues and structural anomalies were identified:
+
+| Data Quality Issue | Column Affected | Root Cause / Manifestation | Resolution in Pipeline (`src/etl.py`) |
+| :--- | :--- | :--- | :--- |
+| **String Date Formats** | `departure_date` | Dates represented as raw `YYYY-MM-DD` strings, preventing temporal ordering. | Parsed into native Date objects via `pl.col().str.to_date("%Y-%m-%d")`. |
+| **Missing Continuous Targets** | `delay_minutes` | Null entries for cancelled or newly scheduled runs without logs. | Imputed nulls with `0` (representing on-time runs) and cast to `pl.Int32`. |
+| **Sparse Target Classes** | `is_delayed` | Missing values or inconsistent binary definitions. | Derived deterministically: `1` if `delay_minutes > 15`, else `0`. |
+| **Missing Environmental Ratios** | `zone_congestion_index`, `fog_risk_score` | Weather stations or sensor dropouts in peripheral divisions. | Imputed missing environmental metrics with seasonal zone medians (`0.50` default). |
+| **Mixed High-Cardinality Strings** | `train_type`, `zone`, `station_category` | Inconsistent string casing and trailing whitespace. | Stripped and standardized into categorical types in Polars and integer-encoded for LightGBM. |
+| **Extreme Outliers** | `delay_minutes` | Rare catastrophic disruptions exceeding 8 hours (480+ mins). | Retained for regression training without arbitrary clipping to allow gradient boosting to learn severe gridlock penalties. |
+
+---
+
+## 5. Important Features & Potential Predictive Signals
+
+### Feature Importance Ranking (From 300,000 Journey Training):
+
+```mermaid
+xychart-beta
+    title "Top 7 Predictive Features (LightGBM Split Importance)"
+    x-axis ["zone_delay_pressure", "route_historical_ontime", "loco_age_years", "coach_age_years", "distance_km", "seat_utilisation", "rake_cascade_chain"]
+    y-axis "Feature Importance Split Score" 0 --> 1300
+    bar [1229, 1187, 973, 882, 810, 665, 606]
+```
+
+1. **`zone_delay_pressure` (Importance: 1229 — Rank #1):**
+   * *Signal:* The rolling 20-train average delay in the operating zone. Captures active, real-time track congestion.
+2. **`route_historical_ontime_pct` (Importance: 1187 — Rank #2):**
+   * *Signal:* Long-term infrastructural reliability anchor for specific corridors.
+3. **`loco_age_years` (Importance: 973 — Rank #3):**
+   * *Signal:* Older locomotives experience higher failure rates and slower acceleration, introducing micro-delays that compound over long distances.
+4. **`coach_age_years` (Importance: 882 — Rank #4):**
+   * *Signal:* Legacy ICF coaches face lower speed caps and frequent brake-binding incidents compared to modern LHB coaches.
+5. **`distance_km` (Importance: 810 — Rank #5):**
+   * *Signal:* Longer journeys cross multiple zone boundaries, exponentially increasing the probability of hitting a bottleneck.
+6. **`seat_utilisation_pct` (Importance: 665 — Rank #6):**
+   * *Signal:* High passenger load factors inflate dwell times at every scheduled halt.
+7. **`rake_cascade_chain_length` (Importance: 606 — Rank #7):**
+   * *Signal:* Measures consecutive delayed turnarounds, capturing physical trainset turnaround compounding.
+
+---
+
+## 6. Class Imbalance & Distribution Concerns
+
+```
+[Target Distribution: is_delayed]
+Delayed (> 15 mins): ██████████████████████████████ 71.85% (1,077,750 trips)
+On-Time (<= 15 mins): ████████████ 28.15% (422,250 trips)
+```
+
+### Observations:
+* **Natural Inversion of Imbalance:** Unlike typical fraud detection datasets where the positive class is rare (<1%), Indian Railways punctuality exhibits an inverted class distribution: **71.85% delayed vs. 28.15% on-time**.
+* **Impact on Classification:**
+  * A naive dummy classifier predicting "Delayed" every time would achieve 71.85% accuracy.
+  * Therefore, **Raw Accuracy is an invalid metric**. We exclusively evaluate models using **AUC-ROC** (measuring ranking discrimination) and **Mean Absolute Error (MAE)** for continuous delay minutes.
+* **Continuous Target Skew:** `delay_minutes` has a long right tail with skewness $> 2.4$. Tree-based algorithms (LightGBM/XGBoost) naturally handle skewed targets without requiring Box-Cox or Log transforms because decision tree splits are invariant to monotonic transformations.
+
+---
+
+## 7. Recommended Preprocessing & Feature Pipeline
+
+The optimal preprocessing pipeline established for this dataset:
+
+```mermaid
+flowchart TD
+    A[Raw ir_train.csv / ir_test.csv] --> B[Polars Lazy Scanning]
+    B --> C[1. Clean Dates & Impute Nulls]
+    C --> D[2. Engineer Rolling Zone Delay Pressure Window=20]
+    D --> E[3. Compute Rake Cascade Cumulative Sum per Train]
+    E --> F[4. Map 16-Zone NetworkX Betweenness Centrality]
+    F --> G[5. Encode Categoricals with Saved Dictionary]
+    G --> H[Final Enriched Feature Matrix: 41 Columns]
+    H --> I[LightGBM Inference Engine]
+```
+
+1. **Streaming Ingestion:** Always process via **Polars** (`scan_csv`) or **DuckDB** to prevent RAM spikes on 1.5M records.
+2. **Categorical Encoding:** Use integer ordinal encoding for tree models (`LightGBM`, `XGBoost`), preserving unique category strings for UI display.
+3. **No Scaling Required for Trees:** Feature scaling (StandardScaler/MinMaxScaler) is omitted for LightGBM/XGBoost to preserve natural units (kilometers, hours, minutes).
+
+---
+
+## 8. Limitations and Next Steps
+
+### Operational Limitations:
+1. **Journey-Level Granularity:** The dataset records origin-to-destination summaries rather than intermediate signal-by-signal GPS timestamps.
+2. **Static Timetable Proxy for Real-Time Feeds:** In the current PoC, historical test rows simulate live queries. Production requires streaming APIs.
+3. **Restricted Freight Logs:** Real-time goods train telemetry remains internal to CRIS (FOIS); passenger delay on HDN corridors acts as an operational proxy.
+
+### Next Steps:
+1. **Real-Time NTES / COA Streaming:** Replace static CSV test streams with live API integrations to update `zone_delay_pressure` dynamically every 15 minutes.
+2. **Dedicated Freight Corridor (DFC) Graph Expansion:** Incorporate Western & Eastern DFC bypass tracks into the NetworkX topology graph.
+3. **Containerized Production Deployment:** Package the Streamlit UI, DuckDB warehouse, and FastAPI microservice into a multi-container Docker architecture.
