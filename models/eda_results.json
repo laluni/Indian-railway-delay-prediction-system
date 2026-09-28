@@ -1,0 +1,484 @@
+{
+    "overall_summary": {
+        "total_records": 1500000,
+        "mean_delay": 97.73,
+        "std_delay": 66.17,
+        "min_delay": 0,
+        "median_delay": 110,
+        "p75_delay": 140,
+        "p90_delay": 173,
+        "max_delay": 579,
+        "delayed_pct": 71.89,
+        "late_rake_pct": 34.92,
+        "shared_rake_pct": 44.98
+    },
+    "delay_causes": [
+        {
+            "cause": "On Time",
+            "count": 421671,
+            "pct": 28.11,
+            "avg_delay": 7.0,
+            "delay_rate": 0.0
+        },
+        {
+            "cause": "Track Congestion",
+            "count": 241693,
+            "pct": 16.11,
+            "avg_delay": 134.7,
+            "delay_rate": 100.0
+        },
+        {
+            "cause": "Flooding / Waterlogging",
+            "count": 208900,
+            "pct": 13.93,
+            "avg_delay": 135.8,
+            "delay_rate": 100.0
+        },
+        {
+            "cause": "Late Incoming Rake",
+            "count": 162183,
+            "pct": 10.81,
+            "avg_delay": 145.0,
+            "delay_rate": 100.0
+        },
+        {
+            "cause": "Track Maintenance / PSR",
+            "count": 139761,
+            "pct": 9.32,
+            "avg_delay": 136.0,
+            "delay_rate": 100.0
+        },
+        {
+            "cause": "Station Congestion",
+            "count": 71834,
+            "pct": 4.79,
+            "avg_delay": 133.8,
+            "delay_rate": 100.0
+        },
+        {
+            "cause": "Signal Failure",
+            "count": 40735,
+            "pct": 2.72,
+            "avg_delay": 122.4,
+            "delay_rate": 100.0
+        },
+        {
+            "cause": "Level Crossing Delay",
+            "count": 31456,
+            "pct": 2.1,
+            "avg_delay": 118.5,
+            "delay_rate": 100.0
+        },
+        {
+            "cause": "Passenger Emergency",
+            "count": 31352,
+            "pct": 2.09,
+            "avg_delay": 118.8,
+            "delay_rate": 100.0
+        },
+        {
+            "cause": "Freight Priority",
+            "count": 31240,
+            "pct": 2.08,
+            "avg_delay": 118.9,
+            "delay_rate": 100.0
+        },
+        {
+            "cause": "Unscheduled Halt",
+            "count": 31208,
+            "pct": 2.08,
+            "avg_delay": 119.1,
+            "delay_rate": 100.0
+        },
+        {
+            "cause": "Crew Availability",
+            "count": 31088,
+            "pct": 2.07,
+            "avg_delay": 118.8,
+            "delay_rate": 100.0
+        },
+        {
+            "cause": "Loco / Engine Failure",
+            "count": 24737,
+            "pct": 1.65,
+            "avg_delay": 117.4,
+            "delay_rate": 100.0
+        },
+        {
+            "cause": "Fog / Low Visibility",
+            "count": 20981,
+            "pct": 1.4,
+            "avg_delay": 134.0,
+            "delay_rate": 100.0
+        },
+        {
+            "cause": "Technical Inspection",
+            "count": 11161,
+            "pct": 0.74,
+            "avg_delay": 117.0,
+            "delay_rate": 100.0
+        }
+    ],
+    "zone_disparity": [
+        {
+            "zone": "ER",
+            "trips": 93698,
+            "avg_delay": 120.5,
+            "delay_pct": 89.3,
+            "congestion": 0.95,
+            "late_rake_pct": 35.2
+        },
+        {
+            "zone": "NR",
+            "trips": 93185,
+            "avg_delay": 118.0,
+            "delay_pct": 87.6,
+            "congestion": 0.92,
+            "late_rake_pct": 35.2
+        },
+        {
+            "zone": "NCR",
+            "trips": 93754,
+            "avg_delay": 114.6,
+            "delay_pct": 84.9,
+            "congestion": 0.9,
+            "late_rake_pct": 35.1
+        },
+        {
+            "zone": "ECR",
+            "trips": 93888,
+            "avg_delay": 114.0,
+            "delay_pct": 84.8,
+            "congestion": 0.88,
+            "late_rake_pct": 35.0
+        },
+        {
+            "zone": "NER",
+            "trips": 94535,
+            "avg_delay": 107.4,
+            "delay_pct": 79.8,
+            "congestion": 0.82,
+            "late_rake_pct": 34.9
+        },
+        {
+            "zone": "CR",
+            "trips": 93702,
+            "avg_delay": 106.5,
+            "delay_pct": 78.5,
+            "congestion": 0.85,
+            "late_rake_pct": 34.9
+        },
+        {
+            "zone": "WCR",
+            "trips": 93621,
+            "avg_delay": 103.5,
+            "delay_pct": 76.8,
+            "congestion": 0.8,
+            "late_rake_pct": 34.8
+        },
+        {
+            "zone": "WR",
+            "trips": 93318,
+            "avg_delay": 102.3,
+            "delay_pct": 75.1,
+            "congestion": 0.83,
+            "late_rake_pct": 34.5
+        },
+        {
+            "zone": "NWR",
+            "trips": 93621,
+            "avg_delay": 98.1,
+            "delay_pct": 72.6,
+            "congestion": 0.75,
+            "late_rake_pct": 34.8
+        },
+        {
+            "zone": "SER",
+            "trips": 93947,
+            "avg_delay": 91.7,
+            "delay_pct": 67.0,
+            "congestion": 0.74,
+            "late_rake_pct": 34.8
+        },
+        {
+            "zone": "ECoR",
+            "trips": 93551,
+            "avg_delay": 89.8,
+            "delay_pct": 66.0,
+            "congestion": 0.7,
+            "late_rake_pct": 34.6
+        },
+        {
+            "zone": "SCR",
+            "trips": 93495,
+            "avg_delay": 87.4,
+            "delay_pct": 63.8,
+            "congestion": 0.72,
+            "late_rake_pct": 35.1
+        },
+        {
+            "zone": "SECR",
+            "trips": 93978,
+            "avg_delay": 87.4,
+            "delay_pct": 64.0,
+            "congestion": 0.68,
+            "late_rake_pct": 35.0
+        },
+        {
+            "zone": "SR",
+            "trips": 94165,
+            "avg_delay": 78.2,
+            "delay_pct": 56.3,
+            "congestion": 0.65,
+            "late_rake_pct": 35.0
+        },
+        {
+            "zone": "NFR",
+            "trips": 93694,
+            "avg_delay": 74.0,
+            "delay_pct": 53.5,
+            "congestion": 0.58,
+            "late_rake_pct": 34.9
+        },
+        {
+            "zone": "SWR",
+            "trips": 93848,
+            "avg_delay": 70.3,
+            "delay_pct": 50.2,
+            "congestion": 0.6,
+            "late_rake_pct": 35.0
+        }
+    ],
+    "seasonal_impact": [
+        {
+            "season": "Monsoon",
+            "trips": 500798,
+            "avg_delay": 126.7,
+            "delay_pct": 92.8,
+            "avg_fog": 0.0,
+            "avg_severity": 0.85
+        },
+        {
+            "season": "Winter/Fog",
+            "trips": 370773,
+            "avg_delay": 105.8,
+            "delay_pct": 77.2,
+            "avg_fog": 0.12,
+            "avg_severity": 0.72
+        },
+        {
+            "season": "Post-Monsoon",
+            "trips": 127778,
+            "avg_delay": 78.5,
+            "delay_pct": 58.3,
+            "avg_fog": 0.0,
+            "avg_severity": 0.42
+        },
+        {
+            "season": "Pre-Monsoon",
+            "trips": 127469,
+            "avg_delay": 72.5,
+            "delay_pct": 54.0,
+            "avg_fog": 0.0,
+            "avg_severity": 0.35
+        },
+        {
+            "season": "Autumn",
+            "trips": 122704,
+            "avg_delay": 68.0,
+            "delay_pct": 50.6,
+            "avg_fog": 0.0,
+            "avg_severity": 0.3
+        },
+        {
+            "season": "Summer",
+            "trips": 250478,
+            "avg_delay": 65.1,
+            "delay_pct": 48.6,
+            "avg_fog": 0.0,
+            "avg_severity": 0.26
+        }
+    ],
+    "train_types": [
+        {
+            "train_type": "Vande Bharat Express",
+            "trips": 59996,
+            "avg_delay": 51.0,
+            "delay_pct": 44.3,
+            "lhb_pct": 60.3,
+            "avg_hours": 4.9
+        },
+        {
+            "train_type": "Gatimaan Express",
+            "trips": 14899,
+            "avg_delay": 55.3,
+            "delay_pct": 48.6,
+            "lhb_pct": 60.7,
+            "avg_hours": 4.6
+        },
+        {
+            "train_type": "Tejas Express",
+            "trips": 14839,
+            "avg_delay": 58.3,
+            "delay_pct": 52.3,
+            "lhb_pct": 60.0,
+            "avg_hours": 7.8
+        },
+        {
+            "train_type": "Rajdhani Express",
+            "trips": 60178,
+            "avg_delay": 62.0,
+            "delay_pct": 56.4,
+            "lhb_pct": 60.1,
+            "avg_hours": 18.6
+        },
+        {
+            "train_type": "Shatabdi Express",
+            "trips": 59930,
+            "avg_delay": 63.7,
+            "delay_pct": 51.5,
+            "lhb_pct": 59.8,
+            "avg_hours": 6.9
+        },
+        {
+            "train_type": "Duronto Express",
+            "trips": 45178,
+            "avg_delay": 74.3,
+            "delay_pct": 62.0,
+            "lhb_pct": 60.1,
+            "avg_hours": 17.3
+        },
+        {
+            "train_type": "Jan Shatabdi Express",
+            "trips": 75120,
+            "avg_delay": 83.0,
+            "delay_pct": 63.3,
+            "lhb_pct": 60.1,
+            "avg_hours": 7.2
+        },
+        {
+            "train_type": "Humsafar Express",
+            "trips": 44886,
+            "avg_delay": 85.4,
+            "delay_pct": 65.5,
+            "lhb_pct": 59.3,
+            "avg_hours": 16.0
+        },
+        {
+            "train_type": "Sampark Kranti Express",
+            "trips": 59833,
+            "avg_delay": 86.6,
+            "delay_pct": 66.5,
+            "lhb_pct": 60.0,
+            "avg_hours": 15.1
+        },
+        {
+            "train_type": "Garib Rath Express",
+            "trips": 44761,
+            "avg_delay": 89.1,
+            "delay_pct": 69.0,
+            "lhb_pct": 60.1,
+            "avg_hours": 14.4
+        },
+        {
+            "train_type": "Superfast Express",
+            "trips": 179697,
+            "avg_delay": 92.3,
+            "delay_pct": 71.8,
+            "lhb_pct": 60.0,
+            "avg_hours": 13.9
+        },
+        {
+            "train_type": "Intercity Express",
+            "trips": 150155,
+            "avg_delay": 100.6,
+            "delay_pct": 71.4,
+            "lhb_pct": 60.1,
+            "avg_hours": 6.6
+        },
+        {
+            "train_type": "Mail/Express",
+            "trips": 421047,
+            "avg_delay": 109.9,
+            "delay_pct": 79.4,
+            "lhb_pct": 59.9,
+            "avg_hours": 12.0
+        },
+        {
+            "train_type": "DEMU/MEMU",
+            "trips": 149910,
+            "avg_delay": 121.0,
+            "delay_pct": 80.5,
+            "lhb_pct": 59.8,
+            "avg_hours": 3.7
+        },
+        {
+            "train_type": "Passenger Train",
+            "trips": 119571,
+            "avg_delay": 130.5,
+            "delay_pct": 88.0,
+            "lhb_pct": 60.2,
+            "avg_hours": 6.8
+        }
+    ],
+    "rake_compounding": [
+        {
+            "late_rake": 0,
+            "shared_rake": 0,
+            "count": 536936,
+            "avg_delay": 77.5,
+            "delay_pct": 61.2
+        },
+        {
+            "late_rake": 0,
+            "shared_rake": 1,
+            "count": 439272,
+            "avg_delay": 83.5,
+            "delay_pct": 66.8
+        },
+        {
+            "late_rake": 1,
+            "shared_rake": 0,
+            "count": 288436,
+            "avg_delay": 128.5,
+            "delay_pct": 85.6
+        },
+        {
+            "late_rake": 1,
+            "shared_rake": 1,
+            "count": 235356,
+            "avg_delay": 132.7,
+            "delay_pct": 88.8
+        }
+    ],
+    "infrastructure": [
+        {
+            "doubled": 1,
+            "hdn": 0,
+            "trips": 683191,
+            "avg_delay": 90.1,
+            "delay_pct": 64.9
+        },
+        {
+            "doubled": 1,
+            "hdn": 1,
+            "trips": 291723,
+            "avg_delay": 94.8,
+            "delay_pct": 69.1
+        },
+        {
+            "doubled": 0,
+            "hdn": 0,
+            "trips": 367527,
+            "avg_delay": 108.4,
+            "delay_pct": 81.5
+        },
+        {
+            "doubled": 0,
+            "hdn": 1,
+            "trips": 157559,
+            "avg_delay": 111.5,
+            "delay_pct": 84.7
+        }
+    ]
+}
