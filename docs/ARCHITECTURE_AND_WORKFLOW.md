@@ -6,33 +6,36 @@ The system is architected as an end-to-end, local-first predictive intelligence 
 
 ```mermaid
 flowchart TD
-    subgraph Data_Layer ["Data & Storage Layer"]
-        A["Raw Historical Dataset: ir_train.csv (1.5M Records)"] -->|Streaming Parallel ETL via Polars| B[("Local DuckDB Warehouse: railway.duckdb")]
-        B -->|Indexed Query Engine| C["Journeys Table (45 Attributes)"]
+    subgraph Data_Layer [Data and Storage Layer]
+        A["Raw Historical Dataset - ir_train.csv - 1.5M Records"] -->|Streaming Parallel ETL via Polars| B["Local DuckDB Warehouse - railway.duckdb"]
+        B -->|Indexed Query Engine| C["Journeys Table - 45 Attributes"]
     end
 
-    subgraph Feature_Engineering ["Graph & Cascade Engine"]
-        C -->|Zone Adjacency & Corridor Flow| D["16-Zone NetworkX Topological Graph"]
-        D -->|Betweenness & Degree Centrality| E["Topological Chokepoint Scores"]
+    subgraph Feature_Engineering [Graph and Cascade Engine]
+        C -->|Zone Adjacency and Corridor Flow| D["16-Zone NetworkX Topological Graph"]
+        D -->|Betweenness and Degree Centrality| E["Topological Chokepoint Scores"]
         C -->|Rake Turnaround Tracking| F["Sequential Rake Delay Accumulator"]
         C -->|Rolling 20-Period Window| G["Zone Delay Congestion Pressure"]
     end
 
-    subgraph AI_Modeling ["Scientific Machine Learning Layer"]
-        E & F & G --> H["Enriched Feature Matrix"]
+    subgraph AI_Modeling [Scientific Machine Learning Layer]
+        E --> H["Enriched Feature Matrix"]
+        F --> H
+        G --> H
         H -->|Multi-Model Benchmark| I{"Model Comparison"}
-        I -.->|Evaluated Baselines| J["Ridge Regression & Random Forest & XGBoost"]
-        I -->|Champion Model (AUC: 0.9195, MAE: 33.9m)| K["LightGBM Regressor & Classifier"]
+        I -.->|Evaluated Baselines| J["Ridge Regression, Random Forest, XGBoost"]
+        I -->|Champion Model AUC 0.9195 MAE 33.9m| K["LightGBM Regressor and Classifier"]
         K -->|Model Bundle Serialization| L["champion_models.pkl"]
     end
 
-    subgraph Presentation ["Dual-Mode Presentation Layer"]
-        L & B --> M["Streamlit Interactive Dashboard: app/dashboard.py"]
-        M --> N["View A: Passenger View - Zero Questions, 100% Inferred"]
-        M --> O["View B: Evaluator View - Manual What-If Overrides"]
-        M --> P["Tab 2: Network Bottleneck Map"]
-        M --> Q["Tab 3: Scientific Benchmark & Ablation"]
-        M --> R["Tab 4: Rake Cascade Simulator"]
+    subgraph Presentation [Dual-Mode Presentation Layer]
+        L --> M["Streamlit Interactive Dashboard"]
+        B --> M
+        M --> N["Passenger View - Zero Questions, Inferred Diagnostics"]
+        M --> O["Evaluator View - Manual What-If Overrides"]
+        M --> P["Network Bottleneck Map"]
+        M --> Q["Scientific Benchmark and Ablation"]
+        M --> R["Rake Cascade Simulator"]
     end
 ```
 
@@ -86,22 +89,22 @@ flowchart TD
 ```mermaid
 sequenceDiagram
     autonumber
-    actor User as Passenger / Commuter
+    actor User as Passenger or Commuter
     participant UI as Streamlit Web Dashboard
     participant Backend as Automated Diagnostic Engine
-    participant DB as Local DuckDB / Timetable Cache
+    participant DB as Local DuckDB Timetable Cache
     participant AI as LightGBM Inference Engine
 
-    User->>UI: Selects Train Number (e.g. 12441)
+    User->>UI: Selects Train Number
     UI->>DB: Query Static Route, Stops, Distance, and Zone
     DB-->>UI: Return Journey Specifications
     UI->>Backend: Inspect Real-Time Signals
-    Backend->>Backend: Infer Rake Turnaround Status (is incoming rake delayed?)
-    Backend->>Backend: Infer Seasonal Weather / Fog Alert Level
+    Backend->>Backend: Infer Rake Turnaround Status
+    Backend->>Backend: Infer Seasonal Weather and Fog Alert Level
     Backend->>Backend: Calculate Active Corridor Delay Pressure from DuckDB
     Backend-->>UI: Display Automatic Background Diagnostic Summary
     UI->>AI: Pass Assembled Feature Vector
-    AI->>AI: Run LightGBM Inference (< 1ms)
-    AI-->>UI: Return Delay Minutes, Probability %, and Risk Tier
-    UI-->>User: Render Interactive Delay Forecast Card & Risk Gauge
+    AI->>AI: Run LightGBM Inference under 1ms
+    AI-->>UI: Return Delay Minutes, Probability, and Risk Tier
+    UI-->>User: Render Interactive Delay Forecast Card and Risk Gauge
 ```

@@ -1,4 +1,4 @@
-﻿# 🚆 Comprehensive Presentation Context & Slide Deck Blueprint
+# 🚆 Comprehensive Presentation Context & Slide Deck Blueprint
 ## Project: Predictive Intelligence System for Indian Railway Delay Cascade Analytics
 
 > **Document Objective:** This document provides the complete, structured narrative, technical depth, operational context, and research findings needed to create an academic/professional slide deck (PPT) for your project proposal and defense.
@@ -133,31 +133,31 @@ To prove that our engineered features were not placebo inputs, we evaluated the 
 
 ```mermaid
 flowchart TD
-    subgraph Layer_1 [Data & Storage Layer]
-        A[Raw Kaggle Dataset: ir_train.csv (1.5M Records)] -->|Streaming Parallel ETL via Polars| B[(Local DuckDB Warehouse: railway.duckdb)]
-        B -->|Indexed Query Engine| C[Journeys Table: 45 Attributes]
+    subgraph Layer_1 ["Data & Storage Layer"]
+        A["Raw Kaggle Dataset: ir_train.csv (1.5M Records)"] -->|Streaming Parallel ETL via Polars| B[("Local DuckDB Warehouse: railway.duckdb")]
+        B -->|Indexed Query Engine| C["Journeys Table: 45 Attributes"]
     end
 
-    subgraph Layer_2 [Graph & Feature Engineering]
-        C -->|Zone Adjacency & HDN Corridors| D[16-Zone NetworkX Topological Graph]
-        D -->|Betweenness Centrality| E[Chokepoint Scores]
-        C -->|Rake Turnaround Tracking| F[Rake Cascade Chain Accumulator]
-        C -->|Rolling 20-Period Window| G[Zone Delay Congestion Pressure]
+    subgraph Layer_2 ["Graph & Feature Engineering"]
+        C -->|Zone Adjacency & HDN Corridors| D["16-Zone NetworkX Topological Graph"]
+        D -->|Betweenness Centrality| E["Chokepoint Scores"]
+        C -->|Rake Turnaround Tracking| F["Rake Cascade Chain Accumulator"]
+        C -->|Rolling 20-Period Window| G["Zone Delay Congestion Pressure"]
     end
 
-    subgraph Layer_3 [Machine Learning Engine]
-        E & F & G --> H[Enriched Feature Matrix]
-        H -->|Trained Weights| I[LightGBM Continuous Delay Regressor]
-        H -->|Trained Weights| J[LightGBM Delay Probability Classifier]
-        I & J --> K[champion_models.pkl]
+    subgraph Layer_3 ["Machine Learning Engine"]
+        E & F & G --> H["Enriched Feature Matrix"]
+        H -->|Trained Weights| I["LightGBM Continuous Delay Regressor"]
+        H -->|Trained Weights| J["LightGBM Delay Probability Classifier"]
+        I & J --> K["champion_models.pkl"]
     end
 
-    subgraph Layer_4 [Interactive Presentation Layer]
-        K & B --> L[Streamlit Web Application: app/dashboard.py]
-        L --> M[Tab 1: Live Journey Forecaster]
-        L --> N[Tab 2: Network Bottleneck Map]
-        L --> O[Tab 3: Scientific Benchmark & Ablation]
-        L --> P[Tab 4: Rake Cascade Simulator]
+    subgraph Layer_4 ["Interactive Presentation Layer"]
+        K & B --> L["Streamlit Web Application: app/dashboard.py"]
+        L --> M["Tab 1: Live Journey Forecaster"]
+        L --> N["Tab 2: Network Bottleneck Map"]
+        L --> O["Tab 3: Scientific Benchmark & Ablation"]
+        L --> P["Tab 4: Rake Cascade Simulator"]
     end
 ```
 
@@ -166,24 +166,24 @@ flowchart TD
 ```mermaid
 sequenceDiagram
     autonumber
-    actor User as Passenger / Commuter
+    actor User as Passenger or Commuter
     participant UI as Streamlit Web Dashboard
     participant Backend as Automated Background Intelligence
-    participant DB as Local DuckDB / Timetable Cache
+    participant DB as Local DuckDB Timetable Cache
     participant AI as LightGBM Inference Engine
 
-    User->>UI: Selects Train Number (e.g., 12441)
+    User->>UI: Selects Train Number
     UI->>DB: Query Static Route, Stops, Distance, and Zone
     DB-->>UI: Return Journey Specifications
     UI->>Backend: Inspect Real-Time Operational Signals
-    Backend->>Backend: Infer Rake Turnaround Status (is incoming rake delayed?)
-    Backend->>Backend: Infer Seasonal Weather / Fog Alert Level
+    Backend->>Backend: Infer Rake Turnaround Status
+    Backend->>Backend: Infer Seasonal Weather and Fog Alert Level
     Backend->>Backend: Calculate Active Corridor Delay Pressure from DuckDB
     Backend-->>UI: Display Automatic Background Diagnostic Summary
     UI->>AI: Pass Assembled Feature Vector
-    AI->>AI: Run LightGBM Inference (< 1ms)
-    AI-->>UI: Return Delay Minutes, Probability %, and Risk Tier
-    UI-->>User: Render Interactive Delay Forecast Card & Risk Gauge
+    AI->>AI: Run LightGBM Inference under 1ms
+    AI-->>UI: Return Delay Minutes, Probability, and Risk Tier
+    UI-->>User: Render Interactive Delay Forecast Card and Risk Gauge
 ```
 
 ---
