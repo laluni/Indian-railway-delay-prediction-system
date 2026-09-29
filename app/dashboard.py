@@ -1,7 +1,7 @@
-﻿"""
+"""
 Streamlit Web Dashboard for Indian Railway Delay Cascade Analytics.
 Features:
-1. Live Journey Delay Forecaster & Risk Gauge
+1. Journey Delay Forecaster & Risk Gauge
    - True User Mode: Select Train Number ONLY (Zero technical questions)
      The system automatically calculates rake status, weather risk, and active congestion from the database!
    - Inspector / Evaluator Mode: What-if parameter tuning for mentors
@@ -109,14 +109,14 @@ st.sidebar.markdown(
 
 # Tabs Navigation
 tab1, tab2, tab3, tab4 = st.tabs([
-    "🎯 Live Journey Forecaster",
+    "🎯 Journey Forecaster",
     "🗺️ Network Bottleneck Map",
     "📊 Scientific Benchmark & Ablation",
     "⚡ Rake Cascade Simulator"
 ])
 
 # ==============================================================================
-# TAB 1: LIVE JOURNEY FORECASTER (ZERO-EFFORT USER MODE)
+# TAB 1: JOURNEY FORECASTER (ZERO-EFFORT USER MODE)
 # ==============================================================================
 with tab1:
     st.subheader("Train Delay & Cascade Forecaster")
