@@ -142,27 +142,73 @@ When a journey passes through high-centrality zones (like NCR or CR), our model 
 
 ---
 
-## 6. Summary Comparison: Before vs. After
+## 6. Phase 5 Evolution: Moving Beyond the 3 Bridges to True Station-Level Localization
 
-| Attribute | Raw Kaggle Dataset ("Without Our Bridges") | With Our 3 Bridges Implemented |
-| :--- | :--- | :--- |
-| **Granularity Level** | Journey-only (Start and End points only) | Journey + Regional Corridor Network Dynamics |
-| **Intermediate View** | Complete blind spot (1,000+ km black box) | **Zone Delay Pressure** reflects live corridor jams |
-| **Domino Effect Tracking** | Impossible (treated each train as independent) | **Rake Turnaround** links late arrivals to departures |
-| **Network Structural Impact**| Ignored (treated all routes identically) | **Graph Centrality** pinpoints vulnerable junctions |
-| **Model Explainability** | Low (only schedule & distance) | High (Tree splits prove why delays compound) |
+In Phase 5, we integrated the **IIT Kharagpur / IIT Delhi RSTGCN Dataset (Chowdhury et al., Sep 2024)** into `data/station_data/`:
+* **`train_routes_delays_Sep2024.csv`**: **1,283,333 actual stop delay records** across 4,735 stations.
+* **`train_routes_Sep2024.csv`**: Timetable sequence numbers, cumulative kilometers, and inter-station links.
+
+### The Kinematic Breakthrough:
+Instead of only inferring corridor pressure via rolling averages, we now calculate **exact kinematic deltas** at every single station $i$:
+
+1. **Track Running Deceleration Delta ($\Delta_{\text{running}}$)**:
+   $$\Delta_{\text{running}} = \text{arr\_delay}_i - \text{dep\_delay}_{i-1}$$
+   * *If $\Delta_{\text{running}} > 0$*: The train lost time **while physically moving on the tracks** between station $i-1$ and station $i$ (due to signaling block red lights, track maintenance, or preceding freight trains).
+2. **Platform Dwell Overstay Delta ($\Delta_{\text{dwell}}$)**:
+   $$\Delta_{\text{dwell}} = \text{dep\_delay}_i - \text{arr\_delay}_i$$
+   * *If $\Delta_{\text{dwell}} > 0$*: The train arrived on time or slightly late, but **overstayed at the platform** (due to passenger boarding surges, parcel loading, or waiting for platform clearance).
+3. **Buffer Slack Recovery ($\Delta_{\text{running}} < -2\text{ mins}$)**:
+   * Timetable engineers build extra padding minutes into the schedule. If a train is running at top speed on a clear block, it absorbs delay here.
+
+```
+Station i-1 (BWN)                      Track Section                       Station i (DGR)
+Dep Delay: +15m ═══════════════ [ Moving Deceleration ] ═══════════════► Arr Delay: +27m
+                                    Δrunning = +12.0 mins (BOTTLE-NECK!)
+                                           │
+                                  Platform Dwell (Halt)
+                                           ▼
+                                    Dep Delay: +29m
+                                    Δdwell = +2.0 mins
+```
 
 ---
 
-## 7. How to Explain This in an Interview or PPT Defense
+## 7. How the System Recommends Actionable Solutions
 
-If a professor, interviewer, or railway panel asks:
-> *"Your dataset didn't have intermediate GPS tracking or station logs. How can you claim to predict cascading delays?"*
+With station-level kinematics and physical track segment statistics (`section_analytics`), the system transforms from passive logging into an active **Decision-Support Engine**:
 
-**You can give this crisp 30-second answer:**
-> *"That was indeed the core technical hurdle of our project. To solve journey-level granularity without GPS, we built 3 analytical bridges:*
-> 1. *We tracked **physical rake turnarounds**, capturing how late-arriving trains directly delay the next outgoing service.*
-> 2. *We modeled corridor congestion using a **20-journey rolling window of zone delay pressure**—similar to how Google Maps detects highway traffic by observing recent vehicle speeds.*
-> 3. *We mapped a **16-zone Golden Quadrilateral graph** using Betweenness Centrality to weigh whether a train passes through high-risk bottleneck hubs like North Central Railway (Prayagraj).*
+1. **Kinematic Root-Cause Attribution**:
+   * Analyzes whether a train's delay was **73% Track Deceleration** vs. **27% Platform Dwell**.
+   * *Recommendation for Track Deceleration*: Section dispatchers should clear track blocks ahead, adjust signal headway, or hold lower-priority freight on loop lines.
+   * *Recommendation for Platform Dwell*: Station superintendents should deploy additional platform staff or expedite parcel loading.
+2. **Dynamic Timetable Buffer Absorption**:
+   * Evaluates if upcoming sections have engineered timetable slack (e.g. 20-minute buffer before terminal). If upcoming recovery buffer exceeds current delay, the system advises dispatchers *not* to cancel connecting services.
+3. **Turnaround Rake Swap & Precedence Protection**:
+   * If incoming train arrival delay breaches the 45-minute cleaning and maintenance window, the system alerts yard masters to deploy standby rakes at terminal yards rather than propagating the cascade to outbound passengers.
+
+---
+
+## 8. Summary Comparison: Macro vs. Micro Architecture
+
+| Attribute | Baseline Journey View (Kaggle Dataset) | Our 3 Analytical Bridges | Phase 5 Micro Trajectory Engine (RSTGCN Dataset) |
+| :--- | :--- | :--- | :--- |
+| **Granularity** | Single row per journey (Origin ➔ Dest) | Journey + Regional Zone Averages | **1,283,333 Station Stop Telemetry Logs** |
+| **Intermediate View**| Complete 1,000 km blind spot | Zone Delay Pressure reflects regional jams | **Pinpoints exact inter-station track blocks** |
+| **Root-Cause Analysis**| None | High-level corridor congestion | **Exact Kinematic Split** (Track Run vs. Platform Dwell) |
+| **Domino Cascade Tracking**| None | Turnaround Rake Chain Count | **Stop-by-Stop Waterfall & Turnaround Buffers** |
+| **Network Graph** | Coarse 16-Zone Graph | Centrality Chokepoints (NCR vs NFR) | **4,735 Stations & 16,490 Track Sections** |
+| **Actionable Solutions** | Passive delay warning | Risk Tier Stratification | **Dynamic Dispatching & Standby Rake Alerts** |
+
+---
+
+## 9. How to Explain This in an Interview or PPT Defense
+
+If an evaluator, professor, or railway panel asks:
+> *"How does your system solve journey-level granularity, and can it actually show where a train got delayed and recommend solutions?"*
+
+**You can give this crisp, authoritative defense:**
+> *"We tackled delay granularity through a dual-layer architecture:*
+> 1. *At the **macro network level**, we designed 3 analytical bridges—tracking physical rake turnarounds, calculating rolling 20-journey zone delay pressure (which ranked as our #1 predictive feature in LightGBM), and modeling a 16-zone NetworkX topological graph to quantify structural chokepoints like NCR/Prayagraj.*
+> 2. *At the **micro operational level**, we integrated the IIT Kharagpur RSTGCN dataset spanning 1.28 million station stops. By calculating kinematic deltas ($\Delta_{\text{running}}$ and $\Delta_{\text{dwell}}$), the system pinpoints the exact track segment where delay was injected, breaks down whether delay was caused by track deceleration (73.4%) or platform overstay (26.6%), and provides operational recommendations for buffer recovery and turnaround rake protection.*
 >
-> *These features turned a blind 1,000 km black box into a quantifiable network cascade model, with Zone Delay Pressure emerging as our LightGBM model's #1 most predictive feature."*
+> *This transitions the platform from a simple prediction model into an end-to-end railway decision-support suite."*

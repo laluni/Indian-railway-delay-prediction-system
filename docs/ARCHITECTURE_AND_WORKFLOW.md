@@ -6,8 +6,8 @@ The platform operates as a dual-granularity, local-first predictive intelligence
 
 ```mermaid
 flowchart TD
-    subgraph Data_Layer ["Data and Storage Warehouse: Polars + DuckDB"]
-        A1["1.28M Station Delays: RSTGCN Sep 2024"] -->|Streaming Polars ETL: src/station_etl.py| B[("DuckDB Warehouse: db/railway.duckdb")]
+    subgraph Data_Layer ["Data and Storage Warehouse: Polars and DuckDB"]
+        A1["1.28M Station Delays: RSTGCN Sep 2024"] -->|Streaming Polars ETL: src/station_etl.py| B["DuckDB Warehouse: db/railway.duckdb"]
         A2["1.5M Journey Records: ir_train.csv"] -->|Streaming Parallel ETL: src/etl.py| B
         B --> C1["Table: station_stops (1.28M rows)"]
         B --> C2["Table: section_analytics (Track segments)"]
@@ -15,7 +15,8 @@ flowchart TD
     end
 
     subgraph Kinematics_Engine ["Micro-Level Trajectory and Bottleneck Engine"]
-        C1 & C2 --> D1["TrajectoryProfiler Service: src/trajectory_profiler.py"]
+        C1 --> D1["TrajectoryProfiler Service: src/trajectory_profiler.py"]
+        C2 --> D1
         D1 --> E1["Station-by-Station Delay Waterfall"]
         D1 --> E2["Platform Dwell vs. Track Deceleration Kinematics"]
         D1 --> E3["Top 10 National Track Bottlenecks"]
@@ -29,7 +30,9 @@ flowchart TD
     end
 
     subgraph AI_Modeling ["Scientific Machine Learning Layer"]
-        F2 & F3 & F4 --> G["Enriched Feature Matrix"]
+        F2 --> G["Enriched Feature Matrix"]
+        F3 --> G
+        F4 --> G
         G -->|Multi-Model Benchmark: src/benchmark.py| H{"Model Evaluation"}
         H -.->|Baselines| I["Ridge Regression, Random Forest, XGBoost"]
         H -->|Champion Model: AUC 0.9153, MAE 33.65m| J["LightGBM Regressor and Classifier"]
@@ -37,7 +40,9 @@ flowchart TD
     end
 
     subgraph Presentation ["Passenger-First 5-Tab Streamlit Dashboard"]
-        K & D1 & B --> L["Web Application: app/dashboard.py"]
+        K --> L["Web Application: app/dashboard.py"]
+        D1 --> L
+        B --> L
         L --> M1["Tab 1: Check My Train - Commuter and What-If Modes"]
         L --> M2["Tab 2: Network Hotspots and National Chokepoints"]
         L --> M3["Tab 3: AI Model Benchmark and Leaderboards"]
