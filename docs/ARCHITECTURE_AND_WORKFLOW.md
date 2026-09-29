@@ -1,4 +1,4 @@
-﻿# Architecture and Workflow Specification
+# Architecture and Workflow Specification
 
 ## 1. High-Level Architecture
 
@@ -6,33 +6,33 @@ The system is architected as an end-to-end, local-first predictive intelligence 
 
 ```mermaid
 flowchart TD
-    subgraph Data_Layer [Data & Storage Layer]
-        A[Raw Historical Dataset: ir_train.csv (1.5M Records)] -->|Streaming Parallel ETL via Polars| B[(Local DuckDB Warehouse: railway.duckdb)]
-        B -->|Indexed Query Engine| C[Journeys Table (45 Attributes)]
+    subgraph Data_Layer ["Data & Storage Layer"]
+        A["Raw Historical Dataset: ir_train.csv (1.5M Records)"] -->|Streaming Parallel ETL via Polars| B[("Local DuckDB Warehouse: railway.duckdb")]
+        B -->|Indexed Query Engine| C["Journeys Table (45 Attributes)"]
     end
 
-    subgraph Feature_Engineering [Graph & Cascade Engine]
-        C -->|Zone Adjacency & Corridor Flow| D[16-Zone NetworkX Topological Graph]
-        D -->|Betweenness & Degree Centrality| E[Topological Chokepoint Scores]
-        C -->|Rake Turnaround Tracking| F[Sequential Rake Delay Accumulator]
-        C -->|Rolling 20-Period Window| G[Zone Delay Congestion Pressure]
+    subgraph Feature_Engineering ["Graph & Cascade Engine"]
+        C -->|Zone Adjacency & Corridor Flow| D["16-Zone NetworkX Topological Graph"]
+        D -->|Betweenness & Degree Centrality| E["Topological Chokepoint Scores"]
+        C -->|Rake Turnaround Tracking| F["Sequential Rake Delay Accumulator"]
+        C -->|Rolling 20-Period Window| G["Zone Delay Congestion Pressure"]
     end
 
-    subgraph AI_Modeling [Scientific Machine Learning Layer]
-        E & F & G --> H[Enriched Feature Matrix]
-        H -->|Multi-Model Benchmark| I{Model Comparison}
-        I -.->|Evaluated Baselines| J[Ridge Regression & Random Forest & XGBoost]
-        I -->|Champion Model (AUC: 0.9195, MAE: 33.9m)| K[LightGBM Regressor & Classifier]
-        K -->|Model Bundle Serialization| L[champion_models.pkl]
+    subgraph AI_Modeling ["Scientific Machine Learning Layer"]
+        E & F & G --> H["Enriched Feature Matrix"]
+        H -->|Multi-Model Benchmark| I{"Model Comparison"}
+        I -.->|Evaluated Baselines| J["Ridge Regression & Random Forest & XGBoost"]
+        I -->|Champion Model (AUC: 0.9195, MAE: 33.9m)| K["LightGBM Regressor & Classifier"]
+        K -->|Model Bundle Serialization| L["champion_models.pkl"]
     end
 
-    subgraph Presentation [Dual-Mode Presentation Layer]
-        L & B --> M[Streamlit Interactive Dashboard: app/dashboard.py]
-        M --> N[View A: Passenger View - Zero Questions, 100% Inferred]
-        M --> O[View B: Evaluator View - Manual What-If Overrides]
-        M --> P[Tab 2: Network Bottleneck Map]
-        M --> Q[Tab 3: Scientific Benchmark & Ablation]
-        M --> R[Tab 4: Rake Cascade Simulator]
+    subgraph Presentation ["Dual-Mode Presentation Layer"]
+        L & B --> M["Streamlit Interactive Dashboard: app/dashboard.py"]
+        M --> N["View A: Passenger View - Zero Questions, 100% Inferred"]
+        M --> O["View B: Evaluator View - Manual What-If Overrides"]
+        M --> P["Tab 2: Network Bottleneck Map"]
+        M --> Q["Tab 3: Scientific Benchmark & Ablation"]
+        M --> R["Tab 4: Rake Cascade Simulator"]
     end
 ```
 
