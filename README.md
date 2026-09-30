@@ -11,12 +11,7 @@ This system addresses that gap through a dual-granularity architecture:
 1. **Station-Level Kinematic Localization**: Ingests **1.28 Million real station delay records** (IIT Kharagpur RSTGCN Dataset, Sep 2024) using **Polars** and an indexed **DuckDB** analytical warehouse. Computes track running deltas ($\Delta_{\text{running}}$) and platform dwell deltas ($\Delta_{\text{dwell}}$) across thousands of track sections.
 2. **Network-Wide Topological Graph**: Models India's **16 railway zones and High-Density Network (HDN) corridors** using **NetworkX** to compute Betweenness Centrality and quantify structural network chokepoints.
 3. **Scientific Machine Learning Benchmark**: Evaluates Ridge, Random Forest, XGBoost, and LightGBM on 100,000 journeys alongside an empirical **ablation study** proving the predictive power of engineered cascade features.
-4. **Interactive 5-Tab Web Dashboard (Streamlit & Plotly)**:
-   * 🎯 **Check My Train**: Commuter zero-effort mode (auto-inferred rake turnaround, weather, and congestion) & What-If simulator with real-time AI delay forecast, probability gauge, station-by-station trajectory waterfall map, and worst bottleneck localization.
-   * 🗺️ **Network Hotspots**: Zone delay rankings vs. centrality and the Top 10 Chronic National Track Bottlenecks across India.
-   * 📊 **AI Performance**: Multi-model comparison leaderboard and evaluation metric visualizations.
-   * ⚡ **Cascade Simulator**: Shared rake turnaround simulation illustrating knock-on delay propagation and buffer recovery.
-   * 🪔 **Festival Rush**: Ganesh Chaturthi (Sept 2024) surge analysis demonstrating how unscheduled special trains trigger cascade gridlocks.
+4. **Passenger-Friendly Streamlit Dashboard**: Lets a user find a train, see a recorded trip's arrival delay, follow delay changes stop by stop, and understand where time was lost or recovered. The dashboard clearly labels these as historical records, not live running status or a forecast for today's trip.
 
 ---
 
@@ -96,4 +91,3 @@ Open **`http://localhost:8501`** in your web browser.
 * **Machine Learning**: LightGBM, XGBoost, Scikit-Learn
 * **Application & Visualizations**: Streamlit, Plotly Express & Graph Objects
 * **Testing & Quality Assurance**: PyTest (9 Automated Test Suites)
-

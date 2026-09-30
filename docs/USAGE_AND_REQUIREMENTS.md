@@ -97,37 +97,14 @@ Open **`http://localhost:8501`** in your web browser.
 
 ---
 
-## 5. Dashboard Walkthrough & Features
+## 5. Dashboard Walkthrough
 
-### 🎯 Tab 1: Check My Train
-* **👤 Commuter Mode (Zero-Effort Default)**:
-  * Select a train from the dropdown (e.g. express train 12441).
-  * The backend automatically auto-populates route specs, inspects whether the incoming trainset was delayed on its prior run (`late_incoming_rake`), evaluates seasonal fog/weather alerts, and queries DuckDB for rolling corridor congestion.
-  * Displays automatic diagnostic badges (Rake status, Weather risk, Corridor delay pressure).
-* **🔬 What-If Simulator (Advanced)**:
-  * Provides manual sliders for zone, distance, stop count, scheduled travel time, departure hour, HDN status, fog conditions, rake sharing, and active zone delay pressure to simulate extreme edge cases.
-* **🔮 AI Delay Forecast**:
-  * Predicts continuous arrival delay in minutes, probability of exceeding the 15-minute IRCTC threshold, and risk tier (LOW, MEDIUM, HIGH).
-* **🚉 Journey Delay Waterfall Map**:
-  * Interactive Plotly chart showing cumulative arrival delay curve alongside section-by-section delay additions ($\Delta_{\text{running}}$) and buffer time recoveries across the entire route.
-* **🚨 Worst Sections on Route**:
-  * Highlights the top 3 worst delay-accumulating track segments on the chosen train's journey.
-* **📋 Full Timing Log**:
-  * Expandable table containing scheduled vs. actual arrival/departure times, section distance, and station dwell deltas.
+The dashboard is designed for passengers and uses plain-language labels:
 
-### 🗺️ Tab 2: Network Hotspots
-* **Zone Delay Rankings**: Interactive bar chart comparing average delay across all 16 railway zones, color-coded by congestion index.
-* **Network Centrality Table**: Ranks railway zones by topological Betweenness Centrality computed from the 16-zone NetworkX graph.
-* **Top 10 Chronic National Track Bottlenecks**: Horizontal bar chart identifying segments across India where trains chronically lose time, with delay frequency and delay gradient metrics.
+1. **Find a train**: Start typing its name or number and choose it from the list.
+2. **Read the trip summary**: See the recorded route, date, distance, number of stops, and delay at the destination.
+3. **Follow the delay**: The chart shows how many minutes early or late the train was at each stop. Hover over a point to see the station name.
+4. **Understand time changes**: See recorded time lost between stations, extra time stopped, time made up later, and the sections where delay grew most.
+5. **Open the timing table**: Expand the table to compare scheduled and recorded arrival times at each stop.
 
-### 📊 Tab 3: AI Performance
-* Multi-model benchmark leaderboard comparing **Ridge Regression vs. Random Forest vs. XGBoost vs. LightGBM** across MAE, RMSE, $R^2$, AUC-ROC, Training Time, and Inference Latency.
-* Interactive Plotly charts visualizing prediction error (MAE) and delay detection accuracy (AUC-ROC).
-
-### ⚡ Tab 4: Cascade Simulator
-* Interactive what-if sandbox simulating how a delay on an incoming trainset ripples across consecutive turnaround services.
-* Configurable incoming delay (0–180 mins), maintenance buffer time (30–180 mins), and number of turnaround services.
-
-### 🪔 Tab 5: Festival Rush
-* Empirical analysis of the **Ganesh Chaturthi (Sept 2024)** festival rush.
-* Visualizes daily average network delays, highlighting the +14.3 minute delay surge during festival peak dates (Sept 7–17, 2024) caused by unscheduled special trains and loop siding cascade gridlocks.
+**Important:** This dashboard displays historical journeys from the local DuckDB database. It is not connected to a live railway feed and does not forecast today's arrival. Use official Indian Railways services for current running status. If the database is missing, build it using `python src/station_etl.py` before launching the dashboard.

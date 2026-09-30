@@ -36,13 +36,12 @@ flowchart TD
         J -->|Serialized Artifacts| K["champion_models.pkl"]
     end
 
-    subgraph Presentation ["Passenger-First 5-Tab Streamlit Dashboard"]
+    subgraph Presentation ["Passenger-Friendly Streamlit Dashboard"]
         K & D1 & B --> L["Web Application: app/dashboard.py"]
-        L --> M1["Tab 1: Check My Train - Commuter and What-If Modes"]
-        L --> M2["Tab 2: Network Hotspots and National Chokepoints"]
-        L --> M3["Tab 3: AI Model Benchmark and Leaderboards"]
-        L --> M4["Tab 4: Turnaround Rake Cascade Simulator"]
-        L --> M5["Tab 5: Ganesh Chaturthi Festival Surge Analytics"]
+        L --> M1["Find a Train in Recorded Journeys"]
+        M1 --> M2["Plain-Language Trip Summary"]
+        M2 --> M3["Stop-by-Stop Delay Chart"]
+        M2 --> M4["Time Lost, Recovered, and Timing Log"]
     end
 ```
 
@@ -104,16 +103,12 @@ flowchart TD
 ---
 
 ### E. Passenger-First Presentation Layer (`app/dashboard.py`)
-* **Tab 1: 🎯 Check My Train**:
-  * **Commuter Mode (Zero-Effort Default)**: User simply selects a Train Number. The system automatically populates route specs, detects incoming rake status, checks seasonal weather/fog alerts, and retrieves active corridor congestion.
-  * **What-If Mode (Advanced)**: Allows operators, evaluators, and judges to tweak distance, stops, departure hour, HDN status, fog, and cascade chain length.
-  * **Dual AI Predictions**: Numerical delay forecast card and radial probability gauge.
-  * **Journey Delay Waterfall Map**: Plotly visual showing cumulative delay trajectory, section-by-section delay additions ($\Delta_{\text{running}}$), and buffer recoveries.
-  * **Worst Section Cards & Timing Log**: Detailed inspection of individual track links.
-* **Tab 2: 🗺️ Network Hotspots**: Zone rankings vs. network centrality, and top 10 chronic national track chokepoints.
-* **Tab 3: 📊 AI Performance**: Multi-model comparison leaderboard (Ridge, Random Forest, XGBoost, LightGBM) with interactive charts.
-* **Tab 4: ⚡ Cascade Simulator**: Rake sharing turnaround simulation illustrating delay accumulation and buffer dissipation across consecutive runs.
-* **Tab 5: 🪔 Festival Rush**: Ganesh Chaturthi (Sept 2024) surge analytics showing unscheduled special train congestion and loop siding cascades.
+* **Find a train**: Passengers can search recorded trips by train number or name.
+* **Plain-language summary**: Shows the selected trip's route, date, destination delay, distance, and stop count.
+* **Stop-by-stop chart**: Plots recorded arrival delay at each stop, with station names available on hover.
+* **Explainable time changes**: Summarizes recorded time lost between stations, extra time stopped, time recovered later, and the sections with the largest delay increases.
+* **Timing log**: An expandable table compares scheduled and recorded arrival times at each stop.
+* **Data limitation**: The dashboard displays historical records from DuckDB; it is not a live train feed and does not present historical values as a forecast.
 
 ---
 
@@ -126,18 +121,14 @@ sequenceDiagram
     participant UI as Streamlit Web Interface
     participant Profiler as TrajectoryProfiler Service
     participant DB as Local DuckDB (railway.duckdb)
-    participant AI as LightGBM Predictor Engine
 
-    User->>UI: Selects Train (e.g., Train 12441)
+    User->>UI: Searches for and selects a train
     UI->>DB: Query Station Stops & Route Metadata
     DB-->>UI: Return Stop Sequences, Scheduled & Actual Times
     UI->>Profiler: Request Trajectory & Bottleneck Analysis
     Profiler->>DB: Query Section Running Deltas & Dwells
     DB-->>Profiler: Return Stop-by-Stop Delays
-    Profiler->>Profiler: Calculate Running vs. Dwell Loss & Extract Top 3 Bottlenecks
-    Profiler-->>UI: Return Waterfall Chart Data & Metrics
-    UI->>AI: Pass Inferred Feature Vector (Zone, Distance, Rake Status, Fog)
-    AI->>AI: Execute Dual LightGBM Inference (< 1ms)
-    AI-->>UI: Return Delay Minutes, Probability %, and Risk Tier
-    UI-->>User: Render Interactive Forecast Card, Risk Gauge, Waterfall Map, & Bottleneck Cards
+    Profiler->>Profiler: Summarize recorded time lost and recovered
+    Profiler-->>UI: Return recorded stops, delays, and trip summary
+    UI-->>User: Show historical trip results in plain language
 ```
