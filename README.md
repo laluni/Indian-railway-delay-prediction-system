@@ -29,6 +29,7 @@ This system addresses that gap through a dual-granularity architecture:
 | 🔬 [Scientific Benchmarking & Findings](docs/SCIENTIFIC_BENCHMARKING_AND_FINDINGS.md) | Multi-model evaluation, LightGBM champion metrics, and cascade ablation study. |
 | 📊 [Model Benchmark & Comparison](docs/MODEL_BENCHMARK_AND_COMPARISON.md) | Deep comparative evaluation across Ridge, Random Forest, XGBoost, and LightGBM. |
 | 📍 [Journey-Level Granularity Explained](docs/JOURNEY_LEVEL_GRANULARITY_EXPLAINED.md) | Architectural rationale for macro-journey vs. micro-station data modeling. |
+| 🌐 [Graph & Dataset Synergy Guide](docs/GRAPH_AND_DATASET_SYNERGY.md) | Mathematical role of the topological graph, centrality ripple effects, and two-dataset synergy. |
 | 🚀 [Usage and Requirements Guide](docs/USAGE_AND_REQUIREMENTS.md) | Complete environment setup, pipeline commands, testing, and dashboard walkthrough. |
 | 🎤 [Presentation & Slide Deck Context](docs/PPT_PRESENTATION_CONTEXT.md) | Structured narrative, freight dilemma analysis, and defense talking points. |
 | 🗺️ [Phased Implementation Roadmap](docs/phased_implementation_plan.md) | Step-by-step milestones, validation gates, and implementation status. |
