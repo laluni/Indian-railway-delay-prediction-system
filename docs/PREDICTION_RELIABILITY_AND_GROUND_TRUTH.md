@@ -78,10 +78,10 @@ The prediction service (`src/predictor.py`) executes two concurrent models train
 
 1. **LightGBM Regressor:**
    Predicts the continuous expected delay value in minutes:
-   $$\hat{y} = \text{LightGBM\_Regressor}(\vec{X})$$
+   $$\hat{y} = \text{LightGBM-Regressor}(\vec{X})$$
 2. **LightGBM Binary Classifier:**
    Estimates the calibrated probability that the journey will breach the official Indian Railways 15-minute punctuality threshold:
-   $$\hat{P}(\text{Delay} \ge 15) = \text{LightGBM\_Classifier.predict\_proba}(\vec{X})[:, 1]$$
+   $$\hat{P}(\text{Delay} \ge 15) = \text{LightGBM-Classifier.predict-proba}(\vec{X})[:, 1]$$
 3. **Tree Agreement (Ensemble Variance):**
    LightGBM constructs hundreds of decision trees with leaf-wise expansion. When tree predictions cluster closely around a single mode, the variance $\sigma^2$ is low, driving high reliability scores.
 
