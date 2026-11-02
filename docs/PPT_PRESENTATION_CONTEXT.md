@@ -123,10 +123,16 @@ To prove that our engineered features were not placebo inputs, we evaluated the 
 
 ## 7. Interactive 5-Tab Dashboard Structure (`app/dashboard.py`)
 
-1. **Tab 1: 🎯 Check My Train**:
-   * **Commuter Zero-Effort Mode**: Select train number only; automatically infers incoming rake delay, weather/fog alerts, and active corridor delay pressure.
-   * **What-If Mode**: Operational sliders for academic evaluation and edge-case simulation.
-   * **AI Forecast**: Predicted arrival delay minutes, % probability gauge, and risk classification.
+1. **Tab 1: 🎯 Check My Train (Grounded Operational Telemetry)**:
+   * **Commuter Zero-Effort Mode**: Select train number only; automatically infers incoming rake turnaround state, verified weather/fog conditions, and active corridor baseline pressure.
+   * **Live Ground-Truth Telemetry Audit**: 100% grounded in verifiable schedule and historical logs. Displays factual metrics:
+     * *Visibility Factor* (derived from verified atmospheric visibility / weather condition codes).
+     * *Average Stop Spacing* (true inter-station track distance / scheduled stop density in km).
+     * *Zone Congestion Baseline* (empirical multi-year delay average for the operational zone).
+     * Replaced deceptive synthetic parameters (such as mock "live GPS", "preceding headway", and "sensor track temperatures") with transparent, verifiable station stop records.
+   * **AI Forecast Card & Reliability Confidence**:
+     * Predicted arrival delay in minutes, delay category badge, and delay probability gauge.
+     * **Dynamically Calibrated Confidence Score**: Calculated via empirical residual variance across the train's speed class, distance bracket, and weather impact.
    * **Station Delay Waterfall Map**: Plotly chart of cumulative delay line overlaid with per-section loss/recovery bars.
    * **Worst 3 Bottlenecks**: Highlights the most problematic track sections on the chosen route.
 2. **Tab 2: 🗺️ Network Hotspots**:
@@ -135,23 +141,44 @@ To prove that our engineered features were not placebo inputs, we evaluated the 
 3. **Tab 3: 📊 AI Performance**:
    * Embedded multi-model benchmark leaderboard and interactive comparison charts.
 4. **Tab 4: ⚡ Cascade Simulator**:
-   * Interactive rake turnaround sandbox simulating knock-on delay propagation and buffer dissipation.
+   * Interactive rake turnaround sandbox simulating knock-on delay propagation and buffer dissipation across consecutive trips.
 5. **Tab 5: 🪔 Festival Rush**:
    * Empirical analysis of **Ganesh Chaturthi (Sept 2024)**, revealing the +14.3 min network delay surge caused by unscheduled special trains and loop siding congestion.
 
 ---
 
-## 8. Suggested Slide Deck Outline (12 Slides)
+## 8. Prediction Reliability, Dynamic Confidence & Telemetry Ground Truth
+
+### Dynamic ML Prediction Confidence
+* **Is Confidence Dynamic?** Yes. It dynamically scales per train query based on:
+  1. **Historical Residual Variance**: Evaluates variance across similar trains (same category, distance, and zone).
+  2. **Route Complexity & Volatility**: Longer routes crossing complex junction zones (e.g., NCR) have higher variance, yielding tighter, more honest confidence bands (e.g., 78–82%), whereas stable Rajdhani/Vande Bharat routes yield 90–95%.
+  3. **Adverse Weather/Fog Volatility**: Winter fog conditions introduce behavioral variance in loco-pilot running times, penalizing confidence dynamically.
+
+### Kinematic Attribution (Running Delta vs Platform Dwell Delta)
+* **What It Tells Decision-Makers**:
+  * **Running Delta**: Tracks mid-section delays (speed restrictions, caution orders, freight crossing conflicts, signaling blocks).
+  * **Platform Dwell Delta**: Tracks station bottlenecks (platform occupancy conflicts, delayed rake shunting, extended passenger loading).
+* **Why It Is Essential**: Pinpoints whether the root cause is **track capacity** (dispatcher/signaling issue) or **terminal capacity** (station master/platform issue).
+
+### Ground-Truth Telemetry vs Synthetic Placeholders
+* **Visibility Factor (e.g., 0.15 Clear)**: Normalized atmospheric degradation index based on historical weather records at origin/transit hubs (1.0 = heavy winter fog < 50m visibility; 0.0 = clear visibility).
+* **Average Stop Spacing (e.g., 78.4 km)**: Exact mathematical quotient of total route kilometers divided by scheduled intermediate halts.
+* **Zone Congestion Baseline (e.g., 37 mins delay baseline)**: Historical median delay observed across all trains traversing that operational zone over the dataset period.
+
+---
+
+## 9. Suggested Slide Deck Outline (12 Slides)
 
 * **Slide 1: Title Slide** – Project Title, Authors, Subtitle: *"From Reactive GPS Tracking to Network-Wide Spatio-Temporal Delay Forecasting"*.
 * **Slide 2: The Problem: Delay Cascades** – Track sharing, rake turnaround compounding, and why isolated tracking fails.
 * **Slide 3: Market Gap & Existing Transit Apps** – Comparison matrix: Ixigo vs. NTES/COA vs. Our Dual-Layer System.
 * **Slide 4: The Freight & Logistics Dilemma** – How passenger cascades shunt freight trains into loop sidings (demurrage costs, supply chain stockouts).
-* **Slide 5: Dual-Layer Technical Architecture** – Diagram showing Polars, DuckDB, NetworkX, LightGBM, and Streamlit.
-* **Slide 6: Station Kinematics & Trajectory Profiling** – Explaining $\Delta_{\text{running}}$ vs. $\Delta_{\text{dwell}}$ and route waterfall charts.
+* **Slide 5: Dual-Layer Technical Architecture** – Diagram showing Polars, DuckDB, NetworkX, LightGBM, and Streamlit/Modern Web UI.
+* **Slide 6: Station Kinematics & Trajectory Profiling** – Explaining running vs. dwell deltas, route waterfall charts, and root-cause localization.
 * **Slide 7: Graph Topology & Cascade Feature Engineering** – 16-zone NetworkX graph, betweenness centrality, and rolling zone delay pressure.
-* **Slide 8: Multi-Model Scientific Benchmark** – Comparative table across Ridge, Random Forest, XGBoost, and LightGBM.
-* **Slide 9: The Scientific Ablation Study** – Statistical proof that engineered cascade features reduce error by 0.53 mins and boost AUC.
-* **Slide 10: Passenger Experience: Zero-Effort Commuter View** – Automatic inference of rake status, weather, and corridor pressure without user effort.
+* **Slide 8: Multi-Model Scientific Benchmark & Ablation Study** – Comparative table (Ridge, RF, XGBoost, LightGBM) + proof that cascade features reduce error by 0.53 mins.
+* **Slide 9: Prediction Reliability & Dynamic Confidence** – Mathematical confidence calibration based on historical prediction errors, route complexity, and weather volatility.
+* **Slide 10: Grounded Telemetry vs Fake Sensor Data** – Audit of truthful station metrics (Average Stop Spacing, Zone Baselines, Visibility) vs misleading synthetic telemetry.
 * **Slide 11: Festival Surge Intelligence: Ganesh Chaturthi 2024** – Data showing the impact of unscheduled special trains on corridor throughput.
-* **Slide 12: Conclusion & Future Scope** – Real-time NTES API streaming integration, Dedicated Freight Corridor (DFC) modeling, and summary.
+* **Slide 12: Conclusion, Operational Impact & Future Scope** – Real-time NTES API integration, Dedicated Freight Corridor (DFC) modeling, and summary.
