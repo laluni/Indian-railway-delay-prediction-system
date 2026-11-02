@@ -25,3 +25,9 @@ db/*.duckdb.wal
 Thumbs.db
 desktop.ini
 ~$*
+
+
+# Temporary and Large Raw Datasets
+Indian-Railway-Network-and-Delays/
+app/dashboard_backup.py
+app/railpulse_hero_banner.*

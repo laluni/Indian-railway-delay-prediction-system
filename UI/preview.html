@@ -1,0 +1,1139 @@
+<!DOCTYPE html><html lang="en" class="h-full"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>RailSense AI - Indian Railway Predictive Operations &amp; Delay Forecasting</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Google Fonts: Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-primary": "#90cfec",
+            "surface-dim": "#d3daec",
+            "on-primary-fixed": "#001f2a",
+            "secondary-fixed-dim": "#ffb599",
+            "surface": "#f9f9ff",
+            "inverse-on-surface": "#ecf0ff",
+            "on-error": "#ffffff",
+            "primary-fixed": "#bde9ff",
+            "on-secondary": "#ffffff",
+            "primary": "#004357",
+            "on-primary-container": "#93d3ef",
+            "on-background": "#151c29",
+            "background": "#f9f9ff",
+            "surface-container-lowest": "#ffffff",
+            "error-container": "#ffdad6",
+            "tertiary-fixed-dim": "#78d8ba",
+            "on-secondary-fixed": "#370e00",
+            "on-secondary-fixed-variant": "#7f2b00",
+            "error": "#ba1a1a",
+            "inverse-surface": "#2a303e",
+            "tertiary-fixed": "#94f5d6",
+            "on-tertiary-container": "#7bdcbe",
+            "secondary": "#a73a00",
+            "on-surface-variant": "#40484c",
+            "surface-bright": "#f9f9ff",
+            "secondary-container": "#fe7031",
+            "surface-container-high": "#e1e8fb",
+            "tertiary": "#004738",
+            "surface-container-highest": "#dce2f5",
+            "outline-variant": "#bfc8cd",
+            "surface-variant": "#dce2f5",
+            "on-surface": "#151c29",
+            "outline": "#70787d",
+            "surface-container": "#e8eeff",
+            "tertiary-container": "#00614d",
+            "on-secondary-container": "#5e1d00",
+            "surface-container-low": "#f1f3ff",
+            "surface-tint": "#1e667f",
+            "on-error-container": "#93000a",
+            "on-tertiary": "#ffffff",
+            "on-primary": "#ffffff",
+            "on-tertiary-fixed-variant": "#005140",
+            "primary-container": "#0d5c75",
+            "on-primary-fixed-variant": "#004d64",
+            "primary-fixed-dim": "#90cfec",
+            "on-tertiary-fixed": "#002018",
+            "secondary-fixed": "#ffdbce"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter-mobile": "0.75rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "gutter": "1rem",
+            "margin-mobile": "1rem",
+            "margin": "1.5rem"
+          },
+          "fontFamily": {
+            "label-md": ["JetBrains Mono"],
+            "label-lg": ["JetBrains Mono"],
+            "headline-xl": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-sm": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "headline-lg": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-sm": ["Inter"],
+            "body-md": ["Inter"],
+            "label-sm": ["JetBrains Mono"],
+            "headline-xl-mobile": ["Inter"]
+          },
+          "fontSize": {
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.025em", "fontWeight": "500" }],
+            "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-lg-mobile": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.03em", "fontWeight": "500" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f3ff;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #bfc8cd;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #70787d;
+    }
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .animate-pulse-subtle {
+      animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased overflow-x-hidden min-h-screen flex flex-col">
+<!-- Main System Shell Flex Layout -->
+<div class="flex h-screen w-full overflow-hidden">
+<!-- 1. SideNavBar Component from Blueprint -->
+
+<!-- Main Workspace Container -->
+<div class="flex-1 flex flex-col h-screen overflow-hidden bg-background">
+<!-- 2. TopNavBar Component from Blueprint -->
+<header class="flex justify-between items-center w-full px-space-lg h-16 sticky top-0 z-40 bg-surface-container-lowest border-b border-outline-variant/30 shadow-sm shrink-0">
+  <!-- Left: System Identity & Status -->
+  <div class="flex items-center gap-space-md">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary shadow-sm">
+        <span class="material-symbols-outlined text-headline-sm" data-icon="train">train</span>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-headline-sm text-body-md font-bold text-on-surface tracking-tight">RailSense AI</span>
+          </div>
+        <p class="text-label-sm font-label-sm text-on-surface-variant hidden sm:block">Indian Railway Predictive Ops &amp; Delay Forecasting</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Center: Elegant Pill Navigation -->
+  <nav class="hidden lg:flex items-center bg-surface-container-low p-1 rounded-full border border-outline-variant/30 text-label-md font-label-md">
+    <a href="#" class="px-4 py-1.5 rounded-full bg-primary text-on-primary font-semibold shadow-sm transition-all">Zone Dashboard</a>
+    <a href="#" class="px-4 py-1.5 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/10 transition-colors flex items-center gap-1.5">
+      <span class="">Corridor chokepoints</span>
+      <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+    </a>
+    <a href="#" class="px-4 py-1.5 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/10 transition-colors"><strong>Model Benchmarks</strong></a>
+  </nav>
+
+  <!-- Right: Sync telemetry and Controls -->
+  <div class="flex items-center gap-space-sm">
+
+    <button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg transition-colors relative" title="Notifications">
+      <span class="material-symbols-outlined text-headline-sm" data-icon="notifications_active">notifications_active</span>
+      <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary"></span>
+    </button>
+    <button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg transition-colors" title="API Settings">
+      <span class="material-symbols-outlined text-headline-sm" data-icon="tune">tune</span>
+    </button>
+    <button class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-surface-container-low border border-outline-variant/50 text-on-surface text-label-sm font-label-sm hover:bg-surface-container transition-colors font-medium active:scale-95">
+      <span class="material-symbols-outlined text-body-md" data-icon="download">download</span>
+      <span class="hidden sm:inline">Export Log</span>
+    </button>
+  </div>
+</header>
+<!-- 3. Operational Content Canvas (Bento Split Architecture) -->
+<main class="flex-1 overflow-y-auto custom-scrollbar p-space-md lg:p-space-lg space-y-space-lg">
+<!-- Top Notification Banner: Junction Congestion Alert -->
+
+<!-- Train Overview Header Ribbon & Multi-Filter Control -->
+<div class="relative bg-gradient-to-r from-primary to-[#052b39] text-on-primary rounded-xl overflow-hidden shadow-md border border-primary/20">
+  <!-- Background 3D Isometric Train Artwork with gradient mask overlay -->
+  <div class="absolute right-0 top-0 bottom-0 w-full sm:w-2/3 lg:w-1/2 overflow-hidden pointer-events-none select-none opacity-40 lg:opacity-90">
+    <img class="w-full h-full object-cover object-right" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9Nx3CLDVdjda9Qi9lVNqboS5VsPpHxvZ-YDTZhImis3_PYAfLBJvg0JqHQLqnt5c2y4swWjxjqKbfnDqKAB71F2pQw3wt9SY60Im82PMJbp-3I-tClcf-7Hbe5bHMxsf_77lT_-zFOzyWhlaTR2fIxXIE_DycoChTK5p9W7TJz4vGcws2wrdD-9AdNiuYit6kZQL3EmDeHTP9FQJfDOp6X0p_9lBm9gNwAF0VZTGv8FAZgIqC38dwiA" alt="3D Isometric Railway Station and High Speed Train Telemetry Visual">
+    <div class="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent"></div>
+  </div>
+
+  <!-- Hero Banner Content -->
+  <div class="relative z-10 p-space-md lg:p-space-lg flex flex-col justify-between gap-space-md max-w-3xl">
+    <!-- Top Row: Train Title & Badges -->
+    <div>
+      <div class="flex flex-wrap items-center gap-2 mb-2">
+        <span class="px-2.5 py-0.5 rounded-full text-label-sm font-label-sm font-bold bg-primary-fixed text-on-primary-fixed">Superfast Special</span>
+        <span class="px-2.5 py-0.5 rounded-full text-label-sm font-label-sm font-semibold bg-surface-container-lowest/20 text-on-primary backdrop-blur-md border border-white/10">LHB Rake #2243</span>
+        <span class="px-2.5 py-0.5 rounded-full text-label-sm font-label-sm font-bold bg-secondary text-on-secondary">Active Tracking</span>
+      </div>
+      <h2 id="trainTitle" class="text-headline-lg font-headline-lg font-extrabold text-on-primary tracking-tight">12301 Rajdhani Express</h2>
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-body-sm font-body-sm text-on-primary-container mt-1">
+        <span class="flex items-center gap-1 font-medium text-white">
+          <span class="material-symbols-outlined text-body-sm" data-icon="route">route</span>
+          <span id="trainRoute">Howrah (HWH) → New Delhi (NDLS)</span>
+        </span>
+        <span class="text-outline-variant">•</span>
+        <span class=""><span id="trainDistance">Total Run: 1,448 km</span></span>
+        <span class="text-outline-variant">•</span>
+        <span class="text-tertiary-fixed font-semibold"><span id="trainCorridor">Grand Chord Corridor</span></span>
+      </div>
+    </div>
+
+    <!-- Bottom Row: Unified Fast Search & Parameter Filters -->
+    <div class="pt-space-sm flex flex-col sm:flex-row items-stretch sm:items-center gap-space-sm">
+      <!-- Clean Search Pill -->
+      <div class="relative flex-1 min-w-[280px]">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-on-primary-container z-10">
+          <span class="material-symbols-outlined text-body-md" data-icon="search">search</span>
+        </div>
+        <select id="trainSelector" onchange="onTrainSelect(this.value)" class="w-full pl-9 pr-8 py-2 bg-surface-container-lowest/20 hover:bg-surface-container-lowest/30 focus:bg-primary-container text-white border border-white/25 rounded-lg text-body-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary-fixed transition-all cursor-pointer appearance-none"><option value="12301">12301 - Rajdhani Express (Howrah → New Delhi)</option><option value="22503">22503 - Dbrg Vivek Express (Kanyakumari → Dibrugarh)</option><option value="12864">12864 - Smvb Howrah Express (Smvt Bengaluru → Howrah)</option><option value="12507">12507 - Aronai Express (Thiruvananthapuram Central → Silchar)</option><option value="16317">16317 - Himsagar Express (Kanyakumari → Shri Mata Vaishno Devi Katra)</option><option value="12002">12002 - Shatabdi Express (New Delhi → Rani Kamalapati)</option><option value="12504">12504 - Humsafar Express (Agartala → Smvt Bengaluru)</option><option value="16787">16787 - Ten Svdk Express (Tirunelveli → Shri Mata Vaishno Devi Katra)</option></select>
+        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-white/70">
+          <span class="material-symbols-outlined text-body-md">arrow_drop_down</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+<!-- Bento Grid Layer 1: Core Hero Analytics + ML Confidence Engine + Root Cause -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- Card 1: Real-time Destination Arrival & Delay Vector (5 Cols) -->
+<div class="lg:col-span-5 bg-surface-container-lowest p-space-lg rounded-xl border border-outline-variant/30 shadow-sm flex flex-col justify-between relative overflow-hidden">
+<!-- Background Watermark Accent -->
+<div class="absolute -right-8 -bottom-8 opacity-5 text-primary pointer-events-none select-none">
+<span class="material-symbols-outlined text-[180px]" data-icon="schedule">schedule</span>
+</div>
+<div>
+<div class="flex items-center justify-between pb-space-md border-b border-outline-variant/20">
+<span class="text-label-sm font-label-sm font-semibold uppercase tracking-wider text-on-surface-variant">Arrival Forecast Engine</span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-label-sm font-label-sm font-bold">
+<span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
+                  <span id="riskBadgeText">Moderate Delay Risk (+42m)</span>
+                </span>
+</div>
+<!-- Main Timestamps -->
+<div class="mt-space-lg grid grid-cols-2 gap-space-md">
+<div class="p-space-md bg-surface-container-low rounded-lg border border-outline-variant/20">
+<span class="text-label-sm font-label-sm text-on-surface-variant">Scheduled Arrival</span>
+<div id="scheduledArrivalTime" class="text-headline-lg font-headline-lg font-bold text-outline mt-1">10:05 AM</div>
+<span class="text-body-sm font-body-sm text-outline">Tomorrow • Platform 9</span>
+</div>
+<div class="p-space-md bg-secondary-fixed/30 rounded-lg border border-secondary-container/40">
+<span class="text-label-sm font-label-sm font-semibold text-secondary">Predicted Arrival</span>
+<div id="predictedArrivalTime" class="text-headline-lg font-headline-lg font-bold text-secondary mt-1">10:47 AM</div>
+<div class="text-body-sm font-body-sm text-on-surface font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-body-md text-secondary" data-icon="arrow_upward">arrow_upward</span>
+<span id="predictedDelayMinsText">+42 mins late</span>
+</div>
+</div>
+</div>
+<!-- Real-time GPS Position Banner -->
+<div class="mt-space-md p-space-md bg-surface-container rounded-lg border border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary" data-icon="my_location">my_location</span>
+<div>
+<div class="text-label-md font-label-md font-bold text-on-surface">Live Kinematics: 118 km/h</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant"><span id="liveLocationSubtext">En route via Grand Chord • Active Automatic Block Signaling</span></div>
+</div>
+</div>
+<div class="text-right">
+<span class="text-label-sm font-label-sm font-bold text-tertiary bg-tertiary-fixed-dim/30 px-2 py-0.5 rounded">Cab Signal Clear</span>
+</div>
+</div>
+</div>
+<!-- Bottom Progress Tracker -->
+<div class="mt-space-lg pt-space-md border-t border-outline-variant/20">
+<div class="flex justify-between text-label-sm font-label-sm text-on-surface-variant mb-1.5">
+<span class=""><span id="journeyProgressText">Journey Completion: 4 stops / 9 stops</span></span>
+<span class="font-bold text-primary">30% Completed</span>
+</div>
+<div class="w-full bg-surface-variant h-2.5 rounded-full overflow-hidden">
+<div class="bg-primary h-2.5 rounded-full" style="width: 30%"></div>
+</div>
+</div>
+</div>
+<!-- Card 2: ML Model Confidence Gauge & Feature Vectors (4 Cols) -->
+<div class="lg:col-span-4 bg-surface-container-lowest p-space-lg rounded-xl border border-outline-variant/30 shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-space-md border-b border-outline-variant/20">
+<span class="text-label-sm font-label-sm font-semibold uppercase tracking-wider text-on-surface-variant">ML Prediction Confidence</span>
+<span class="text-label-sm font-label-sm text-tertiary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-label-md" data-icon="verified">verified</span>
+                  Model: Ensemble-v4.8
+                </span>
+</div>
+<!-- Confidence Dial / Segmented Metric -->
+<div class="mt-space-md text-center p-space-md bg-surface-container-low rounded-xl border border-outline-variant/20">
+<div class="inline-flex items-baseline gap-1">
+<span id="confidenceScoreVal" class="text-headline-xl font-headline-xl font-extrabold text-primary">94.2</span>
+<span class="text-headline-md font-headline-md font-bold text-primary">%</span>
+</div>
+<p class="text-label-md font-label-md font-bold text-tertiary mt-1">High Forecast Reliability</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">Trained on 1.2M historical Rajdhani/Superfast runs &amp; Live NTES telemetry</p>
+<!-- Segmented Meter Bar -->
+<div class="flex gap-1.5 mt-space-md">
+<div class="flex-1 h-2 rounded bg-tertiary"></div>
+<div class="flex-1 h-2 rounded bg-tertiary"></div>
+<div class="flex-1 h-2 rounded bg-tertiary"></div>
+<div class="flex-1 h-2 rounded bg-tertiary"></div>
+<div class="flex-1 h-2 rounded bg-tertiary/40"></div>
+</div>
+</div>
+<!-- Model Key Inputs -->
+<div class="mt-space-md space-y-2">
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-label-md" data-icon="foggy">foggy</span>
+                    Visibility &amp; Weather Coeff.
+                  </span>
+<span class="font-label-md font-bold text-on-surface">0.78 (Severe NCR Fog)</span>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-label-md" data-icon="alt_route">alt_route</span>
+                    Preceding Train Headway
+                  </span>
+<span class="font-label-md font-bold text-on-surface">11.4 mins</span>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-label-md" data-icon="thermostat">thermostat</span>
+                    Track Temperature
+                  </span>
+<span class="font-label-md font-bold text-on-surface">19.2°C (Optimal)</span>
+</div>
+</div>
+</div>
+<div class="pt-space-md border-t border-outline-variant/20 flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span class="">Recalibration Cycle: 60s</span>
+<span class="text-primary font-bold">Latency: 140ms</span>
+</div>
+</div>
+<!-- Card 3: Root Cause Delay Attributions (3 Cols) -->
+<div class="lg:col-span-3 bg-surface-container-lowest p-space-lg rounded-xl border border-outline-variant/30 shadow-sm flex flex-col justify-between">
+<div>
+<div class="pb-space-md border-b border-outline-variant/20">
+<h3 class="text-headline-sm font-headline-sm text-on-surface font-bold">Delay Breakdown</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant">AI Factor Attribution</p>
+</div>
+<!-- Breakdown Factors List -->
+<div class="mt-space-md space-y-space-md">
+<!-- Factor 1 -->
+<div>
+<div class="flex justify-between text-body-sm font-body-sm mb-1">
+<span class="font-semibold text-on-surface">Track Congestion</span>
+<span id="attrTrackLossVal" class="font-label-md font-bold text-secondary">72% (+30.2m)</span>
+</div>
+<div class="w-full bg-surface-variant h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-2 rounded-full" style="width: 42%"></div>
+</div>
+</div>
+<!-- Factor 2 -->
+<div>
+<div class="flex justify-between text-body-sm font-body-sm mb-1">
+<span class="font-semibold text-on-surface">Fog &amp; Low Visibility</span>
+<span class="font-label-md font-bold text-primary">31% (+8.6m)</span>
+</div>
+<div class="w-full bg-surface-variant h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-2 rounded-full" style="width: 31%"></div>
+</div>
+</div>
+<!-- Factor 3 -->
+<div>
+<div class="flex justify-between text-body-sm font-body-sm mb-1">
+<span class="font-semibold text-on-surface">DDU Platform Clearance</span>
+<span id="attrDwellLossVal" class="font-label-md font-bold text-tertiary">28% (+11.8m)</span>
+</div>
+<div class="w-full bg-surface-variant h-2 rounded-full overflow-hidden">
+<div class="bg-tertiary h-2 rounded-full" style="width: 18%"></div>
+</div>
+</div>
+<!-- Factor 4 -->
+<div>
+<div class="flex justify-between text-body-sm font-body-sm mb-1">
+<span class="font-semibold text-on-surface">Scheduled Maintenance</span>
+<span class="font-label-md font-bold text-outline">9% (+2.6m)</span>
+</div>
+<div class="w-full bg-surface-variant h-2 rounded-full overflow-hidden">
+<div class="bg-outline h-2 rounded-full" style="width: 9%"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-space-sm bg-surface-container-low rounded-lg border border-outline-variant/30 text-label-sm font-label-sm text-on-surface-variant mt-space-md">
+<span class="font-bold text-on-surface">Predictor Advice:</span> <span id="predictorAdviceText">Clear freight at DHN loop to recover ~10m before Parasnath.</span>
+            </div>
+</div>
+</div>
+<!-- Bento Grid Layer 2: Interactive Station-by-Station Route Delay Timeline & Spatial Inspector -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- Left Col: Station Timeline & Planned Schedule (7 Cols) -->
+<div class="lg:col-span-7 bg-surface-container-lowest p-space-lg rounded-xl border border-outline-variant/30 shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-space-md border-b border-outline-variant/20">
+<div>
+<h3 class="text-headline-sm font-headline-sm font-bold text-on-surface">Station-by-Station Predictive Timeline</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Scheduled vs. Live / Predicted Timestamps with Dwell Time Analysis</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-1 bg-surface-container text-on-surface text-label-sm font-label-sm rounded-lg font-bold">Northern &amp; Eastern Corridor</span>
+</div>
+</div>
+<!-- Vertical Stepper Route Map Component -->
+<div id="stationTimelineContainer" class="mt-space-lg relative pl-6 space-y-space-lg before:content-[''] before:absolute before:left-9 before:top-4 before:bottom-4 before:w-1 before:bg-surface-variant">
+<!-- Station 1: New Delhi (Passed) -->
+<div class="relative flex items-start gap-space-md group">
+<div class="w-7 h-7 rounded-full bg-tertiary text-on-tertiary flex items-center justify-center ring-4 ring-background shrink-0 z-10">
+<span class="material-symbols-outlined text-body-md" data-icon="check">check</span>
+</div>
+<div class="flex-1 p-space-sm rounded-lg bg-surface-container-low border border-outline-variant/20 flex flex-wrap items-center justify-between gap-2">
+<div>
+<div class="flex items-center gap-2">
+<span class="text-label-md font-label-md font-bold text-on-surface">New Delhi (NDLS)</span>
+<span class="px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed text-label-sm font-label-sm font-bold">Origin • Departed</span>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">Platform 16 • Dwell: 0m • Distance: 0 km</div>
+</div>
+<div class="text-right">
+<div class="text-label-md font-label-md font-bold text-tertiary">16:55 (On-Time)</div>
+<div class="text-body-sm font-body-sm text-outline line-through">Sched: 16:55</div>
+</div>
+</div>
+</div>
+<!-- Station 2: Kanpur Central (Passed with minor delay) -->
+<div class="relative flex items-start gap-space-md group">
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center ring-4 ring-background shrink-0 z-10">
+<span class="material-symbols-outlined text-body-md" data-icon="done">done</span>
+</div>
+<div class="flex-1 p-space-sm rounded-lg bg-surface-container-low border border-outline-variant/20 flex flex-wrap items-center justify-between gap-2">
+<div>
+<div class="flex items-center gap-2">
+<span class="text-label-md font-label-md font-bold text-on-surface">Kanpur Central (CNB)</span>
+<span class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed text-label-sm font-label-sm font-bold">+12m Delay</span>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">Platform 1 • Dwell: 7m (Sched 5m) • Distance: 440 km</div>
+</div>
+<div class="text-right">
+<div class="text-label-md font-label-md font-bold text-secondary">21:40 (Actual)</div>
+<div class="text-body-sm font-body-sm text-outline line-through">Sched: 21:28</div>
+</div>
+</div>
+</div>
+<!-- Live Train Active Pulse In-Transit Marker -->
+<div class="relative flex items-center gap-space-md py-1">
+<div class="w-7 h-7 rounded-full bg-secondary text-on-secondary flex items-center justify-center ring-4 ring-secondary-fixed shrink-0 z-10 animate-bounce">
+<span class="material-symbols-outlined text-body-md" data-icon="train">train</span>
+</div>
+<div class="flex-1 bg-secondary-fixed/50 border border-secondary-container p-2 rounded-lg flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-label-sm font-label-sm font-bold text-on-secondary-fixed uppercase tracking-wider">LIVE POSITION:</span>
+<span class="text-body-sm font-body-sm text-on-secondary-fixed font-medium">Km 582 • Near Sirathu (118 km/h)</span>
+</div>
+<span class="text-label-sm font-label-sm font-bold text-secondary bg-surface-container-lowest px-2 py-0.5 rounded">Active Block Telemetry</span>
+</div>
+</div>
+<!-- Station 3: Prayagraj Jn (Upcoming Next) -->
+<div class="relative flex items-start gap-space-md group">
+<div class="w-7 h-7 rounded-full bg-surface-container-highest border-2 border-secondary text-secondary flex items-center justify-center ring-4 ring-background shrink-0 z-10">
+<span class="material-symbols-outlined text-body-md" data-icon="near_me">near_me</span>
+</div>
+<div class="flex-1 p-space-sm rounded-lg bg-surface-container-lowest border-2 border-primary/20 shadow-sm flex flex-wrap items-center justify-between gap-2">
+<div>
+<div class="flex items-center gap-2">
+<span class="text-label-md font-label-md font-bold text-on-surface">Prayagraj Jn (PRYJ)</span>
+<span class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed text-label-sm font-label-sm font-bold">+19m Forecast</span>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">Platform 4 (Assigned) • Distance: 635 km</div>
+</div>
+<div class="text-right">
+<div class="text-label-md font-label-md font-bold text-secondary">23:59 (Est.)</div>
+<div class="text-body-sm font-body-sm text-outline">Sched: 23:40</div>
+</div>
+</div>
+</div>
+<!-- Station 4: Pt. Deen Dayal Upadhyaya Jn (Predicted Major Risk) -->
+<div class="relative flex items-start gap-space-md group">
+<div class="w-7 h-7 rounded-full bg-surface-container text-outline flex items-center justify-center ring-4 ring-background shrink-0 z-10">
+<span class="material-symbols-outlined text-body-md" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+</div>
+<div class="flex-1 p-space-sm rounded-lg bg-surface-container-low border border-outline-variant/20 flex flex-wrap items-center justify-between gap-2">
+<div>
+<div class="flex items-center gap-2">
+<span class="text-label-md font-label-md font-bold text-on-surface">Pt. Deen Dayal Upadhyaya Jn (DDU)</span>
+<span class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed text-label-sm font-label-sm font-bold">+28m Forecast</span>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">Mughalsarai Yard • Platform 2 • Distance: 786 km</div>
+</div>
+<div class="text-right">
+<div class="text-label-md font-label-md font-bold text-secondary">02:18 (Est.)</div>
+<div class="text-body-sm font-body-sm text-outline">Sched: 01:50</div>
+</div>
+</div>
+</div>
+<!-- Station 5: Gaya Jn -->
+<div class="relative flex items-start gap-space-md group">
+<div class="w-7 h-7 rounded-full bg-surface-container text-outline flex items-center justify-center ring-4 ring-background shrink-0 z-10">
+<span class="material-symbols-outlined text-body-md" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+</div>
+<div class="flex-1 p-space-sm rounded-lg bg-surface-container-low border border-outline-variant/20 flex flex-wrap items-center justify-between gap-2">
+<div>
+<div class="flex items-center gap-2">
+<span class="text-label-md font-label-md font-bold text-on-surface">Gaya Jn (GAYA)</span>
+<span class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed text-label-sm font-label-sm font-bold">+24m Forecast</span>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">Grand Chord Route • Distance: 990 km</div>
+</div>
+<div class="text-right">
+<div class="text-label-md font-label-md font-bold text-secondary">04:44 (Est.)</div>
+<div class="text-body-sm font-body-sm text-outline">Sched: 04:20</div>
+</div>
+</div>
+</div>
+<!-- Station 6: Howrah Jn (Terminal Destination) -->
+<div class="relative flex items-start gap-space-md group">
+<div class="w-7 h-7 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center ring-4 ring-background shrink-0 z-10 font-bold">
+<span class="material-symbols-outlined text-body-md" data-icon="flag">flag</span>
+</div>
+<div class="flex-1 p-space-sm rounded-lg bg-surface-container-low border border-outline-variant/20 flex flex-wrap items-center justify-between gap-2">
+<div>
+<div class="flex items-center gap-2">
+<span class="text-label-md font-label-md font-bold text-on-surface">Howrah Jn (HWH)</span>
+<span class="px-2 py-0.5 rounded bg-secondary text-on-secondary text-label-sm font-label-sm font-bold">Terminal • +28m Est. Delay</span>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">Platform 9 • Distance: 1,451 km</div>
+</div>
+<div class="text-right">
+<div class="text-label-md font-label-md font-bold text-secondary">10:33 AM (Est.)</div>
+<div class="text-body-sm font-body-sm text-outline">Sched: 10:05 AM</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer summary pill for timeline -->
+<div class="mt-space-md pt-space-md border-t border-outline-variant/20 flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span class="">Dynamic Time Slotted: Grand Chord High-Speed Corridor</span>
+<button class="text-primary font-bold hover:underline flex items-center gap-1">
+<span class="">View Full 14 Intermediate Halt Details</span>
+<span class="material-symbols-outlined text-body-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Right Col: Spatial Route Canvas & Alternate Dispatch Engine (5 Cols) -->
+<div class="lg:col-span-5 space-y-space-lg flex flex-col">
+<!-- Route Map Visualizer Card -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl border border-outline-variant/30 shadow-sm flex-1 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-space-sm border-b border-outline-variant/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="map">map</span>
+<h4 class="text-headline-sm font-headline-sm font-bold text-on-surface">Geospatial Sector Telemetry</h4>
+</div>
+<span class="text-label-sm font-label-sm bg-surface-container px-2 py-1 rounded text-on-surface font-semibold">GIS Map Feed</span>
+</div>
+<!-- Map Frame with Route Overlay -->
+<div class="mt-space-md relative w-full h-56 rounded-lg overflow-hidden border border-outline-variant/30 bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="Satellite and vector digital GIS map of the Northern Indian railway corridor stretching from Kanpur through Prayagraj to Mughalsarai with glowing railway tracks, live train markers in midnight cyan and saffron orange, sharp topography lines, and transit telemetry overlays under soft operational ambient light." data-location="Prayagraj India" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVIs-0M6gbFMmWypg1JyNdYC8tFObU1PaY1nzJ6NbXXmcF2bgxVE0WO3VCOaKiFwy_BYrdm_AmNFLSKLm1tCtt0KdvG-PGjC1KDpZrKQClUXMAYsiW7i2OT0KvISeaHaF-WOZKB6LkUSZYEggwytBzuk6GikwO0fDXHiTyjTepMJ_VCX3a9Er1oLq7Xd_Odw0S5NitQwue72slyP5yArX8UGpJZaRVJSzP8KKrR4sd">
+<!-- Floating GPS Telemetry Overlay on Map -->
+<div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-2 rounded-lg border border-outline-variant/30 shadow-sm text-label-sm font-label-sm">
+<div class="text-on-surface font-bold flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
+<span class="">Train 12301 (Speed: 118 km/h)</span>
+</div>
+<div class="text-on-surface-variant font-label-sm mt-0.5">Lat: 25.568° N • Lon: 81.332° E</div>
+</div>
+<!-- Map Layer Zoom Utilities -->
+<div class="absolute bottom-3 right-3 flex flex-col gap-1 bg-surface-container-lowest/90 backdrop-blur-md p-1 rounded-lg border border-outline-variant/30 shadow-sm">
+<button class="w-7 h-7 flex items-center justify-center text-on-surface hover:bg-surface-container rounded" title="Zoom In">
+<span class="material-symbols-outlined text-body-md" data-icon="add">add</span>
+</button>
+<button class="w-7 h-7 flex items-center justify-center text-on-surface hover:bg-surface-container rounded" title="Zoom Out">
+<span class="material-symbols-outlined text-body-md" data-icon="remove">remove</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Map Legend & Junction Bottleneck stats -->
+<div class="mt-space-md grid grid-cols-2 gap-space-sm pt-space-sm border-t border-outline-variant/20">
+<div class="p-2 rounded bg-surface-container-low border border-outline-variant/20">
+<div class="text-label-sm font-label-sm text-on-surface-variant">Congestion Density</div>
+<div class="text-label-md font-label-md font-bold text-secondary mt-0.5">78% Track Saturation</div>
+</div>
+<div class="p-2 rounded bg-surface-container-low border border-outline-variant/20">
+<div class="text-label-sm font-label-sm text-on-surface-variant">Ahead Section Traffic</div>
+<div class="text-label-md font-label-md font-bold text-tertiary mt-0.5">3 Freight / 1 Express</div>
+</div>
+</div>
+</div>
+<!-- Historical Comparison vs 30-Day Mean Trend Card -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl border border-outline-variant/30 shadow-sm">
+<div class="flex items-center justify-between pb-space-sm border-b border-outline-variant/20">
+<span class="text-label-sm font-label-sm font-semibold uppercase tracking-wider text-on-surface-variant">30-Day Delay Mean Comparison</span>
+<span class="text-label-sm font-label-sm font-bold text-primary">Train #12301</span>
+</div>
+<div class="mt-space-md flex items-center justify-between">
+<div>
+<div class="text-headline-md font-headline-md font-bold text-on-surface">+34.5m</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant">Historical 30-Day Mean Delay</div>
+</div>
+<div class="text-right">
+<div class="text-headline-md font-headline-md font-bold text-tertiary">+28.0m</div>
+<div class="text-body-sm font-body-sm text-tertiary font-medium">Today's Prediction (-6.5m Better)</div>
+</div>
+</div>
+<!-- Sparkline visualization (pure css mock) -->
+<div class="mt-space-md flex items-end gap-1.5 h-14 w-full bg-surface-container-low p-2 rounded-lg border border-outline-variant/20">
+<div class="flex-1 bg-surface-variant h-[30%] rounded-t" title="Day 1"></div>
+<div class="flex-1 bg-surface-variant h-[45%] rounded-t" title="Day 2"></div>
+<div class="flex-1 bg-secondary-fixed h-[85%] rounded-t" title="Day 3 (Fog Event)"></div>
+<div class="flex-1 bg-surface-variant h-[50%] rounded-t" title="Day 4"></div>
+<div class="flex-1 bg-surface-variant h-[40%] rounded-t" title="Day 5"></div>
+<div class="flex-1 bg-surface-variant h-[60%] rounded-t" title="Day 6"></div>
+<div class="flex-1 bg-primary h-[55%] rounded-t ring-2 ring-primary-container" title="Today"></div>
+</div>
+<div class="flex justify-between text-label-sm font-label-sm text-outline mt-1 px-1">
+<span class="">Nov 18</span>
+<span class="">Past 7 Runs</span>
+<span class="">Today (Predictive)</span>
+</div>
+</div>
+<!-- Alternate Route & Buffer Recommendation Engine -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl border border-outline-variant/30 shadow-sm">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-secondary" data-icon="psychology">psychology</span>
+<h4 class="text-headline-sm font-headline-sm font-bold text-on-surface">Dispatcher Action Recommender</h4>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+                Grant green signal clearance at <span class="font-bold text-on-surface">Sirathu 3rd loop</span> over freight 58302 DOWN to recover <span class="font-bold text-tertiary">9 minutes</span> before Prayagraj arrival.
+              </p>
+<div class="mt-3 flex gap-2">
+<button class="flex-1 py-1.5 bg-primary text-on-primary rounded-lg text-label-sm font-label-sm font-bold hover:bg-primary-container transition-colors shadow-sm">
+                  Apply Section Pre-emption
+                </button>
+<button class="px-3 py-1.5 border border-outline-variant/60 text-on-surface rounded-lg text-label-sm font-label-sm font-bold hover:bg-surface-container transition-colors">
+                  Ignore
+                </button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Bento Grid Layer 3: Knock-On Cascade Delays & Bottleneck Sections -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+  <!-- Downstream Cascade Impact Card (7 Cols) -->
+  <div class="lg:col-span-7 bg-surface-container-lowest p-space-lg rounded-xl border border-outline-variant/30 shadow-sm flex flex-col justify-between">
+    <div>
+      <div class="flex items-center justify-between pb-space-md border-b border-outline-variant/20">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-secondary" data-icon="alt_route">alt_route</span>
+            <h3 class="text-headline-sm font-headline-sm font-bold text-on-surface">Downstream Cascade Impact</h3>
+          </div>
+          <p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">Specific trains delayed on shared track sections because of this service</p>
+        </div>
+        <span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm font-bold bg-secondary-fixed text-on-secondary-fixed">
+          Knock-On Propagation
+        </span>
+      </div>
+      <div id="cascadeTrainsContainer" class="mt-space-md space-y-space-sm">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+    <div class="mt-space-md p-space-sm bg-surface-container-low rounded-lg border border-outline-variant/30 text-label-sm font-label-sm text-on-surface-variant flex items-center gap-2">
+      <span class="material-symbols-outlined text-secondary text-body-md" data-icon="info">info</span>
+      <span><b>Physical Mechanism:</b> When this train occupies shared automatic signaling blocks, following services are held at preceding outer signals.</span>
+    </div>
+  </div>
+
+  <!-- Primary Bottleneck Chokepoints (5 Cols) -->
+  <div class="lg:col-span-5 bg-surface-container-lowest p-space-lg rounded-xl border border-outline-variant/30 shadow-sm flex flex-col justify-between">
+    <div>
+      <div class="flex items-center justify-between pb-space-md border-b border-outline-variant/20">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary" data-icon="warning">warning</span>
+          <h3 class="text-headline-sm font-headline-sm font-bold text-on-surface">Primary Delay Injection Points</h3>
+        </div>
+        <span class="px-2 py-0.5 rounded text-label-sm font-label-sm bg-surface-container text-on-surface font-semibold">Route Analytics</span>
+      </div>
+      <div id="worstSectionsContainer" class="mt-space-md space-y-space-sm">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+    <div class="mt-space-md pt-space-sm border-t border-outline-variant/20 flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant">
+      <span>Speed Recovery Potential</span>
+      <span class="text-tertiary font-bold" id="recoveredBufferText">+20.0m Recovered via Slack</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- Bento Grid Layer 4: Model Benchmark (Why LightGBM) & 2 DBs Architecture -->
+<div class="space-y-space-lg mt-space-lg">
+  <!-- Section 1: Why LightGBM Table Card -->
+  <div class="bg-surface-container-lowest p-space-lg rounded-xl border border-outline-variant/30 shadow-sm">
+    <div class="flex items-center justify-between pb-space-sm border-b border-outline-variant/20 mb-space-md">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary" data-icon="leaderboard">leaderboard</span>
+        <h3 class="text-headline-sm font-headline-sm font-bold text-on-surface">Model Benchmark: Why LightGBM Was Selected</h3>
+      </div>
+      <span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm font-bold bg-tertiary-fixed text-on-tertiary-fixed">
+        Champion ML Model
+      </span>
+    </div>
+    <p class="text-body-sm font-body-sm text-on-surface-variant mb-space-md">
+      Evaluated on 100,000 unobserved Indian Railways journey records against standard baseline architectures:
+    </p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-body-sm font-body-sm border-collapse">
+        <thead>
+          <tr class="bg-surface-container-low text-primary border-b-2 border-outline-variant/30 text-label-sm font-label-sm uppercase">
+            <th class="p-3">Model Architecture</th>
+            <th class="p-3">MAE (Minutes)</th>
+            <th class="p-3">RMSE</th>
+            <th class="p-3">R² Score</th>
+            <th class="p-3">AUC-ROC</th>
+            <th class="p-3">Train Time</th>
+            <th class="p-3">Inference Latency</th>
+            <th class="p-3">Primary Limitation / Advantage</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-outline-variant/20">
+          <tr class="bg-tertiary-fixed/15 font-semibold">
+            <td class="p-3 text-primary">LightGBM (Champion)</td>
+            <td class="p-3 text-primary">33.65 min</td>
+            <td class="p-3">45.76</td>
+            <td class="p-3">0.4648</td>
+            <td class="p-3 text-tertiary">0.9153</td>
+            <td class="p-3">0.47 sec</td>
+            <td class="p-3">&lt; 0.001 ms</td>
+            <td class="p-3 text-tertiary">Lowest error; leaf-wise split growth captures extreme bottleneck tails (GOSS + EFB)</td>
+          </tr>
+          <tr>
+            <td class="p-3">XGBoost (Histogram)</td>
+            <td class="p-3">33.80 min</td>
+            <td class="p-3">45.87</td>
+            <td class="p-3">0.4623</td>
+            <td class="p-3">0.9148</td>
+            <td class="p-3">0.88 sec</td>
+            <td class="p-3">&lt; 0.001 ms</td>
+            <td class="p-3 text-outline">Competitive accuracy, but 1.9x slower training and higher memory consumption</td>
+          </tr>
+          <tr>
+            <td class="p-3">Random Forest (50 Trees)</td>
+            <td class="p-3">33.95 min</td>
+            <td class="p-3">46.35</td>
+            <td class="p-3">0.4510</td>
+            <td class="p-3">0.9068</td>
+            <td class="p-3">3.69 sec</td>
+            <td class="p-3">0.002 ms</td>
+            <td class="p-3 text-outline">High memory footprint (&gt;1.5 GB); 7.8x slower training without gradient boosting</td>
+          </tr>
+          <tr>
+            <td class="p-3">Ridge Linear Regression</td>
+            <td class="p-3">36.76 min</td>
+            <td class="p-3">47.74</td>
+            <td class="p-3">0.4175</td>
+            <td class="p-3">0.9140</td>
+            <td class="p-3">0.04 sec</td>
+            <td class="p-3">&lt; 0.001 ms</td>
+            <td class="p-3 text-outline">Underfits non-linear bottleneck congestion thresholds (+3.11 min higher error)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section 2: Why 2 Databases Table Card -->
+  <div class="bg-surface-container-lowest p-space-lg rounded-xl border border-outline-variant/30 shadow-sm">
+    <div class="flex items-center justify-between pb-space-sm border-b border-outline-variant/20 mb-space-md">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-secondary" data-icon="database">database</span>
+        <h3 class="text-headline-sm font-headline-sm font-bold text-on-surface">Dual Database Architecture: DuckDB & In-Memory Graph (NetworkX)</h3>
+      </div>
+      <span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm font-bold bg-secondary-fixed text-on-secondary-fixed">
+        System Engineering
+      </span>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-body-sm font-body-sm border-collapse">
+        <thead>
+          <tr class="bg-surface-container-low text-primary border-b-2 border-outline-variant/30 text-label-sm font-label-sm uppercase">
+            <th class="p-3">Pipeline Layer</th>
+            <th class="p-3">Selected Technology</th>
+            <th class="p-3">Alternative Considered</th>
+            <th class="p-3">Query Speed (1.28M Rows)</th>
+            <th class="p-3">Server Overhead</th>
+            <th class="p-3">Architectural Justification</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-outline-variant/20">
+          <tr>
+            <td class="p-3 font-bold">1. Analytical Warehouse (OLAP)</td>
+            <td class="p-3 text-primary font-bold">DuckDB (v1.5.5)</td>
+            <td class="p-3 text-outline">PostgreSQL / MySQL</td>
+            <td class="p-3 text-tertiary font-bold">&lt; 15 ms</td>
+            <td class="p-3">0 MB (Embedded in-process)</td>
+            <td class="p-3">Vectorized columnar execution queries 1.28M station stops 40x faster than row-store RDBMS with zero socket IPC overhead.</td>
+          </tr>
+          <tr>
+            <td class="p-3 font-bold">2. Topological Network Graph</td>
+            <td class="p-3 text-secondary font-bold">NetworkX (In-Memory)</td>
+            <td class="p-3 text-outline">Neo4j Graph Database</td>
+            <td class="p-3 text-tertiary font-bold">&lt; 25 ms</td>
+            <td class="p-3">&lt; 50 MB RAM (Zero Java JVM)</td>
+            <td class="p-3">The 16 railway zones are topologically fixed. NetworkX computes exact betweenness and degree centrality in-memory in milliseconds without heavyweight external Neo4j servers.</td>
+          </tr>
+          <tr>
+            <td class="p-3 font-bold">3. Streaming Parallel Ingestion</td>
+            <td class="p-3 text-primary font-bold">Polars (Rust Engine)</td>
+            <td class="p-3 text-outline">Standard Pandas</td>
+            <td class="p-3 text-tertiary font-bold">6.4x Faster Chunking</td>
+            <td class="p-3">Zero-Copy Apache Arrow</td>
+            <td class="p-3">Streams multi-gigabyte raw NTES station telemetry in parallel chunks, eliminating out-of-memory crashes.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+</div>
+
+
+
+
+
+
+<script>
+  const trainsData = {"12301": {"train_number": "12301", "train_name": "Rajdhani Express", "train_type": "Express", "zone": "ER", "origin": "Howrah (HWH)", "destination": "New Delhi (NDLS)", "total_distance_km": 1448, "stop_count": 9, "journey_date": "2024-09-30", "predicted_delay_mins": 42, "delay_probability_pct": 36, "risk_tier": "Moderate Delay", "track_loss_mins": 20.0, "dwell_loss_mins": 0.0, "recovered_mins": 20.0, "track_loss_pct": 100.0, "dwell_loss_pct": 28.0, "worst_sections": [{"section": "DHN -> PNME", "section_name": "Parasnath", "delay_added": "+14.0 mins", "distance": "48 km", "status": "Severe Bottleneck (Track Jam)"}, {"section": "HWH -> ASN", "section_name": "Asansol", "delay_added": "+6.0 mins", "distance": "199 km", "status": "Moderate Delay Accumulation"}], "impacted_trains": [{"train_number": "22303", "train_name": "Hwh Gaya Vb Express", "bottleneck_section": "DHN -> PNME", "location_name": "Parasnath", "primary_delay_added": 14.0, "downstream_delay_mins": 19.0, "scheduled_arrival": "10:13 AM", "actual_arrival": "10:32 AM"}], "stops": [{"stop_sequence": 1, "station_code": "HWH", "station_name": "Howrah", "distance_km": 0.0, "sch_arr_time": "04:50 PM", "act_arr_time": "04:50 PM", "arr_delay_mins": 0.0, "sch_dep_time": "04:50 PM", "act_dep_time": "04:50 PM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 2, "station_code": "ASN", "station_name": "Asansol", "distance_km": 199.0, "sch_arr_time": "06:57 PM", "act_arr_time": "07:03 PM", "arr_delay_mins": 6.0, "sch_dep_time": "06:59 PM", "act_dep_time": "07:05 PM", "dep_delay_mins": 6.0, "running_delta": 6.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 3, "station_code": "DHN", "station_name": "Dhanbad", "distance_km": 257.0, "sch_arr_time": "07:55 PM", "act_arr_time": "07:57 PM", "arr_delay_mins": 2.0, "sch_dep_time": "08:00 PM", "act_dep_time": "08:02 PM", "dep_delay_mins": 2.0, "running_delta": -4.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 4, "station_code": "PNME", "station_name": "Parasnath", "distance_km": 305.0, "sch_arr_time": "08:30 PM", "act_arr_time": "08:46 PM", "arr_delay_mins": 16.0, "sch_dep_time": "08:32 PM", "act_dep_time": "08:48 PM", "dep_delay_mins": 16.0, "running_delta": 14.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 5, "station_code": "GAYA", "station_name": "Gaya", "distance_km": 456.0, "sch_arr_time": "10:31 PM", "act_arr_time": "10:31 PM", "arr_delay_mins": 0.0, "sch_dep_time": "10:34 PM", "act_dep_time": "10:34 PM", "dep_delay_mins": 0.0, "running_delta": -16.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 6, "station_code": "DDU", "station_name": "Ptdeen Dayal Upadhyaya", "distance_km": 660.0, "sch_arr_time": "12:45 AM", "act_arr_time": "12:45 AM", "arr_delay_mins": 0.0, "sch_dep_time": "12:55 AM", "act_dep_time": "12:55 AM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 7, "station_code": "PRYJ", "station_name": "Prayagraj", "distance_km": 813.0, "sch_arr_time": "02:43 AM", "act_arr_time": "02:43 AM", "arr_delay_mins": 0.0, "sch_dep_time": "02:45 AM", "act_dep_time": "02:45 AM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 8, "station_code": "CNB", "station_name": "Kanpur Central", "distance_km": 1007.0, "sch_arr_time": "04:50 AM", "act_arr_time": "04:50 AM", "arr_delay_mins": 0.0, "sch_dep_time": "04:55 AM", "act_dep_time": "04:55 AM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 9, "station_code": "NDLS", "station_name": "New Delhi", "distance_km": 1448.0, "sch_arr_time": "10:05 AM", "act_arr_time": "10:05 AM", "arr_delay_mins": 0.0, "sch_dep_time": "10:05 AM", "act_dep_time": "10:05 AM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}]}, "22503": {"train_number": "22503", "train_name": "Dbrg Vivek Express", "train_type": "Express", "zone": "SR", "origin": "Kanyakumari (CAPE)", "destination": "Dibrugarh (DBRG)", "total_distance_km": 4162, "stop_count": 59, "journey_date": "2024-09-30", "predicted_delay_mins": 48, "delay_probability_pct": 30, "risk_tier": "High Cascade Risk", "track_loss_mins": 466.0, "dwell_loss_mins": 0.0, "recovered_mins": 464.0, "track_loss_pct": 100.0, "dwell_loss_pct": 28.0, "worst_sections": [{"section": "BLS -> KGP", "section_name": "Kharagpur", "delay_added": "+79.0 mins", "distance": "121 km", "status": "Severe Bottleneck (Track Jam)"}, {"section": "MLDT -> KNE", "section_name": "Kishanganj", "delay_added": "+40.0 mins", "distance": "145 km", "status": "Severe Bottleneck (Track Jam)"}, {"section": "NOQ -> KOJ", "section_name": "Kokrajhar", "delay_added": "+35.0 mins", "distance": "79 km", "status": "Severe Bottleneck (Track Jam)"}], "impacted_trains": [{"train_number": "5951", "train_name": "Smvb Ntsk Special", "bottleneck_section": "VZM -> CHE", "location_name": "Srikakulam Road", "primary_delay_added": 26.0, "downstream_delay_mins": 442.0, "scheduled_arrival": "11:50 PM", "actual_arrival": "07:12 AM"}, {"train_number": "12864", "train_name": "Smvb Howrah Express", "bottleneck_section": "BLS -> KGP", "location_name": "Kharagpur", "primary_delay_added": 79.0, "downstream_delay_mins": 378.0, "scheduled_arrival": "05:30 PM", "actual_arrival": "11:48 PM"}, {"train_number": "12864", "train_name": "Smvb Howrah Express", "bottleneck_section": "VZM -> CHE", "location_name": "Srikakulam Road", "primary_delay_added": 26.0, "downstream_delay_mins": 375.0, "scheduled_arrival": "06:48 AM", "actual_arrival": "01:03 PM"}, {"train_number": "12864", "train_name": "Smvb Howrah Express", "bottleneck_section": "BBS -> CTC", "location_name": "Cuttack", "primary_delay_added": 27.0, "downstream_delay_mins": 373.0, "scheduled_arrival": "12:35 PM", "actual_arrival": "06:48 PM"}, {"train_number": "12864", "train_name": "Smvb Howrah Express", "bottleneck_section": "BZA -> EE", "location_name": "Eluru", "primary_delay_added": 18.0, "downstream_delay_mins": 310.0, "scheduled_arrival": "11:48 PM", "actual_arrival": "04:58 AM"}], "stops": [{"stop_sequence": 1, "station_code": "CAPE", "station_name": "Kanyakumari", "distance_km": 0.0, "sch_arr_time": "05:25 PM", "act_arr_time": "05:25 PM", "arr_delay_mins": 0.0, "sch_dep_time": "05:25 PM", "act_dep_time": "05:25 PM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 2, "station_code": "NCJ", "station_name": "Nagercoil Junction", "distance_km": 16.0, "sch_arr_time": "05:40 PM", "act_arr_time": "05:49 PM", "arr_delay_mins": 9.0, "sch_dep_time": "05:45 PM", "act_dep_time": "05:54 PM", "dep_delay_mins": 9.0, "running_delta": 9.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 3, "station_code": "TVC", "station_name": "Thiruvananthapuram Central", "distance_km": 87.0, "sch_arr_time": "07:35 PM", "act_arr_time": "08:10 PM", "arr_delay_mins": 35.0, "sch_dep_time": "07:40 PM", "act_dep_time": "08:15 PM", "dep_delay_mins": 35.0, "running_delta": 26.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 4, "station_code": "QLN", "station_name": "Kollam", "distance_km": 151.0, "sch_arr_time": "08:42 PM", "act_arr_time": "09:11 PM", "arr_delay_mins": 29.0, "sch_dep_time": "08:45 PM", "act_dep_time": "09:14 PM", "dep_delay_mins": 29.0, "running_delta": -6.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 5, "station_code": "CNGR", "station_name": "Chengannur", "distance_km": 212.0, "sch_arr_time": "09:34 PM", "act_arr_time": "10:12 PM", "arr_delay_mins": 38.0, "sch_dep_time": "09:36 PM", "act_dep_time": "10:14 PM", "dep_delay_mins": 38.0, "running_delta": 9.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 6, "station_code": "KTYM", "station_name": "Kottayam", "distance_km": 247.0, "sch_arr_time": "10:03 PM", "act_arr_time": "10:56 PM", "arr_delay_mins": 53.0, "sch_dep_time": "10:06 PM", "act_dep_time": "10:59 PM", "dep_delay_mins": 53.0, "running_delta": 15.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 7, "station_code": "ERN", "station_name": "Ernakulam Town", "distance_km": 307.0, "sch_arr_time": "11:45 PM", "act_arr_time": "12:06 AM", "arr_delay_mins": 21.0, "sch_dep_time": "11:50 PM", "act_dep_time": "12:11 AM", "dep_delay_mins": 21.0, "running_delta": -32.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 8, "station_code": "AWY", "station_name": "Aluva", "distance_km": 323.0, "sch_arr_time": "12:13 AM", "act_arr_time": "12:37 AM", "arr_delay_mins": 24.0, "sch_dep_time": "12:15 AM", "act_dep_time": "12:39 AM", "dep_delay_mins": 24.0, "running_delta": 3.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 9, "station_code": "TCR", "station_name": "Thrisur", "distance_km": 378.0, "sch_arr_time": "01:07 AM", "act_arr_time": "01:32 AM", "arr_delay_mins": 25.0, "sch_dep_time": "01:10 AM", "act_dep_time": "01:35 AM", "dep_delay_mins": 25.0, "running_delta": 1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 10, "station_code": "PGT", "station_name": "Palakkad", "distance_km": 455.0, "sch_arr_time": "02:37 AM", "act_arr_time": "02:50 AM", "arr_delay_mins": 13.0, "sch_dep_time": "02:40 AM", "act_dep_time": "02:53 AM", "dep_delay_mins": 13.0, "running_delta": -12.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 11, "station_code": "CBE", "station_name": "Coimbatore", "distance_km": 510.0, "sch_arr_time": "04:07 AM", "act_arr_time": "04:26 AM", "arr_delay_mins": 19.0, "sch_dep_time": "04:10 AM", "act_dep_time": "04:29 AM", "dep_delay_mins": 19.0, "running_delta": 6.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 12, "station_code": "TUP", "station_name": "Tiruppur", "distance_km": 560.0, "sch_arr_time": "04:58 AM", "act_arr_time": "05:13 AM", "arr_delay_mins": 15.0, "sch_dep_time": "05:00 AM", "act_dep_time": "05:15 AM", "dep_delay_mins": 15.0, "running_delta": -4.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 13, "station_code": "ED", "station_name": "Erode", "distance_km": 610.0, "sch_arr_time": "05:40 AM", "act_arr_time": "05:54 AM", "arr_delay_mins": 14.0, "sch_dep_time": "05:50 AM", "act_dep_time": "06:04 AM", "dep_delay_mins": 14.0, "running_delta": -1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 14, "station_code": "SA", "station_name": "Salem", "distance_km": 669.0, "sch_arr_time": "06:47 AM", "act_arr_time": "06:59 AM", "arr_delay_mins": 12.0, "sch_dep_time": "06:50 AM", "act_dep_time": "07:02 AM", "dep_delay_mins": 12.0, "running_delta": -2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 15, "station_code": "KPD", "station_name": "Katpadi", "distance_km": 878.0, "sch_arr_time": "09:40 AM", "act_arr_time": "09:40 AM", "arr_delay_mins": 0.0, "sch_dep_time": "09:45 AM", "act_dep_time": "09:45 AM", "dep_delay_mins": 0.0, "running_delta": -12.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 16, "station_code": "RU", "station_name": "Renigunta", "distance_km": 1004.0, "sch_arr_time": "12:15 PM", "act_arr_time": "12:16 PM", "arr_delay_mins": 0.0, "sch_dep_time": "12:20 PM", "act_dep_time": "12:21 PM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 17, "station_code": "NLR", "station_name": "Nellore", "distance_km": 1126.0, "sch_arr_time": "02:19 PM", "act_arr_time": "02:33 PM", "arr_delay_mins": 14.0, "sch_dep_time": "02:20 PM", "act_dep_time": "02:34 PM", "dep_delay_mins": 14.0, "running_delta": 14.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 18, "station_code": "OGL", "station_name": "Ongole", "distance_km": 1242.0, "sch_arr_time": "03:43 PM", "act_arr_time": "04:03 PM", "arr_delay_mins": 20.0, "sch_dep_time": "03:45 PM", "act_dep_time": "04:05 PM", "dep_delay_mins": 20.0, "running_delta": 6.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 19, "station_code": "BZA", "station_name": "Vijayawada", "distance_km": 1380.0, "sch_arr_time": "05:50 PM", "act_arr_time": "06:04 PM", "arr_delay_mins": 14.0, "sch_dep_time": "06:00 PM", "act_dep_time": "06:14 PM", "dep_delay_mins": 14.0, "running_delta": -6.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 20, "station_code": "EE", "station_name": "Eluru", "distance_km": 1439.0, "sch_arr_time": "06:53 PM", "act_arr_time": "07:25 PM", "arr_delay_mins": 32.0, "sch_dep_time": "06:55 PM", "act_dep_time": "07:27 PM", "dep_delay_mins": 32.0, "running_delta": 18.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 21, "station_code": "RJY", "station_name": "Rajamundry", "distance_km": 1529.0, "sch_arr_time": "08:13 PM", "act_arr_time": "08:44 PM", "arr_delay_mins": 31.0, "sch_dep_time": "08:15 PM", "act_dep_time": "08:46 PM", "dep_delay_mins": 31.0, "running_delta": -1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 22, "station_code": "SLO", "station_name": "Samalkot", "distance_km": 1580.0, "sch_arr_time": "08:58 PM", "act_arr_time": "09:34 PM", "arr_delay_mins": 36.0, "sch_dep_time": "09:00 PM", "act_dep_time": "09:36 PM", "dep_delay_mins": 36.0, "running_delta": 5.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 23, "station_code": "DVD", "station_name": "Duvvada", "distance_km": 1712.0, "sch_arr_time": "11:18 PM", "act_arr_time": "11:18 PM", "arr_delay_mins": 0.0, "sch_dep_time": "11:20 PM", "act_dep_time": "11:20 PM", "dep_delay_mins": 0.0, "running_delta": -36.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 24, "station_code": "VSKP", "station_name": "Visakhapatnam", "distance_km": 1730.0, "sch_arr_time": "11:45 PM", "act_arr_time": "11:55 PM", "arr_delay_mins": 10.0, "sch_dep_time": "12:05 AM", "act_dep_time": "12:15 AM", "dep_delay_mins": 10.0, "running_delta": 10.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 25, "station_code": "VZM", "station_name": "Vizianagram", "distance_km": 1791.0, "sch_arr_time": "12:55 AM", "act_arr_time": "12:55 AM", "arr_delay_mins": 0.0, "sch_dep_time": "01:00 AM", "act_dep_time": "01:00 AM", "dep_delay_mins": 0.0, "running_delta": -10.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 26, "station_code": "CHE", "station_name": "Srikakulam Road", "distance_km": 1860.0, "sch_arr_time": "01:53 AM", "act_arr_time": "02:19 AM", "arr_delay_mins": 26.0, "sch_dep_time": "01:55 AM", "act_dep_time": "02:21 AM", "dep_delay_mins": 26.0, "running_delta": 26.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 27, "station_code": "PSA", "station_name": "Palasa", "distance_km": 1933.0, "sch_arr_time": "03:05 AM", "act_arr_time": "03:10 AM", "arr_delay_mins": 5.0, "sch_dep_time": "03:07 AM", "act_dep_time": "03:12 AM", "dep_delay_mins": 5.0, "running_delta": -21.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 28, "station_code": "BAM", "station_name": "Brahmapur", "distance_km": 2007.0, "sch_arr_time": "04:07 AM", "act_arr_time": "04:12 AM", "arr_delay_mins": 5.0, "sch_dep_time": "04:12 AM", "act_dep_time": "04:17 AM", "dep_delay_mins": 5.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 29, "station_code": "KUR", "station_name": "Khurda Road", "distance_km": 2154.0, "sch_arr_time": "06:00 AM", "act_arr_time": "06:21 AM", "arr_delay_mins": 21.0, "sch_dep_time": "06:20 AM", "act_dep_time": "06:41 AM", "dep_delay_mins": 21.0, "running_delta": 16.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 30, "station_code": "BBS", "station_name": "Bhubaneswar", "distance_km": 2173.0, "sch_arr_time": "06:45 AM", "act_arr_time": "07:08 AM", "arr_delay_mins": 23.0, "sch_dep_time": "06:50 AM", "act_dep_time": "07:13 AM", "dep_delay_mins": 23.0, "running_delta": 2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 31, "station_code": "CTC", "station_name": "Cuttack", "distance_km": 2200.0, "sch_arr_time": "07:05 AM", "act_arr_time": "07:55 AM", "arr_delay_mins": 50.0, "sch_dep_time": "07:10 AM", "act_dep_time": "08:00 AM", "dep_delay_mins": 50.0, "running_delta": 27.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 32, "station_code": "BHC", "station_name": "Bhadrakh", "distance_km": 2315.0, "sch_arr_time": "09:18 AM", "act_arr_time": "09:54 AM", "arr_delay_mins": 36.0, "sch_dep_time": "09:20 AM", "act_dep_time": "09:56 AM", "dep_delay_mins": 36.0, "running_delta": -14.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 33, "station_code": "BLS", "station_name": "Balasore", "distance_km": 2377.0, "sch_arr_time": "09:56 AM", "act_arr_time": "09:56 AM", "arr_delay_mins": 0.0, "sch_dep_time": "09:58 AM", "act_dep_time": "09:58 AM", "dep_delay_mins": 0.0, "running_delta": -36.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 34, "station_code": "KGP", "station_name": "Kharagpur", "distance_km": 2498.0, "sch_arr_time": "11:47 AM", "act_arr_time": "01:06 PM", "arr_delay_mins": 79.0, "sch_dep_time": "11:55 AM", "act_dep_time": "01:14 PM", "dep_delay_mins": 79.0, "running_delta": 79.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 35, "station_code": "DKAE", "station_name": "Dankuni", "distance_km": 2620.0, "sch_arr_time": "02:35 PM", "act_arr_time": "04:06 PM", "arr_delay_mins": 91.0, "sch_dep_time": "02:40 PM", "act_dep_time": "04:11 PM", "dep_delay_mins": 91.0, "running_delta": 12.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 36, "station_code": "BWN", "station_name": "Bardhaman", "distance_km": 2700.0, "sch_arr_time": "03:37 PM", "act_arr_time": "05:18 PM", "arr_delay_mins": 101.0, "sch_dep_time": "03:39 PM", "act_dep_time": "05:20 PM", "dep_delay_mins": 101.0, "running_delta": 10.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 37, "station_code": "RPH", "station_name": "Rampur Hat", "distance_km": 2812.0, "sch_arr_time": "05:27 PM", "act_arr_time": "06:58 PM", "arr_delay_mins": 91.0, "sch_dep_time": "05:32 PM", "act_dep_time": "07:03 PM", "dep_delay_mins": 91.0, "running_delta": -10.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 38, "station_code": "MLDT", "station_name": "Malda Town", "distance_km": 2934.0, "sch_arr_time": "08:05 PM", "act_arr_time": "08:54 PM", "arr_delay_mins": 49.0, "sch_dep_time": "08:15 PM", "act_dep_time": "09:04 PM", "dep_delay_mins": 49.0, "running_delta": -42.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 39, "station_code": "KNE", "station_name": "Kishanganj", "distance_km": 3079.0, "sch_arr_time": "10:10 PM", "act_arr_time": "11:39 PM", "arr_delay_mins": 89.0, "sch_dep_time": "10:12 PM", "act_dep_time": "11:41 PM", "dep_delay_mins": 89.0, "running_delta": 40.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 40, "station_code": "NJP", "station_name": "New Jalpaiguri", "distance_km": 3167.0, "sch_arr_time": "11:55 PM", "act_arr_time": "01:01 AM", "arr_delay_mins": 66.0, "sch_dep_time": "12:05 AM", "act_dep_time": "01:11 AM", "dep_delay_mins": 66.0, "running_delta": -23.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 41, "station_code": "JPE", "station_name": "Jalpaiguri Road", "distance_km": 3200.0, "sch_arr_time": "12:32 AM", "act_arr_time": "01:43 AM", "arr_delay_mins": 71.0, "sch_dep_time": "12:34 AM", "act_dep_time": "01:45 AM", "dep_delay_mins": 71.0, "running_delta": 5.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 42, "station_code": "MHBA", "station_name": "Mathabhanga", "distance_km": 3263.0, "sch_arr_time": "01:30 AM", "act_arr_time": "02:43 AM", "arr_delay_mins": 73.0, "sch_dep_time": "01:32 AM", "act_dep_time": "02:45 AM", "dep_delay_mins": 73.0, "running_delta": 2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 43, "station_code": "NCB", "station_name": "New Cooch Behar", "distance_km": 3296.0, "sch_arr_time": "02:22 AM", "act_arr_time": "03:18 AM", "arr_delay_mins": 56.0, "sch_dep_time": "02:27 AM", "act_dep_time": "03:23 AM", "dep_delay_mins": 56.0, "running_delta": -17.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 44, "station_code": "NOQ", "station_name": "New Alipurduar", "distance_km": 3314.0, "sch_arr_time": "02:47 AM", "act_arr_time": "04:17 AM", "arr_delay_mins": 90.0, "sch_dep_time": "02:52 AM", "act_dep_time": "04:22 AM", "dep_delay_mins": 90.0, "running_delta": 34.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 45, "station_code": "KOJ", "station_name": "Kokrajhar", "distance_km": 3393.0, "sch_arr_time": "03:45 AM", "act_arr_time": "05:50 AM", "arr_delay_mins": 125.0, "sch_dep_time": "03:47 AM", "act_dep_time": "05:52 AM", "dep_delay_mins": 125.0, "running_delta": 35.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 46, "station_code": "NBQ", "station_name": "New Bongaigaon", "distance_km": 3424.0, "sch_arr_time": "04:50 AM", "act_arr_time": "06:27 AM", "arr_delay_mins": 97.0, "sch_dep_time": "04:55 AM", "act_dep_time": "06:32 AM", "dep_delay_mins": 97.0, "running_delta": -28.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 47, "station_code": "GLPT", "station_name": "Goal Para Town", "distance_km": 3475.0, "sch_arr_time": "05:33 AM", "act_arr_time": "07:25 AM", "arr_delay_mins": 112.0, "sch_dep_time": "05:35 AM", "act_dep_time": "07:27 AM", "dep_delay_mins": 112.0, "running_delta": 15.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 48, "station_code": "GHY", "station_name": "Guwahati", "distance_km": 3606.0, "sch_arr_time": "09:00 AM", "act_arr_time": "10:12 AM", "arr_delay_mins": 72.0, "sch_dep_time": "09:15 AM", "act_dep_time": "10:27 AM", "dep_delay_mins": 72.0, "running_delta": -40.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 49, "station_code": "JID", "station_name": "Jagi Road", "distance_km": 3663.0, "sch_arr_time": "10:10 AM", "act_arr_time": "11:52 AM", "arr_delay_mins": 102.0, "sch_dep_time": "10:12 AM", "act_dep_time": "11:54 AM", "dep_delay_mins": 102.0, "running_delta": 30.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 50, "station_code": "HJI", "station_name": "Hojai", "distance_km": 3742.0, "sch_arr_time": "11:15 AM", "act_arr_time": "12:58 PM", "arr_delay_mins": 103.0, "sch_dep_time": "11:17 AM", "act_dep_time": "01:00 PM", "dep_delay_mins": 103.0, "running_delta": 1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 51, "station_code": "LMG", "station_name": "Lumding", "distance_km": 3787.0, "sch_arr_time": "12:08 PM", "act_arr_time": "01:41 PM", "arr_delay_mins": 93.0, "sch_dep_time": "12:13 PM", "act_dep_time": "01:46 PM", "dep_delay_mins": 93.0, "running_delta": -10.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 52, "station_code": "DPU", "station_name": "Diphu", "distance_km": 3819.0, "sch_arr_time": "12:50 PM", "act_arr_time": "02:29 PM", "arr_delay_mins": 99.0, "sch_dep_time": "12:52 PM", "act_dep_time": "02:31 PM", "dep_delay_mins": 99.0, "running_delta": 6.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 53, "station_code": "DMV", "station_name": "Dimapur", "distance_km": 3856.0, "sch_arr_time": "01:38 PM", "act_arr_time": "03:03 PM", "arr_delay_mins": 85.0, "sch_dep_time": "01:45 PM", "act_dep_time": "03:10 PM", "dep_delay_mins": 85.0, "running_delta": -14.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 54, "station_code": "FKG", "station_name": "Furkating", "distance_km": 3926.0, "sch_arr_time": "03:45 PM", "act_arr_time": "04:22 PM", "arr_delay_mins": 37.0, "sch_dep_time": "03:47 PM", "act_dep_time": "04:24 PM", "dep_delay_mins": 37.0, "running_delta": -48.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 55, "station_code": "MXN", "station_name": "Mariani", "distance_km": 3964.0, "sch_arr_time": "04:20 PM", "act_arr_time": "04:56 PM", "arr_delay_mins": 36.0, "sch_dep_time": "04:25 PM", "act_dep_time": "05:01 PM", "dep_delay_mins": 36.0, "running_delta": -1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 56, "station_code": "SLGR", "station_name": "Simaluguri", "distance_km": 4018.0, "sch_arr_time": "05:10 PM", "act_arr_time": "05:49 PM", "arr_delay_mins": 39.0, "sch_dep_time": "05:12 PM", "act_dep_time": "05:51 PM", "dep_delay_mins": 39.0, "running_delta": 3.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 57, "station_code": "NHK", "station_name": "Naharkatiya", "distance_km": 4096.0, "sch_arr_time": "06:20 PM", "act_arr_time": "06:46 PM", "arr_delay_mins": 26.0, "sch_dep_time": "06:22 PM", "act_dep_time": "06:48 PM", "dep_delay_mins": 26.0, "running_delta": -13.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 58, "station_code": "NTSK", "station_name": "New Tinsukia", "distance_km": 4120.0, "sch_arr_time": "07:00 PM", "act_arr_time": "07:27 PM", "arr_delay_mins": 27.0, "sch_dep_time": "07:10 PM", "act_dep_time": "07:37 PM", "dep_delay_mins": 27.0, "running_delta": 1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 59, "station_code": "DBRG", "station_name": "Dibrugarh", "distance_km": 4162.0, "sch_arr_time": "08:50 PM", "act_arr_time": "08:52 PM", "arr_delay_mins": 2.0, "sch_dep_time": "08:50 PM", "act_dep_time": "08:52 PM", "dep_delay_mins": 2.0, "running_delta": -25.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}]}, "12864": {"train_number": "12864", "train_name": "Smvb Howrah Express", "train_type": "Express", "zone": "SWR", "origin": "Smvt Bengaluru (SMVB)", "destination": "Howrah (HWH)", "total_distance_km": 1947, "stop_count": 35, "journey_date": "2024-09-30", "predicted_delay_mins": 114, "delay_probability_pct": 92, "risk_tier": "Severe Gridlock", "track_loss_mins": 871.0, "dwell_loss_mins": 0.0, "recovered_mins": 757.0, "track_loss_pct": 100.0, "dwell_loss_pct": 28.0, "worst_sections": [{"section": "BZA -> EE", "section_name": "Eluru", "delay_added": "+310.0 mins", "distance": "59 km", "status": "Severe Bottleneck (Track Jam)"}, {"section": "OGL -> CLX", "section_name": "Chirala", "delay_added": "+306.0 mins", "distance": "49 km", "status": "Severe Bottleneck (Track Jam)"}, {"section": "TPTY -> RU", "section_name": "Renigunta", "delay_added": "+45.0 mins", "distance": "10 km", "status": "Severe Bottleneck (Track Jam)"}], "impacted_trains": [{"train_number": "11019", "train_name": "Konark Express", "bottleneck_section": "VSKP -> VZM", "location_name": "Vizianagram", "primary_delay_added": 34.0, "downstream_delay_mins": 172.0, "scheduled_arrival": "04:55 PM", "actual_arrival": "07:47 PM"}, {"train_number": "12763", "train_name": "Padmavathi Express", "bottleneck_section": "OGL -> CLX", "location_name": "Chirala", "primary_delay_added": 306.0, "downstream_delay_mins": 150.0, "scheduled_arrival": "09:38 PM", "actual_arrival": "12:08 AM"}, {"train_number": "20707", "train_name": "Vskp Vandebharat", "bottleneck_section": "BZA -> EE", "location_name": "Eluru", "primary_delay_added": 310.0, "downstream_delay_mins": 146.0, "scheduled_arrival": "09:49 AM", "actual_arrival": "12:15 PM"}, {"train_number": "2814", "train_name": "Bgm Bbs Special", "bottleneck_section": "PSA -> BAM", "location_name": "Brahmapur", "primary_delay_added": 14.0, "downstream_delay_mins": 144.0, "scheduled_arrival": "10:40 AM", "actual_arrival": "01:04 PM"}, {"train_number": "17315", "train_name": "Velankanni Express", "bottleneck_section": "SMVB -> KJM", "location_name": "Krishnarajapurm", "primary_delay_added": 17.0, "downstream_delay_mins": 137.0, "scheduled_arrival": "11:36 PM", "actual_arrival": "01:53 AM"}], "stops": [{"stop_sequence": 1, "station_code": "SMVB", "station_name": "Smvt Bengaluru", "distance_km": 0.0, "sch_arr_time": "10:35 AM", "act_arr_time": "03:07 PM", "arr_delay_mins": 272.0, "sch_dep_time": "10:35 AM", "act_dep_time": "03:07 PM", "dep_delay_mins": 272.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 2, "station_code": "KJM", "station_name": "Krishnarajapurm", "distance_km": 7.0, "sch_arr_time": "10:46 AM", "act_arr_time": "03:35 PM", "arr_delay_mins": 289.0, "sch_dep_time": "10:48 AM", "act_dep_time": "03:37 PM", "dep_delay_mins": 289.0, "running_delta": 17.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 3, "station_code": "BWT", "station_name": "Bangarapet", "distance_km": 62.0, "sch_arr_time": "11:33 AM", "act_arr_time": "04:24 PM", "arr_delay_mins": 291.0, "sch_dep_time": "11:35 AM", "act_dep_time": "04:26 PM", "dep_delay_mins": 291.0, "running_delta": 2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 4, "station_code": "KPN", "station_name": "Kuppam", "distance_km": 96.0, "sch_arr_time": "12:00 PM", "act_arr_time": "05:01 PM", "arr_delay_mins": 301.0, "sch_dep_time": "12:01 PM", "act_dep_time": "05:02 PM", "dep_delay_mins": 301.0, "running_delta": 10.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 5, "station_code": "JTJ", "station_name": "Jolarpettai", "distance_km": 140.0, "sch_arr_time": "12:58 PM", "act_arr_time": "05:44 PM", "arr_delay_mins": 286.0, "sch_dep_time": "01:00 PM", "act_dep_time": "05:46 PM", "dep_delay_mins": 286.0, "running_delta": -15.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 6, "station_code": "KPD", "station_name": "Katpadi", "distance_km": 223.0, "sch_arr_time": "02:15 PM", "act_arr_time": "06:56 PM", "arr_delay_mins": 281.0, "sch_dep_time": "02:20 PM", "act_dep_time": "07:01 PM", "dep_delay_mins": 281.0, "running_delta": -5.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 7, "station_code": "TPTY", "station_name": "Tirupati", "distance_km": 327.0, "sch_arr_time": "04:00 PM", "act_arr_time": "08:30 PM", "arr_delay_mins": 270.0, "sch_dep_time": "04:05 PM", "act_dep_time": "08:35 PM", "dep_delay_mins": 270.0, "running_delta": -11.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 8, "station_code": "RU", "station_name": "Renigunta", "distance_km": 337.0, "sch_arr_time": "04:30 PM", "act_arr_time": "09:45 PM", "arr_delay_mins": 315.0, "sch_dep_time": "04:35 PM", "act_dep_time": "09:50 PM", "dep_delay_mins": 315.0, "running_delta": 45.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 9, "station_code": "GDR", "station_name": "Gudur", "distance_km": 420.0, "sch_arr_time": "05:58 PM", "act_arr_time": "11:12 PM", "arr_delay_mins": 314.0, "sch_dep_time": "06:00 PM", "act_dep_time": "11:14 PM", "dep_delay_mins": 314.0, "running_delta": -1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 10, "station_code": "NLR", "station_name": "Nellore", "distance_km": 459.0, "sch_arr_time": "06:33 PM", "act_arr_time": "11:47 PM", "arr_delay_mins": 314.0, "sch_dep_time": "06:35 PM", "act_dep_time": "11:49 PM", "dep_delay_mins": 314.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 11, "station_code": "OGL", "station_name": "Ongole", "distance_km": 575.0, "sch_arr_time": "08:18 PM", "act_arr_time": "08:18 PM", "arr_delay_mins": 0.0, "sch_dep_time": "08:20 PM", "act_dep_time": "08:20 PM", "dep_delay_mins": 0.0, "running_delta": -314.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 12, "station_code": "CLX", "station_name": "Chirala", "distance_km": 624.0, "sch_arr_time": "08:58 PM", "act_arr_time": "02:04 AM", "arr_delay_mins": 306.0, "sch_dep_time": "09:00 PM", "act_dep_time": "02:06 AM", "dep_delay_mins": 306.0, "running_delta": 306.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 13, "station_code": "BPP", "station_name": "Bapatla", "distance_km": 639.0, "sch_arr_time": "09:18 PM", "act_arr_time": "02:19 AM", "arr_delay_mins": 301.0, "sch_dep_time": "09:20 PM", "act_dep_time": "02:21 AM", "dep_delay_mins": 301.0, "running_delta": -5.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 14, "station_code": "TEL", "station_name": "Tenali", "distance_km": 682.0, "sch_arr_time": "09:58 PM", "act_arr_time": "09:58 PM", "arr_delay_mins": 0.0, "sch_dep_time": "10:00 PM", "act_dep_time": "10:00 PM", "dep_delay_mins": 0.0, "running_delta": -301.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 15, "station_code": "BZA", "station_name": "Vijayawada", "distance_km": 713.0, "sch_arr_time": "10:40 PM", "act_arr_time": "10:40 PM", "arr_delay_mins": 0.0, "sch_dep_time": "10:50 PM", "act_dep_time": "10:50 PM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 16, "station_code": "EE", "station_name": "Eluru", "distance_km": 772.0, "sch_arr_time": "11:48 PM", "act_arr_time": "04:58 AM", "arr_delay_mins": 310.0, "sch_dep_time": "11:50 PM", "act_dep_time": "05:00 AM", "dep_delay_mins": 310.0, "running_delta": 310.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 17, "station_code": "TDD", "station_name": "Tadepalligudem", "distance_km": 820.0, "sch_arr_time": "12:23 AM", "act_arr_time": "05:38 AM", "arr_delay_mins": 315.0, "sch_dep_time": "12:25 AM", "act_dep_time": "05:40 AM", "dep_delay_mins": 315.0, "running_delta": 5.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 18, "station_code": "RJY", "station_name": "Rajamundry", "distance_km": 862.0, "sch_arr_time": "01:13 AM", "act_arr_time": "06:26 AM", "arr_delay_mins": 313.0, "sch_dep_time": "01:15 AM", "act_dep_time": "06:28 AM", "dep_delay_mins": 313.0, "running_delta": -2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 19, "station_code": "SLO", "station_name": "Samalkot", "distance_km": 913.0, "sch_arr_time": "02:03 AM", "act_arr_time": "07:15 AM", "arr_delay_mins": 312.0, "sch_dep_time": "02:05 AM", "act_dep_time": "07:17 AM", "dep_delay_mins": 312.0, "running_delta": -1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 20, "station_code": "VSKP", "station_name": "Visakhapatnam", "distance_km": 1063.0, "sch_arr_time": "04:35 AM", "act_arr_time": "10:15 AM", "arr_delay_mins": 340.0, "sch_dep_time": "04:55 AM", "act_dep_time": "10:35 AM", "dep_delay_mins": 340.0, "running_delta": 28.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 21, "station_code": "VZM", "station_name": "Vizianagram", "distance_km": 1124.0, "sch_arr_time": "05:50 AM", "act_arr_time": "12:04 PM", "arr_delay_mins": 374.0, "sch_dep_time": "05:55 AM", "act_dep_time": "12:09 PM", "dep_delay_mins": 374.0, "running_delta": 34.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 22, "station_code": "CHE", "station_name": "Srikakulam Road", "distance_km": 1193.0, "sch_arr_time": "06:48 AM", "act_arr_time": "01:03 PM", "arr_delay_mins": 375.0, "sch_dep_time": "06:50 AM", "act_dep_time": "01:05 PM", "dep_delay_mins": 375.0, "running_delta": 1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 23, "station_code": "PSA", "station_name": "Palasa", "distance_km": 1266.0, "sch_arr_time": "08:10 AM", "act_arr_time": "02:06 PM", "arr_delay_mins": 356.0, "sch_dep_time": "08:12 AM", "act_dep_time": "02:08 PM", "dep_delay_mins": 356.0, "running_delta": -19.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 24, "station_code": "BAM", "station_name": "Brahmapur", "distance_km": 1340.0, "sch_arr_time": "09:00 AM", "act_arr_time": "03:10 PM", "arr_delay_mins": 370.0, "sch_dep_time": "09:10 AM", "act_dep_time": "03:20 PM", "dep_delay_mins": 370.0, "running_delta": 14.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 25, "station_code": "BALU", "station_name": "Balugan", "distance_km": 1416.0, "sch_arr_time": "09:53 AM", "act_arr_time": "04:07 PM", "arr_delay_mins": 374.0, "sch_dep_time": "09:55 AM", "act_dep_time": "04:09 PM", "dep_delay_mins": 374.0, "running_delta": 4.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 26, "station_code": "KUR", "station_name": "Khurda Road", "distance_km": 1487.0, "sch_arr_time": "11:10 AM", "act_arr_time": "05:19 PM", "arr_delay_mins": 369.0, "sch_dep_time": "11:30 AM", "act_dep_time": "05:39 PM", "dep_delay_mins": 369.0, "running_delta": -5.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 27, "station_code": "BBS", "station_name": "Bhubaneswar", "distance_km": 1506.0, "sch_arr_time": "12:00 PM", "act_arr_time": "05:56 PM", "arr_delay_mins": 356.0, "sch_dep_time": "12:05 PM", "act_dep_time": "06:01 PM", "dep_delay_mins": 356.0, "running_delta": -13.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 28, "station_code": "CTC", "station_name": "Cuttack", "distance_km": 1533.0, "sch_arr_time": "12:35 PM", "act_arr_time": "06:48 PM", "arr_delay_mins": 373.0, "sch_dep_time": "12:40 PM", "act_dep_time": "06:53 PM", "dep_delay_mins": 373.0, "running_delta": 17.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 29, "station_code": "JJKR", "station_name": "Jajpur K Road", "distance_km": 1605.0, "sch_arr_time": "01:31 PM", "act_arr_time": "07:54 PM", "arr_delay_mins": 383.0, "sch_dep_time": "01:33 PM", "act_dep_time": "07:56 PM", "dep_delay_mins": 383.0, "running_delta": 10.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 30, "station_code": "BHC", "station_name": "Bhadrakh", "distance_km": 1648.0, "sch_arr_time": "02:55 PM", "act_arr_time": "08:45 PM", "arr_delay_mins": 350.0, "sch_dep_time": "02:57 PM", "act_dep_time": "08:47 PM", "dep_delay_mins": 350.0, "running_delta": -33.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 31, "station_code": "BLS", "station_name": "Balasore", "distance_km": 1710.0, "sch_arr_time": "03:42 PM", "act_arr_time": "09:42 PM", "arr_delay_mins": 360.0, "sch_dep_time": "03:44 PM", "act_dep_time": "09:44 PM", "dep_delay_mins": 360.0, "running_delta": 10.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 32, "station_code": "KGP", "station_name": "Kharagpur", "distance_km": 1831.0, "sch_arr_time": "05:30 PM", "act_arr_time": "11:48 PM", "arr_delay_mins": 378.0, "sch_dep_time": "05:35 PM", "act_dep_time": "11:53 PM", "dep_delay_mins": 378.0, "running_delta": 18.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 33, "station_code": "MCA", "station_name": "Mecheda", "distance_km": 1888.0, "sch_arr_time": "06:22 PM", "act_arr_time": "12:45 AM", "arr_delay_mins": 383.0, "sch_dep_time": "06:24 PM", "act_dep_time": "12:47 AM", "dep_delay_mins": 383.0, "running_delta": 5.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 34, "station_code": "SRC", "station_name": "Santragachi", "distance_km": 1939.0, "sch_arr_time": "07:11 PM", "act_arr_time": "02:09 AM", "arr_delay_mins": 418.0, "sch_dep_time": "07:13 PM", "act_dep_time": "02:11 AM", "dep_delay_mins": 418.0, "running_delta": 35.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 35, "station_code": "HWH", "station_name": "Howrah", "distance_km": 1947.0, "sch_arr_time": "08:10 PM", "act_arr_time": "02:36 AM", "arr_delay_mins": 386.0, "sch_dep_time": "08:10 PM", "act_dep_time": "02:36 AM", "dep_delay_mins": 386.0, "running_delta": -32.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}]}, "12507": {"train_number": "12507", "train_name": "Aronai Express", "train_type": "Express", "zone": "SR", "origin": "Thiruvananthapuram Central (TVC)", "destination": "Silchar (SCL)", "total_distance_km": 3930, "stop_count": 57, "journey_date": "2024-09-17", "predicted_delay_mins": 48, "delay_probability_pct": 30, "risk_tier": "High Cascade Risk", "track_loss_mins": 346.0, "dwell_loss_mins": 0.0, "recovered_mins": 349.0, "track_loss_pct": 100.0, "dwell_loss_pct": 28.0, "worst_sections": [{"section": "MLDT -> KNE", "section_name": "Kishanganj", "delay_added": "+77.0 mins", "distance": "145 km", "status": "Severe Bottleneck (Track Jam)"}, {"section": "QLN -> KYJ", "section_name": "Kayankulam", "delay_added": "+22.0 mins", "distance": "41 km", "status": "Severe Bottleneck (Track Jam)"}, {"section": "DKAE -> BHP", "section_name": "Bolpur S Niktn", "delay_added": "+22.0 mins", "distance": "131 km", "status": "Severe Bottleneck (Track Jam)"}], "impacted_trains": [{"train_number": "12864", "train_name": "Smvb Howrah Express", "bottleneck_section": "BAM -> BALU", "location_name": "Balugan", "primary_delay_added": 15.0, "downstream_delay_mins": 631.0, "scheduled_arrival": "09:53 AM", "actual_arrival": "08:24 PM"}, {"train_number": "12864", "train_name": "Smvb Howrah Express", "bottleneck_section": "VSKP -> VZM", "location_name": "Vizianagram", "primary_delay_added": 8.0, "downstream_delay_mins": 603.0, "scheduled_arrival": "05:50 AM", "actual_arrival": "03:53 PM"}, {"train_number": "12864", "train_name": "Smvb Howrah Express", "bottleneck_section": "CTC -> JJKR", "location_name": "Jajpur K Road", "primary_delay_added": 21.0, "downstream_delay_mins": 598.0, "scheduled_arrival": "01:31 PM", "actual_arrival": "11:29 PM"}, {"train_number": "12864", "train_name": "Smvb Howrah Express", "bottleneck_section": "BLS -> KGP", "location_name": "Kharagpur", "primary_delay_added": 17.0, "downstream_delay_mins": 564.0, "scheduled_arrival": "05:30 PM", "actual_arrival": "02:54 AM"}, {"train_number": "12864", "train_name": "Smvb Howrah Express", "bottleneck_section": "BHC -> BLS", "location_name": "Balasore", "primary_delay_added": 9.0, "downstream_delay_mins": 562.0, "scheduled_arrival": "03:42 PM", "actual_arrival": "01:04 AM"}], "stops": [{"stop_sequence": 1, "station_code": "TVC", "station_name": "Thiruvananthapuram Central", "distance_km": 0.0, "sch_arr_time": "04:55 PM", "act_arr_time": "04:58 PM", "arr_delay_mins": 3.0, "sch_dep_time": "04:55 PM", "act_dep_time": "04:58 PM", "dep_delay_mins": 3.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 2, "station_code": "QLN", "station_name": "Kollam", "distance_km": 64.0, "sch_arr_time": "05:50 PM", "act_arr_time": "06:13 PM", "arr_delay_mins": 23.0, "sch_dep_time": "05:53 PM", "act_dep_time": "06:16 PM", "dep_delay_mins": 23.0, "running_delta": 20.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 3, "station_code": "KYJ", "station_name": "Kayankulam", "distance_km": 105.0, "sch_arr_time": "06:33 PM", "act_arr_time": "07:18 PM", "arr_delay_mins": 45.0, "sch_dep_time": "06:35 PM", "act_dep_time": "07:20 PM", "dep_delay_mins": 45.0, "running_delta": 22.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 4, "station_code": "MVLK", "station_name": "Mavelikara", "distance_km": 113.0, "sch_arr_time": "06:44 PM", "act_arr_time": "07:31 PM", "arr_delay_mins": 47.0, "sch_dep_time": "06:45 PM", "act_dep_time": "07:32 PM", "dep_delay_mins": 47.0, "running_delta": 2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 5, "station_code": "CNGR", "station_name": "Chengannur", "distance_km": 126.0, "sch_arr_time": "06:55 PM", "act_arr_time": "07:43 PM", "arr_delay_mins": 48.0, "sch_dep_time": "06:57 PM", "act_dep_time": "07:45 PM", "dep_delay_mins": 48.0, "running_delta": 1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 6, "station_code": "TRVL", "station_name": "Tiruvalla", "distance_km": 135.0, "sch_arr_time": "07:06 PM", "act_arr_time": "07:55 PM", "arr_delay_mins": 49.0, "sch_dep_time": "07:07 PM", "act_dep_time": "07:56 PM", "dep_delay_mins": 49.0, "running_delta": 1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 7, "station_code": "KTYM", "station_name": "Kottayam", "distance_km": 160.0, "sch_arr_time": "07:42 PM", "act_arr_time": "08:18 PM", "arr_delay_mins": 36.0, "sch_dep_time": "07:45 PM", "act_dep_time": "08:21 PM", "dep_delay_mins": 36.0, "running_delta": -13.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 8, "station_code": "ERN", "station_name": "Ernakulam Town", "distance_km": 220.0, "sch_arr_time": "08:55 PM", "act_arr_time": "09:36 PM", "arr_delay_mins": 41.0, "sch_dep_time": "09:00 PM", "act_dep_time": "09:41 PM", "dep_delay_mins": 41.0, "running_delta": 5.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 9, "station_code": "AWY", "station_name": "Aluva", "distance_km": 237.0, "sch_arr_time": "09:22 PM", "act_arr_time": "10:13 PM", "arr_delay_mins": 51.0, "sch_dep_time": "09:24 PM", "act_dep_time": "10:15 PM", "dep_delay_mins": 51.0, "running_delta": 10.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 10, "station_code": "TCR", "station_name": "Thrisur", "distance_km": 291.0, "sch_arr_time": "10:11 PM", "act_arr_time": "11:04 PM", "arr_delay_mins": 53.0, "sch_dep_time": "10:16 PM", "act_dep_time": "11:09 PM", "dep_delay_mins": 53.0, "running_delta": 2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 11, "station_code": "PGT", "station_name": "Palakkad", "distance_km": 369.0, "sch_arr_time": "12:07 AM", "act_arr_time": "12:13 AM", "arr_delay_mins": 6.0, "sch_dep_time": "12:10 AM", "act_dep_time": "12:16 AM", "dep_delay_mins": 6.0, "running_delta": -47.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 12, "station_code": "CBE", "station_name": "Coimbatore", "distance_km": 423.0, "sch_arr_time": "01:30 AM", "act_arr_time": "01:41 AM", "arr_delay_mins": 11.0, "sch_dep_time": "01:35 AM", "act_dep_time": "01:46 AM", "dep_delay_mins": 11.0, "running_delta": 5.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 13, "station_code": "TUP", "station_name": "Tiruppur", "distance_km": 473.0, "sch_arr_time": "02:15 AM", "act_arr_time": "02:34 AM", "arr_delay_mins": 19.0, "sch_dep_time": "02:20 AM", "act_dep_time": "02:39 AM", "dep_delay_mins": 19.0, "running_delta": 8.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 14, "station_code": "ED", "station_name": "Erode", "distance_km": 524.0, "sch_arr_time": "03:10 AM", "act_arr_time": "03:22 AM", "arr_delay_mins": 12.0, "sch_dep_time": "03:15 AM", "act_dep_time": "03:27 AM", "dep_delay_mins": 12.0, "running_delta": -7.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 15, "station_code": "SA", "station_name": "Salem", "distance_km": 583.0, "sch_arr_time": "04:12 AM", "act_arr_time": "04:33 AM", "arr_delay_mins": 21.0, "sch_dep_time": "04:15 AM", "act_dep_time": "04:36 AM", "dep_delay_mins": 21.0, "running_delta": 9.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 16, "station_code": "JTJ", "station_name": "Jolarpettai", "distance_km": 708.0, "sch_arr_time": "05:58 AM", "act_arr_time": "06:00 AM", "arr_delay_mins": 2.0, "sch_dep_time": "06:00 AM", "act_dep_time": "06:02 AM", "dep_delay_mins": 2.0, "running_delta": -19.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 17, "station_code": "KPD", "station_name": "Katpadi", "distance_km": 792.0, "sch_arr_time": "07:05 AM", "act_arr_time": "07:07 AM", "arr_delay_mins": 2.0, "sch_dep_time": "07:25 AM", "act_dep_time": "07:27 AM", "dep_delay_mins": 2.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 18, "station_code": "AJJ", "station_name": "Arakkonam", "distance_km": 852.0, "sch_arr_time": "08:18 AM", "act_arr_time": "08:22 AM", "arr_delay_mins": 4.0, "sch_dep_time": "08:20 AM", "act_dep_time": "08:24 AM", "dep_delay_mins": 4.0, "running_delta": 2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 19, "station_code": "PER", "station_name": "Perambur", "distance_km": 921.0, "sch_arr_time": "09:10 AM", "act_arr_time": "09:29 AM", "arr_delay_mins": 19.0, "sch_dep_time": "09:15 AM", "act_dep_time": "09:34 AM", "dep_delay_mins": 19.0, "running_delta": 15.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 20, "station_code": "OGL", "station_name": "Ongole", "distance_km": 1213.0, "sch_arr_time": "01:48 PM", "act_arr_time": "01:49 PM", "arr_delay_mins": 0.0, "sch_dep_time": "01:50 PM", "act_dep_time": "01:51 PM", "dep_delay_mins": 0.0, "running_delta": -19.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 21, "station_code": "BZA", "station_name": "Vijayawada", "distance_km": 1352.0, "sch_arr_time": "04:00 PM", "act_arr_time": "04:09 PM", "arr_delay_mins": 9.0, "sch_dep_time": "04:10 PM", "act_dep_time": "04:19 PM", "dep_delay_mins": 9.0, "running_delta": 9.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 22, "station_code": "RJY", "station_name": "Rajamundry", "distance_km": 1501.0, "sch_arr_time": "06:23 PM", "act_arr_time": "06:28 PM", "arr_delay_mins": 5.0, "sch_dep_time": "06:25 PM", "act_dep_time": "06:30 PM", "dep_delay_mins": 5.0, "running_delta": -4.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 23, "station_code": "VSKP", "station_name": "Visakhapatnam", "distance_km": 1702.0, "sch_arr_time": "09:25 PM", "act_arr_time": "09:34 PM", "arr_delay_mins": 9.0, "sch_dep_time": "09:45 PM", "act_dep_time": "09:54 PM", "dep_delay_mins": 9.0, "running_delta": 4.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 24, "station_code": "VZM", "station_name": "Vizianagram", "distance_km": 1763.0, "sch_arr_time": "10:38 PM", "act_arr_time": "10:55 PM", "arr_delay_mins": 17.0, "sch_dep_time": "10:40 PM", "act_dep_time": "10:57 PM", "dep_delay_mins": 17.0, "running_delta": 8.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 25, "station_code": "CHE", "station_name": "Srikakulam Road", "distance_km": 1832.0, "sch_arr_time": "11:33 PM", "act_arr_time": "11:43 PM", "arr_delay_mins": 10.0, "sch_dep_time": "11:35 PM", "act_dep_time": "11:45 PM", "dep_delay_mins": 10.0, "running_delta": -7.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 26, "station_code": "PSA", "station_name": "Palasa", "distance_km": 1905.0, "sch_arr_time": "12:48 AM", "act_arr_time": "12:51 AM", "arr_delay_mins": 3.0, "sch_dep_time": "12:50 AM", "act_dep_time": "12:53 AM", "dep_delay_mins": 3.0, "running_delta": -7.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 27, "station_code": "BAM", "station_name": "Brahmapur", "distance_km": 1979.0, "sch_arr_time": "01:40 AM", "act_arr_time": "01:48 AM", "arr_delay_mins": 8.0, "sch_dep_time": "01:45 AM", "act_dep_time": "01:53 AM", "dep_delay_mins": 8.0, "running_delta": 5.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 28, "station_code": "BALU", "station_name": "Balugan", "distance_km": 2055.0, "sch_arr_time": "02:27 AM", "act_arr_time": "02:50 AM", "arr_delay_mins": 23.0, "sch_dep_time": "02:29 AM", "act_dep_time": "02:52 AM", "dep_delay_mins": 23.0, "running_delta": 15.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 29, "station_code": "KUR", "station_name": "Khurda Road", "distance_km": 2125.0, "sch_arr_time": "03:40 AM", "act_arr_time": "03:46 AM", "arr_delay_mins": 6.0, "sch_dep_time": "03:50 AM", "act_dep_time": "03:56 AM", "dep_delay_mins": 6.0, "running_delta": -17.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 30, "station_code": "BBS", "station_name": "Bhubaneswar", "distance_km": 2144.0, "sch_arr_time": "04:10 AM", "act_arr_time": "04:17 AM", "arr_delay_mins": 7.0, "sch_dep_time": "04:15 AM", "act_dep_time": "04:22 AM", "dep_delay_mins": 7.0, "running_delta": 1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 31, "station_code": "CTC", "station_name": "Cuttack", "distance_km": 2171.0, "sch_arr_time": "05:00 AM", "act_arr_time": "05:00 AM", "arr_delay_mins": 0.0, "sch_dep_time": "05:05 AM", "act_dep_time": "05:05 AM", "dep_delay_mins": 0.0, "running_delta": -7.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 32, "station_code": "JJKR", "station_name": "Jajpur K Road", "distance_km": 2243.0, "sch_arr_time": "06:00 AM", "act_arr_time": "06:21 AM", "arr_delay_mins": 21.0, "sch_dep_time": "06:02 AM", "act_dep_time": "06:23 AM", "dep_delay_mins": 21.0, "running_delta": 21.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 33, "station_code": "BHC", "station_name": "Bhadrakh", "distance_km": 2287.0, "sch_arr_time": "06:45 AM", "act_arr_time": "07:23 AM", "arr_delay_mins": 38.0, "sch_dep_time": "06:47 AM", "act_dep_time": "07:25 AM", "dep_delay_mins": 38.0, "running_delta": 17.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 34, "station_code": "BLS", "station_name": "Balasore", "distance_km": 2349.0, "sch_arr_time": "07:28 AM", "act_arr_time": "08:15 AM", "arr_delay_mins": 47.0, "sch_dep_time": "07:30 AM", "act_dep_time": "08:17 AM", "dep_delay_mins": 47.0, "running_delta": 9.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 35, "station_code": "KGP", "station_name": "Kharagpur", "distance_km": 2470.0, "sch_arr_time": "09:05 AM", "act_arr_time": "10:09 AM", "arr_delay_mins": 64.0, "sch_dep_time": "09:13 AM", "act_dep_time": "10:17 AM", "dep_delay_mins": 64.0, "running_delta": 17.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 36, "station_code": "DKAE", "station_name": "Dankuni", "distance_km": 2592.0, "sch_arr_time": "11:36 AM", "act_arr_time": "12:45 PM", "arr_delay_mins": 69.0, "sch_dep_time": "11:41 AM", "act_dep_time": "12:50 PM", "dep_delay_mins": 69.0, "running_delta": 5.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 37, "station_code": "BHP", "station_name": "Bolpur S Niktn", "distance_km": 2723.0, "sch_arr_time": "01:17 PM", "act_arr_time": "02:48 PM", "arr_delay_mins": 91.0, "sch_dep_time": "01:19 PM", "act_dep_time": "02:50 PM", "dep_delay_mins": 91.0, "running_delta": 22.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 38, "station_code": "RPH", "station_name": "Rampur Hat", "distance_km": 2784.0, "sch_arr_time": "02:09 PM", "act_arr_time": "03:55 PM", "arr_delay_mins": 106.0, "sch_dep_time": "02:11 PM", "act_dep_time": "03:57 PM", "dep_delay_mins": 106.0, "running_delta": 15.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 39, "station_code": "PKR", "station_name": "Pakaur", "distance_km": 2838.0, "sch_arr_time": "02:54 PM", "act_arr_time": "04:59 PM", "arr_delay_mins": 125.0, "sch_dep_time": "02:56 PM", "act_dep_time": "05:01 PM", "dep_delay_mins": 125.0, "running_delta": 19.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 40, "station_code": "MLDT", "station_name": "Malda Town", "distance_km": 2906.0, "sch_arr_time": "05:05 PM", "act_arr_time": "06:24 PM", "arr_delay_mins": 79.0, "sch_dep_time": "05:15 PM", "act_dep_time": "06:34 PM", "dep_delay_mins": 79.0, "running_delta": -46.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 41, "station_code": "KNE", "station_name": "Kishanganj", "distance_km": 3051.0, "sch_arr_time": "07:15 PM", "act_arr_time": "09:51 PM", "arr_delay_mins": 156.0, "sch_dep_time": "07:17 PM", "act_dep_time": "09:53 PM", "dep_delay_mins": 156.0, "running_delta": 77.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 42, "station_code": "NJP", "station_name": "New Jalpaiguri", "distance_km": 3138.0, "sch_arr_time": "08:50 PM", "act_arr_time": "08:50 PM", "arr_delay_mins": 0.0, "sch_dep_time": "09:00 PM", "act_dep_time": "09:00 PM", "dep_delay_mins": 0.0, "running_delta": -156.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 43, "station_code": "DQG", "station_name": "Dhupguri", "distance_km": 3204.0, "sch_arr_time": "10:08 PM", "act_arr_time": "10:08 PM", "arr_delay_mins": 0.0, "sch_dep_time": "10:10 PM", "act_dep_time": "10:10 PM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 44, "station_code": "NCB", "station_name": "New Cooch Behar", "distance_km": 3265.0, "sch_arr_time": "11:00 PM", "act_arr_time": "11:00 PM", "arr_delay_mins": 0.0, "sch_dep_time": "11:02 PM", "act_dep_time": "11:02 PM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 45, "station_code": "NOQ", "station_name": "New Alipurduar", "distance_km": 3283.0, "sch_arr_time": "11:22 PM", "act_arr_time": "11:22 PM", "arr_delay_mins": 0.0, "sch_dep_time": "11:24 PM", "act_dep_time": "11:24 PM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 46, "station_code": "KOJ", "station_name": "Kokrajhar", "distance_km": 3361.0, "sch_arr_time": "12:25 AM", "act_arr_time": "12:25 AM", "arr_delay_mins": 0.0, "sch_dep_time": "12:27 AM", "act_dep_time": "12:27 AM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 47, "station_code": "NBQ", "station_name": "New Bongaigaon", "distance_km": 3393.0, "sch_arr_time": "01:43 AM", "act_arr_time": "01:43 AM", "arr_delay_mins": 0.0, "sch_dep_time": "01:48 AM", "act_dep_time": "01:48 AM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 48, "station_code": "BPRD", "station_name": "Barpeta Road", "distance_km": 3437.0, "sch_arr_time": "02:24 AM", "act_arr_time": "02:24 AM", "arr_delay_mins": 0.0, "sch_dep_time": "02:26 AM", "act_dep_time": "02:26 AM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 49, "station_code": "RNY", "station_name": "Rangiya", "distance_km": 3502.0, "sch_arr_time": "03:20 AM", "act_arr_time": "03:20 AM", "arr_delay_mins": 0.0, "sch_dep_time": "03:25 AM", "act_dep_time": "03:25 AM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 50, "station_code": "KYQ", "station_name": "Kamakhya", "distance_km": 3543.0, "sch_arr_time": "04:40 AM", "act_arr_time": "04:40 AM", "arr_delay_mins": 0.0, "sch_dep_time": "04:42 AM", "act_dep_time": "04:42 AM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 51, "station_code": "GHY", "station_name": "Guwahati", "distance_km": 3550.0, "sch_arr_time": "04:58 AM", "act_arr_time": "04:58 AM", "arr_delay_mins": 0.0, "sch_dep_time": "05:13 AM", "act_dep_time": "05:13 AM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 52, "station_code": "HJI", "station_name": "Hojai", "distance_km": 3685.0, "sch_arr_time": "07:30 AM", "act_arr_time": "07:30 AM", "arr_delay_mins": 0.0, "sch_dep_time": "07:32 AM", "act_dep_time": "07:32 AM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 53, "station_code": "LMG", "station_name": "Lumding", "distance_km": 3730.0, "sch_arr_time": "08:15 AM", "act_arr_time": "08:15 AM", "arr_delay_mins": 0.0, "sch_dep_time": "08:25 AM", "act_dep_time": "08:25 AM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 54, "station_code": "MBG", "station_name": "Maibang", "distance_km": 3795.0, "sch_arr_time": "10:09 AM", "act_arr_time": "10:09 AM", "arr_delay_mins": 0.0, "sch_dep_time": "10:11 AM", "act_dep_time": "10:11 AM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 55, "station_code": "NHLG", "station_name": "New Haflong", "distance_km": 3829.0, "sch_arr_time": "11:20 AM", "act_arr_time": "11:20 AM", "arr_delay_mins": 0.0, "sch_dep_time": "11:25 AM", "act_dep_time": "11:25 AM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 56, "station_code": "BPB", "station_name": "Badarpur", "distance_km": 3900.0, "sch_arr_time": "02:00 PM", "act_arr_time": "02:00 PM", "arr_delay_mins": 0.0, "sch_dep_time": "02:15 PM", "act_dep_time": "02:15 PM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 57, "station_code": "SCL", "station_name": "Silchar", "distance_km": 3930.0, "sch_arr_time": "03:55 PM", "act_arr_time": "03:55 PM", "arr_delay_mins": 0.0, "sch_dep_time": "03:55 PM", "act_dep_time": "03:55 PM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}]}, "16317": {"train_number": "16317", "train_name": "Himsagar Express", "train_type": "Express", "zone": "SR", "origin": "Kanyakumari (CAPE)", "destination": "Shri Mata Vaishno Devi Katra (SVDK)", "total_distance_km": 3789, "stop_count": 65, "journey_date": "2024-09-20", "predicted_delay_mins": 112, "delay_probability_pct": 92, "risk_tier": "Severe Gridlock", "track_loss_mins": 312.0, "dwell_loss_mins": 0.0, "recovered_mins": 312.0, "track_loss_pct": 100.0, "dwell_loss_pct": 28.0, "worst_sections": [{"section": "QLN -> KYJ", "section_name": "Kayankulam", "delay_added": "+36.0 mins", "distance": "41 km", "status": "Severe Bottleneck (Track Jam)"}, {"section": "NDLS -> SSB", "section_name": "Shakurbasti", "delay_added": "+29.0 mins", "distance": "12 km", "status": "Severe Bottleneck (Track Jam)"}, {"section": "KMT -> WL", "section_name": "Warangal", "delay_added": "+21.0 mins", "distance": "108 km", "status": "Severe Bottleneck (Track Jam)"}], "impacted_trains": [{"train_number": "20805", "train_name": "Ap Express", "bottleneck_section": "BZA -> KMT", "location_name": "Khammam", "primary_delay_added": 18.0, "downstream_delay_mins": 506.0, "scheduled_arrival": "05:14 AM", "actual_arrival": "01:40 PM"}, {"train_number": "20805", "train_name": "Ap Express", "bottleneck_section": "KMT -> WL", "location_name": "Warangal", "primary_delay_added": 21.0, "downstream_delay_mins": 499.0, "scheduled_arrival": "06:44 AM", "actual_arrival": "03:03 PM"}, {"train_number": "12295", "train_name": "Sanghamitra Express", "bottleneck_section": "KMT -> WL", "location_name": "Warangal", "primary_delay_added": 21.0, "downstream_delay_mins": 264.0, "scheduled_arrival": "12:33 AM", "actual_arrival": "04:57 AM"}, {"train_number": "12295", "train_name": "Sanghamitra Express", "bottleneck_section": "WL -> RDM", "location_name": "Ramgundam", "primary_delay_added": 19.0, "downstream_delay_mins": 258.0, "scheduled_arrival": "02:09 AM", "actual_arrival": "06:27 AM"}, {"train_number": "12137", "train_name": "Punjab Mail", "bottleneck_section": "FDB -> NZM", "location_name": "Hazrat Nizamuddin", "primary_delay_added": 20.0, "downstream_delay_mins": 244.0, "scheduled_arrival": "08:55 PM", "actual_arrival": "12:59 AM"}], "stops": [{"stop_sequence": 1, "station_code": "CAPE", "station_name": "Kanyakumari", "distance_km": 0.0, "sch_arr_time": "02:15 PM", "act_arr_time": "02:16 PM", "arr_delay_mins": 0.0, "sch_dep_time": "02:15 PM", "act_dep_time": "02:16 PM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 2, "station_code": "NCJ", "station_name": "Nagercoil Junction", "distance_km": 16.0, "sch_arr_time": "02:40 PM", "act_arr_time": "02:42 PM", "arr_delay_mins": 2.0, "sch_dep_time": "02:45 PM", "act_dep_time": "02:47 PM", "dep_delay_mins": 2.0, "running_delta": 2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 3, "station_code": "KZT", "station_name": "Kulitthurai", "distance_km": 49.0, "sch_arr_time": "03:14 PM", "act_arr_time": "03:34 PM", "arr_delay_mins": 20.0, "sch_dep_time": "03:15 PM", "act_dep_time": "03:35 PM", "dep_delay_mins": 20.0, "running_delta": 18.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 4, "station_code": "TVC", "station_name": "Thiruvananthapuram Central", "distance_km": 87.0, "sch_arr_time": "04:07 PM", "act_arr_time": "04:16 PM", "arr_delay_mins": 9.0, "sch_dep_time": "04:12 PM", "act_dep_time": "04:21 PM", "dep_delay_mins": 9.0, "running_delta": -11.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 5, "station_code": "QLN", "station_name": "Kollam", "distance_km": 151.0, "sch_arr_time": "05:12 PM", "act_arr_time": "05:28 PM", "arr_delay_mins": 16.0, "sch_dep_time": "05:15 PM", "act_dep_time": "05:31 PM", "dep_delay_mins": 16.0, "running_delta": 7.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 6, "station_code": "KYJ", "station_name": "Kayankulam", "distance_km": 192.0, "sch_arr_time": "05:50 PM", "act_arr_time": "06:42 PM", "arr_delay_mins": 52.0, "sch_dep_time": "05:52 PM", "act_dep_time": "06:44 PM", "dep_delay_mins": 52.0, "running_delta": 36.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 7, "station_code": "CNGR", "station_name": "Chengannur", "distance_km": 212.0, "sch_arr_time": "06:11 PM", "act_arr_time": "07:12 PM", "arr_delay_mins": 61.0, "sch_dep_time": "06:13 PM", "act_dep_time": "07:14 PM", "dep_delay_mins": 61.0, "running_delta": 9.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 8, "station_code": "TRVL", "station_name": "Tiruvalla", "distance_km": 221.0, "sch_arr_time": "06:22 PM", "act_arr_time": "07:25 PM", "arr_delay_mins": 63.0, "sch_dep_time": "06:23 PM", "act_dep_time": "07:26 PM", "dep_delay_mins": 63.0, "running_delta": 2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 9, "station_code": "KTYM", "station_name": "Kottayam", "distance_km": 247.0, "sch_arr_time": "07:02 PM", "act_arr_time": "07:57 PM", "arr_delay_mins": 55.0, "sch_dep_time": "07:05 PM", "act_dep_time": "08:00 PM", "dep_delay_mins": 55.0, "running_delta": -8.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 10, "station_code": "ERN", "station_name": "Ernakulam Town", "distance_km": 307.0, "sch_arr_time": "08:40 PM", "act_arr_time": "09:11 PM", "arr_delay_mins": 31.0, "sch_dep_time": "08:45 PM", "act_dep_time": "09:16 PM", "dep_delay_mins": 31.0, "running_delta": -24.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 11, "station_code": "AWY", "station_name": "Aluva", "distance_km": 323.0, "sch_arr_time": "09:10 PM", "act_arr_time": "09:45 PM", "arr_delay_mins": 35.0, "sch_dep_time": "09:12 PM", "act_dep_time": "09:47 PM", "dep_delay_mins": 35.0, "running_delta": 4.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 12, "station_code": "TCR", "station_name": "Thrisur", "distance_km": 378.0, "sch_arr_time": "10:02 PM", "act_arr_time": "10:40 PM", "arr_delay_mins": 38.0, "sch_dep_time": "10:05 PM", "act_dep_time": "10:43 PM", "dep_delay_mins": 38.0, "running_delta": 3.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 13, "station_code": "OTP", "station_name": "Ottappalam", "distance_km": 424.0, "sch_arr_time": "11:19 PM", "act_arr_time": "11:32 PM", "arr_delay_mins": 13.0, "sch_dep_time": "11:20 PM", "act_dep_time": "11:33 PM", "dep_delay_mins": 13.0, "running_delta": -25.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 14, "station_code": "PGT", "station_name": "Palakkad", "distance_km": 455.0, "sch_arr_time": "11:47 PM", "act_arr_time": "12:02 AM", "arr_delay_mins": 15.0, "sch_dep_time": "11:50 PM", "act_dep_time": "12:05 AM", "dep_delay_mins": 15.0, "running_delta": 2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 15, "station_code": "CBE", "station_name": "Coimbatore", "distance_km": 510.0, "sch_arr_time": "01:15 AM", "act_arr_time": "01:39 AM", "arr_delay_mins": 24.0, "sch_dep_time": "01:20 AM", "act_dep_time": "01:44 AM", "dep_delay_mins": 24.0, "running_delta": 9.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 16, "station_code": "ED", "station_name": "Erode", "distance_km": 610.0, "sch_arr_time": "03:00 AM", "act_arr_time": "03:22 AM", "arr_delay_mins": 22.0, "sch_dep_time": "03:05 AM", "act_dep_time": "03:27 AM", "dep_delay_mins": 22.0, "running_delta": -2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 17, "station_code": "SA", "station_name": "Salem", "distance_km": 669.0, "sch_arr_time": "04:02 AM", "act_arr_time": "04:35 AM", "arr_delay_mins": 33.0, "sch_dep_time": "04:05 AM", "act_dep_time": "04:38 AM", "dep_delay_mins": 33.0, "running_delta": 11.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 18, "station_code": "JTJ", "station_name": "Jolarpettai", "distance_km": 794.0, "sch_arr_time": "05:58 AM", "act_arr_time": "06:05 AM", "arr_delay_mins": 7.0, "sch_dep_time": "06:00 AM", "act_dep_time": "06:07 AM", "dep_delay_mins": 7.0, "running_delta": -26.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 19, "station_code": "KPD", "station_name": "Katpadi", "distance_km": 878.0, "sch_arr_time": "07:25 AM", "act_arr_time": "07:25 AM", "arr_delay_mins": 0.0, "sch_dep_time": "07:30 AM", "act_dep_time": "07:30 AM", "dep_delay_mins": 0.0, "running_delta": -7.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 20, "station_code": "CTO", "station_name": "Chittoor", "distance_km": 911.0, "sch_arr_time": "08:04 AM", "act_arr_time": "08:22 AM", "arr_delay_mins": 18.0, "sch_dep_time": "08:05 AM", "act_dep_time": "08:23 AM", "dep_delay_mins": 18.0, "running_delta": 18.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 21, "station_code": "TPTY", "station_name": "Tirupati", "distance_km": 982.0, "sch_arr_time": "09:05 AM", "act_arr_time": "09:37 AM", "arr_delay_mins": 32.0, "sch_dep_time": "09:10 AM", "act_dep_time": "09:42 AM", "dep_delay_mins": 32.0, "running_delta": 14.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 22, "station_code": "RU", "station_name": "Renigunta", "distance_km": 992.0, "sch_arr_time": "09:25 AM", "act_arr_time": "10:05 AM", "arr_delay_mins": 40.0, "sch_dep_time": "09:30 AM", "act_dep_time": "10:10 AM", "dep_delay_mins": 40.0, "running_delta": 8.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 23, "station_code": "GDR", "station_name": "Gudur", "distance_km": 1075.0, "sch_arr_time": "11:03 AM", "act_arr_time": "11:26 AM", "arr_delay_mins": 23.0, "sch_dep_time": "11:05 AM", "act_dep_time": "11:28 AM", "dep_delay_mins": 23.0, "running_delta": -17.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 24, "station_code": "NLR", "station_name": "Nellore", "distance_km": 1113.0, "sch_arr_time": "11:38 AM", "act_arr_time": "12:01 PM", "arr_delay_mins": 23.0, "sch_dep_time": "11:40 AM", "act_dep_time": "12:03 PM", "dep_delay_mins": 23.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 25, "station_code": "OGL", "station_name": "Ongole", "distance_km": 1229.0, "sch_arr_time": "01:09 PM", "act_arr_time": "01:25 PM", "arr_delay_mins": 16.0, "sch_dep_time": "01:10 PM", "act_dep_time": "01:26 PM", "dep_delay_mins": 16.0, "running_delta": -7.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 26, "station_code": "TEL", "station_name": "Tenali", "distance_km": 1336.0, "sch_arr_time": "02:44 PM", "act_arr_time": "02:49 PM", "arr_delay_mins": 5.0, "sch_dep_time": "02:45 PM", "act_dep_time": "02:50 PM", "dep_delay_mins": 5.0, "running_delta": -11.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 27, "station_code": "BZA", "station_name": "Vijayawada", "distance_km": 1368.0, "sch_arr_time": "03:20 PM", "act_arr_time": "03:45 PM", "arr_delay_mins": 25.0, "sch_dep_time": "03:30 PM", "act_dep_time": "03:55 PM", "dep_delay_mins": 25.0, "running_delta": 20.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 28, "station_code": "KMT", "station_name": "Khammam", "distance_km": 1469.0, "sch_arr_time": "04:48 PM", "act_arr_time": "05:31 PM", "arr_delay_mins": 43.0, "sch_dep_time": "04:50 PM", "act_dep_time": "05:33 PM", "dep_delay_mins": 43.0, "running_delta": 18.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 29, "station_code": "WL", "station_name": "Warangal", "distance_km": 1577.0, "sch_arr_time": "06:10 PM", "act_arr_time": "07:14 PM", "arr_delay_mins": 64.0, "sch_dep_time": "06:15 PM", "act_dep_time": "07:19 PM", "dep_delay_mins": 64.0, "running_delta": 21.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 30, "station_code": "RDM", "station_name": "Ramgundam", "distance_km": 1678.0, "sch_arr_time": "07:34 PM", "act_arr_time": "08:57 PM", "arr_delay_mins": 83.0, "sch_dep_time": "07:35 PM", "act_dep_time": "08:58 PM", "dep_delay_mins": 83.0, "running_delta": 19.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 31, "station_code": "BPQ", "station_name": "Balharshah", "distance_km": 1821.0, "sch_arr_time": "10:15 PM", "act_arr_time": "11:19 PM", "arr_delay_mins": 64.0, "sch_dep_time": "10:20 PM", "act_dep_time": "11:24 PM", "dep_delay_mins": 64.0, "running_delta": -19.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 32, "station_code": "CD", "station_name": "Chandrapur", "distance_km": 1834.0, "sch_arr_time": "10:35 PM", "act_arr_time": "11:43 PM", "arr_delay_mins": 68.0, "sch_dep_time": "10:37 PM", "act_dep_time": "11:45 PM", "dep_delay_mins": 68.0, "running_delta": 4.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 33, "station_code": "SEGM", "station_name": "Sevagram", "distance_km": 1953.0, "sch_arr_time": "12:23 AM", "act_arr_time": "01:27 AM", "arr_delay_mins": 64.0, "sch_dep_time": "12:25 AM", "act_dep_time": "01:29 AM", "dep_delay_mins": 64.0, "running_delta": -4.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 34, "station_code": "NGP", "station_name": "Nagpur", "distance_km": 2029.0, "sch_arr_time": "01:40 AM", "act_arr_time": "02:29 AM", "arr_delay_mins": 49.0, "sch_dep_time": "01:45 AM", "act_dep_time": "02:34 AM", "dep_delay_mins": 49.0, "running_delta": -15.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 35, "station_code": "ET", "station_name": "Itarsi", "distance_km": 2325.0, "sch_arr_time": "07:20 AM", "act_arr_time": "07:20 AM", "arr_delay_mins": 0.0, "sch_dep_time": "07:30 AM", "act_dep_time": "07:30 AM", "dep_delay_mins": 0.0, "running_delta": -49.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 36, "station_code": "BPL", "station_name": "Bhopal", "distance_km": 2416.0, "sch_arr_time": "09:05 AM", "act_arr_time": "09:11 AM", "arr_delay_mins": 6.0, "sch_dep_time": "09:10 AM", "act_dep_time": "09:16 AM", "dep_delay_mins": 6.0, "running_delta": 6.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 37, "station_code": "VGLJ", "station_name": "Virangana Lakshmibai Jhansi", "distance_km": 2707.0, "sch_arr_time": "01:30 PM", "act_arr_time": "01:30 PM", "arr_delay_mins": 0.0, "sch_dep_time": "01:38 PM", "act_dep_time": "01:38 PM", "dep_delay_mins": 0.0, "running_delta": -6.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 38, "station_code": "GWL", "station_name": "Gwalior", "distance_km": 2806.0, "sch_arr_time": "02:50 PM", "act_arr_time": "02:50 PM", "arr_delay_mins": 0.0, "sch_dep_time": "02:52 PM", "act_dep_time": "02:52 PM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 39, "station_code": "DHO", "station_name": "Dhaulpur", "distance_km": 2872.0, "sch_arr_time": "04:10 PM", "act_arr_time": "04:10 PM", "arr_delay_mins": 0.0, "sch_dep_time": "04:12 PM", "act_dep_time": "04:12 PM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 40, "station_code": "AGC", "station_name": "Agra Cantt", "distance_km": 2924.0, "sch_arr_time": "04:50 PM", "act_arr_time": "05:00 PM", "arr_delay_mins": 10.0, "sch_dep_time": "04:55 PM", "act_dep_time": "05:05 PM", "dep_delay_mins": 10.0, "running_delta": 10.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 41, "station_code": "FDB", "station_name": "Faridabad", "distance_km": 3090.0, "sch_arr_time": "07:42 PM", "act_arr_time": "07:46 PM", "arr_delay_mins": 4.0, "sch_dep_time": "07:44 PM", "act_dep_time": "07:48 PM", "dep_delay_mins": 4.0, "running_delta": -6.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 42, "station_code": "NZM", "station_name": "Hazrat Nizamuddin", "distance_km": 3111.0, "sch_arr_time": "08:16 PM", "act_arr_time": "08:40 PM", "arr_delay_mins": 24.0, "sch_dep_time": "08:21 PM", "act_dep_time": "08:45 PM", "dep_delay_mins": 24.0, "running_delta": 20.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 43, "station_code": "NDLS", "station_name": "New Delhi", "distance_km": 3118.0, "sch_arr_time": "08:55 PM", "act_arr_time": "09:04 PM", "arr_delay_mins": 9.0, "sch_dep_time": "09:10 PM", "act_dep_time": "09:19 PM", "dep_delay_mins": 9.0, "running_delta": -15.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 44, "station_code": "SSB", "station_name": "Shakurbasti", "distance_km": 3130.0, "sch_arr_time": "09:39 PM", "act_arr_time": "10:17 PM", "arr_delay_mins": 38.0, "sch_dep_time": "09:41 PM", "act_dep_time": "10:19 PM", "dep_delay_mins": 38.0, "running_delta": 29.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 45, "station_code": "BGZ", "station_name": "Bahadurgarh", "distance_km": 3149.0, "sch_arr_time": "09:57 PM", "act_arr_time": "10:37 PM", "arr_delay_mins": 40.0, "sch_dep_time": "09:59 PM", "act_dep_time": "10:39 PM", "dep_delay_mins": 40.0, "running_delta": 2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 46, "station_code": "ROK", "station_name": "Rohtak", "distance_km": 3189.0, "sch_arr_time": "10:31 PM", "act_arr_time": "11:07 PM", "arr_delay_mins": 36.0, "sch_dep_time": "10:33 PM", "act_dep_time": "11:09 PM", "dep_delay_mins": 36.0, "running_delta": -4.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 47, "station_code": "JIND", "station_name": "Jind", "distance_km": 3246.0, "sch_arr_time": "11:15 PM", "act_arr_time": "11:49 PM", "arr_delay_mins": 34.0, "sch_dep_time": "11:18 PM", "act_dep_time": "11:52 PM", "dep_delay_mins": 34.0, "running_delta": -2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 48, "station_code": "NRW", "station_name": "Narwana", "distance_km": 3280.0, "sch_arr_time": "11:47 PM", "act_arr_time": "12:16 AM", "arr_delay_mins": 29.0, "sch_dep_time": "11:49 PM", "act_dep_time": "12:18 AM", "dep_delay_mins": 29.0, "running_delta": -5.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 49, "station_code": "TUN", "station_name": "Tohana", "distance_km": 3306.0, "sch_arr_time": "12:09 AM", "act_arr_time": "12:36 AM", "arr_delay_mins": 27.0, "sch_dep_time": "12:11 AM", "act_dep_time": "12:38 AM", "dep_delay_mins": 27.0, "running_delta": -2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 50, "station_code": "JHL", "station_name": "Jakhal", "distance_km": 3318.0, "sch_arr_time": "12:40 AM", "act_arr_time": "12:52 AM", "arr_delay_mins": 12.0, "sch_dep_time": "12:43 AM", "act_dep_time": "12:55 AM", "dep_delay_mins": 12.0, "running_delta": -15.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 51, "station_code": "LHA", "station_name": "Lehra Gaga", "distance_km": 3335.0, "sch_arr_time": "12:57 AM", "act_arr_time": "01:09 AM", "arr_delay_mins": 12.0, "sch_dep_time": "12:59 AM", "act_dep_time": "01:11 AM", "dep_delay_mins": 12.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 52, "station_code": "SFMU", "station_name": "Sunam Udham Singh Wala", "distance_km": 3356.0, "sch_arr_time": "01:16 AM", "act_arr_time": "01:31 AM", "arr_delay_mins": 15.0, "sch_dep_time": "01:18 AM", "act_dep_time": "01:33 AM", "dep_delay_mins": 15.0, "running_delta": 3.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 53, "station_code": "SAG", "station_name": "Sangrur", "distance_km": 3369.0, "sch_arr_time": "01:30 AM", "act_arr_time": "01:45 AM", "arr_delay_mins": 15.0, "sch_dep_time": "01:32 AM", "act_dep_time": "01:47 AM", "dep_delay_mins": 15.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 54, "station_code": "DUI", "station_name": "Dhuri", "distance_km": 3385.0, "sch_arr_time": "01:57 AM", "act_arr_time": "02:08 AM", "arr_delay_mins": 11.0, "sch_dep_time": "02:00 AM", "act_dep_time": "02:11 AM", "dep_delay_mins": 11.0, "running_delta": -4.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 55, "station_code": "MET", "station_name": "Malerkotla", "distance_km": 3402.0, "sch_arr_time": "02:12 AM", "act_arr_time": "02:26 AM", "arr_delay_mins": 14.0, "sch_dep_time": "02:14 AM", "act_dep_time": "02:28 AM", "dep_delay_mins": 14.0, "running_delta": 3.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 56, "station_code": "AHH", "station_name": "Ahmadgarh", "distance_km": 3421.0, "sch_arr_time": "02:29 AM", "act_arr_time": "02:44 AM", "arr_delay_mins": 15.0, "sch_dep_time": "02:31 AM", "act_dep_time": "02:46 AM", "dep_delay_mins": 15.0, "running_delta": 1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 57, "station_code": "LDH", "station_name": "Ludhiana", "distance_km": 3447.0, "sch_arr_time": "03:10 AM", "act_arr_time": "03:17 AM", "arr_delay_mins": 7.0, "sch_dep_time": "03:20 AM", "act_dep_time": "03:27 AM", "dep_delay_mins": 7.0, "running_delta": -8.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 58, "station_code": "PGW", "station_name": "Phagwara", "distance_km": 3482.0, "sch_arr_time": "03:49 AM", "act_arr_time": "03:59 AM", "arr_delay_mins": 10.0, "sch_dep_time": "03:51 AM", "act_dep_time": "04:01 AM", "dep_delay_mins": 10.0, "running_delta": 3.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 59, "station_code": "JRC", "station_name": "Jalandhar Cant", "distance_km": 3499.0, "sch_arr_time": "04:08 AM", "act_arr_time": "04:25 AM", "arr_delay_mins": 17.0, "sch_dep_time": "04:13 AM", "act_dep_time": "04:30 AM", "dep_delay_mins": 17.0, "running_delta": 7.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 60, "station_code": "MEX", "station_name": "Mukerian", "distance_km": 3572.0, "sch_arr_time": "05:22 AM", "act_arr_time": "05:36 AM", "arr_delay_mins": 14.0, "sch_dep_time": "05:24 AM", "act_dep_time": "05:38 AM", "dep_delay_mins": 14.0, "running_delta": -3.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 61, "station_code": "PTKC", "station_name": "Pathankot Cantt", "distance_km": 3612.0, "sch_arr_time": "06:00 AM", "act_arr_time": "06:12 AM", "arr_delay_mins": 12.0, "sch_dep_time": "06:05 AM", "act_dep_time": "06:17 AM", "dep_delay_mins": 12.0, "running_delta": -2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 62, "station_code": "KTHU", "station_name": "Kathua", "distance_km": 3635.0, "sch_arr_time": "06:34 AM", "act_arr_time": "06:47 AM", "arr_delay_mins": 13.0, "sch_dep_time": "06:36 AM", "act_dep_time": "06:49 AM", "dep_delay_mins": 13.0, "running_delta": 1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 63, "station_code": "JAT", "station_name": "Jammutavi", "distance_km": 3711.0, "sch_arr_time": "08:10 AM", "act_arr_time": "08:17 AM", "arr_delay_mins": 7.0, "sch_dep_time": "08:20 AM", "act_dep_time": "08:27 AM", "dep_delay_mins": 7.0, "running_delta": -6.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 64, "station_code": "MCTM", "station_name": "Martyr Captain Tushar Mahajan", "distance_km": 3764.0, "sch_arr_time": "09:43 AM", "act_arr_time": "09:52 AM", "arr_delay_mins": 9.0, "sch_dep_time": "09:45 AM", "act_dep_time": "09:54 AM", "dep_delay_mins": 9.0, "running_delta": 2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 65, "station_code": "SVDK", "station_name": "Shri Mata Vaishno Devi Katra", "distance_km": 3789.0, "sch_arr_time": "10:45 AM", "act_arr_time": "10:45 AM", "arr_delay_mins": 0.0, "sch_dep_time": "10:45 AM", "act_dep_time": "10:45 AM", "dep_delay_mins": 0.0, "running_delta": -9.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}]}, "12002": {"train_number": "12002", "train_name": "Shatabdi Express", "train_type": "Express", "zone": "NR", "origin": "New Delhi (NDLS)", "destination": "Rani Kamalapati (RKMP)", "total_distance_km": 708, "stop_count": 11, "journey_date": "2024-09-30", "predicted_delay_mins": 49, "delay_probability_pct": 75, "risk_tier": "High Cascade Risk", "track_loss_mins": 50.0, "dwell_loss_mins": 0.0, "recovered_mins": 45.0, "track_loss_pct": 100.0, "dwell_loss_pct": 28.0, "worst_sections": [{"section": "NDLS -> MTJ", "section_name": "Mathura", "delay_added": "+20.0 mins", "distance": "141 km", "status": "Severe Bottleneck (Track Jam)"}, {"section": "BINA -> BPL", "section_name": "Bhopal", "delay_added": "+16.0 mins", "distance": "139 km", "status": "Severe Bottleneck (Track Jam)"}, {"section": "DHO -> MRA", "section_name": "Morena", "delay_added": "+8.0 mins", "distance": "28 km", "status": "Moderate Delay Accumulation"}], "impacted_trains": [{"train_number": "12626", "train_name": "Kerala Express", "bottleneck_section": "BINA -> BPL", "location_name": "Bhopal", "primary_delay_added": 16.0, "downstream_delay_mins": 852.0, "scheduled_arrival": "05:20 AM", "actual_arrival": "07:32 PM"}, {"train_number": "12626", "train_name": "Kerala Express", "bottleneck_section": "NDLS -> MTJ", "location_name": "Mathura", "primary_delay_added": 20.0, "downstream_delay_mins": 671.0, "scheduled_arrival": "09:38 PM", "actual_arrival": "08:49 AM"}, {"train_number": "12190", "train_name": "Mahakaushal Express", "bottleneck_section": "DHO -> MRA", "location_name": "Morena", "primary_delay_added": 8.0, "downstream_delay_mins": 332.0, "scheduled_arrival": "05:01 PM", "actual_arrival": "10:33 PM"}, {"train_number": "22130", "train_name": "Tulsi Express", "bottleneck_section": "BINA -> BPL", "location_name": "Bhopal", "primary_delay_added": 16.0, "downstream_delay_mins": 293.0, "scheduled_arrival": "05:55 AM", "actual_arrival": "10:48 AM"}, {"train_number": "11058", "train_name": "Asr Csmt Express", "bottleneck_section": "DHO -> MRA", "location_name": "Morena", "primary_delay_added": 8.0, "downstream_delay_mins": 233.0, "scheduled_arrival": "01:23 AM", "actual_arrival": "05:16 AM"}], "stops": [{"stop_sequence": 1, "station_code": "NDLS", "station_name": "New Delhi", "distance_km": 0.0, "sch_arr_time": "06:00 AM", "act_arr_time": "06:00 AM", "arr_delay_mins": 0.0, "sch_dep_time": "06:00 AM", "act_dep_time": "06:00 AM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 2, "station_code": "MTJ", "station_name": "Mathura", "distance_km": 141.0, "sch_arr_time": "07:19 AM", "act_arr_time": "07:39 AM", "arr_delay_mins": 20.0, "sch_dep_time": "07:20 AM", "act_dep_time": "07:40 AM", "dep_delay_mins": 20.0, "running_delta": 20.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 3, "station_code": "AGC", "station_name": "Agra Cantt", "distance_km": 194.0, "sch_arr_time": "07:50 AM", "act_arr_time": "08:15 AM", "arr_delay_mins": 25.0, "sch_dep_time": "07:55 AM", "act_dep_time": "08:20 AM", "dep_delay_mins": 25.0, "running_delta": 5.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 4, "station_code": "DHO", "station_name": "Dhaulpur", "distance_km": 246.0, "sch_arr_time": "08:39 AM", "act_arr_time": "08:53 AM", "arr_delay_mins": 14.0, "sch_dep_time": "08:40 AM", "act_dep_time": "08:54 AM", "dep_delay_mins": 14.0, "running_delta": -11.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 5, "station_code": "MRA", "station_name": "Morena", "distance_km": 274.0, "sch_arr_time": "08:57 AM", "act_arr_time": "09:19 AM", "arr_delay_mins": 22.0, "sch_dep_time": "08:58 AM", "act_dep_time": "09:20 AM", "dep_delay_mins": 22.0, "running_delta": 8.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 6, "station_code": "GWL", "station_name": "Gwalior", "distance_km": 312.0, "sch_arr_time": "09:23 AM", "act_arr_time": "09:45 AM", "arr_delay_mins": 22.0, "sch_dep_time": "09:28 AM", "act_dep_time": "09:50 AM", "dep_delay_mins": 22.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 7, "station_code": "VGLJ", "station_name": "Virangana Lakshmibai Jhansi", "distance_km": 411.0, "sch_arr_time": "10:45 AM", "act_arr_time": "10:56 AM", "arr_delay_mins": 11.0, "sch_dep_time": "10:50 AM", "act_dep_time": "11:01 AM", "dep_delay_mins": 11.0, "running_delta": -11.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 8, "station_code": "LAR", "station_name": "Lalitpur", "distance_km": 501.0, "sch_arr_time": "11:42 AM", "act_arr_time": "11:54 AM", "arr_delay_mins": 12.0, "sch_dep_time": "11:43 AM", "act_dep_time": "11:55 AM", "dep_delay_mins": 12.0, "running_delta": 1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 9, "station_code": "BINA", "station_name": "Bina", "distance_km": 563.0, "sch_arr_time": "12:40 PM", "act_arr_time": "12:41 PM", "arr_delay_mins": 0.0, "sch_dep_time": "12:42 PM", "act_dep_time": "12:43 PM", "dep_delay_mins": 0.0, "running_delta": -12.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 10, "station_code": "BPL", "station_name": "Bhopal", "distance_km": 702.0, "sch_arr_time": "02:12 PM", "act_arr_time": "02:28 PM", "arr_delay_mins": 16.0, "sch_dep_time": "02:15 PM", "act_dep_time": "02:31 PM", "dep_delay_mins": 16.0, "running_delta": 16.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 11, "station_code": "RKMP", "station_name": "Rani Kamalapati", "distance_km": 708.0, "sch_arr_time": "02:40 PM", "act_arr_time": "02:45 PM", "arr_delay_mins": 5.0, "sch_dep_time": "02:40 PM", "act_dep_time": "02:45 PM", "dep_delay_mins": 5.0, "running_delta": -11.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}]}, "12504": {"train_number": "12504", "train_name": "Humsafar Express", "train_type": "Express", "zone": "NFR", "origin": "Agartala (AGTL)", "destination": "Smvt Bengaluru (SMVB)", "total_distance_km": 3562, "stop_count": 31, "journey_date": "2024-09-28", "predicted_delay_mins": 48, "delay_probability_pct": 33, "risk_tier": "High Cascade Risk", "track_loss_mins": 284.0, "dwell_loss_mins": 0.0, "recovered_mins": 195.0, "track_loss_pct": 100.0, "dwell_loss_pct": 28.0, "worst_sections": [{"section": "DVD -> BZA", "section_name": "Vijayawada", "delay_added": "+49.0 mins", "distance": "333 km", "status": "Severe Bottleneck (Track Jam)"}, {"section": "BPB -> NHLG", "section_name": "New Haflong", "delay_added": "+37.0 mins", "distance": "71 km", "status": "Severe Bottleneck (Track Jam)"}, {"section": "NBQ -> NJP", "section_name": "New Jalpaiguri", "delay_added": "+24.0 mins", "distance": "254 km", "status": "Severe Bottleneck (Track Jam)"}], "impacted_trains": [{"train_number": "12863", "train_name": "Hwh Smvb Express", "bottleneck_section": "BBS -> KUR", "location_name": "Khurda Road", "primary_delay_added": 18.0, "downstream_delay_mins": 215.0, "scheduled_arrival": "05:30 AM", "actual_arrival": "09:05 AM"}, {"train_number": "12863", "train_name": "Hwh Smvb Express", "bottleneck_section": "PSA -> CHE", "location_name": "Srikakulam Road", "primary_delay_added": 11.0, "downstream_delay_mins": 210.0, "scheduled_arrival": "10:08 AM", "actual_arrival": "01:38 PM"}, {"train_number": "12863", "train_name": "Hwh Smvb Express", "bottleneck_section": "CTC -> BBS", "location_name": "Bhubaneswar", "primary_delay_added": 11.0, "downstream_delay_mins": 198.0, "scheduled_arrival": "05:10 AM", "actual_arrival": "08:28 AM"}, {"train_number": "22877", "train_name": "Hwh-ers Antyodaya Express", "bottleneck_section": "BBS -> KUR", "location_name": "Khurda Road", "primary_delay_added": 18.0, "downstream_delay_mins": 173.0, "scheduled_arrival": "09:45 PM", "actual_arrival": "12:38 AM"}, {"train_number": "22877", "train_name": "Hwh-ers Antyodaya Express", "bottleneck_section": "CTC -> BBS", "location_name": "Bhubaneswar", "primary_delay_added": 11.0, "downstream_delay_mins": 171.0, "scheduled_arrival": "09:20 PM", "actual_arrival": "12:11 AM"}], "stops": [{"stop_sequence": 1, "station_code": "AGTL", "station_name": "Agartala", "distance_km": 0.0, "sch_arr_time": "05:30 AM", "act_arr_time": "05:32 AM", "arr_delay_mins": 2.0, "sch_dep_time": "05:30 AM", "act_dep_time": "05:32 AM", "dep_delay_mins": 2.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 2, "station_code": "ABSA", "station_name": "Ambassa", "distance_km": 67.0, "sch_arr_time": "06:38 AM", "act_arr_time": "06:38 AM", "arr_delay_mins": 0.0, "sch_dep_time": "06:40 AM", "act_dep_time": "06:40 AM", "dep_delay_mins": 0.0, "running_delta": -2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 3, "station_code": "DMR", "station_name": "Dharmanagar", "distance_km": 140.0, "sch_arr_time": "08:09 AM", "act_arr_time": "08:09 AM", "arr_delay_mins": 0.0, "sch_dep_time": "08:11 AM", "act_dep_time": "08:11 AM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 4, "station_code": "NKMG", "station_name": "New Karimganj", "distance_km": 205.0, "sch_arr_time": "09:25 AM", "act_arr_time": "09:25 AM", "arr_delay_mins": 0.0, "sch_dep_time": "09:27 AM", "act_dep_time": "09:27 AM", "dep_delay_mins": 0.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 5, "station_code": "BPB", "station_name": "Badarpur", "distance_km": 226.0, "sch_arr_time": "09:50 AM", "act_arr_time": "10:03 AM", "arr_delay_mins": 13.0, "sch_dep_time": "10:00 AM", "act_dep_time": "10:13 AM", "dep_delay_mins": 13.0, "running_delta": 13.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 6, "station_code": "NHLG", "station_name": "New Haflong", "distance_km": 297.0, "sch_arr_time": "12:10 PM", "act_arr_time": "01:00 PM", "arr_delay_mins": 50.0, "sch_dep_time": "12:15 PM", "act_dep_time": "01:05 PM", "dep_delay_mins": 50.0, "running_delta": 37.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 7, "station_code": "GHY", "station_name": "Guwahati", "distance_km": 567.0, "sch_arr_time": "06:30 PM", "act_arr_time": "06:31 PM", "arr_delay_mins": 0.0, "sch_dep_time": "06:40 PM", "act_dep_time": "06:41 PM", "dep_delay_mins": 0.0, "running_delta": -50.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 8, "station_code": "KYQ", "station_name": "Kamakhya", "distance_km": 573.0, "sch_arr_time": "07:00 PM", "act_arr_time": "07:12 PM", "arr_delay_mins": 12.0, "sch_dep_time": "07:02 PM", "act_dep_time": "07:14 PM", "dep_delay_mins": 12.0, "running_delta": 12.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 9, "station_code": "NBQ", "station_name": "New Bongaigaon", "distance_km": 749.0, "sch_arr_time": "10:00 PM", "act_arr_time": "10:17 PM", "arr_delay_mins": 17.0, "sch_dep_time": "10:05 PM", "act_dep_time": "10:22 PM", "dep_delay_mins": 17.0, "running_delta": 5.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 10, "station_code": "NJP", "station_name": "New Jalpaiguri", "distance_km": 1003.0, "sch_arr_time": "02:20 AM", "act_arr_time": "03:01 AM", "arr_delay_mins": 41.0, "sch_dep_time": "02:30 AM", "act_dep_time": "03:11 AM", "dep_delay_mins": 41.0, "running_delta": 24.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 11, "station_code": "KNE", "station_name": "Kishanganj", "distance_km": 1090.0, "sch_arr_time": "03:45 AM", "act_arr_time": "04:32 AM", "arr_delay_mins": 47.0, "sch_dep_time": "03:47 AM", "act_dep_time": "04:34 AM", "dep_delay_mins": 47.0, "running_delta": 6.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 12, "station_code": "MLDT", "station_name": "Malda Town", "distance_km": 1236.0, "sch_arr_time": "06:50 AM", "act_arr_time": "07:53 AM", "arr_delay_mins": 63.0, "sch_dep_time": "07:00 AM", "act_dep_time": "08:03 AM", "dep_delay_mins": 63.0, "running_delta": 16.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 13, "station_code": "RPH", "station_name": "Rampur Hat", "distance_km": 1358.0, "sch_arr_time": "08:47 AM", "act_arr_time": "10:13 AM", "arr_delay_mins": 86.0, "sch_dep_time": "08:49 AM", "act_dep_time": "10:15 AM", "dep_delay_mins": 86.0, "running_delta": 23.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 14, "station_code": "DKAE", "station_name": "Dankuni", "distance_km": 1549.0, "sch_arr_time": "11:48 AM", "act_arr_time": "01:07 PM", "arr_delay_mins": 79.0, "sch_dep_time": "11:53 AM", "act_dep_time": "01:12 PM", "dep_delay_mins": 79.0, "running_delta": -7.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 15, "station_code": "ADL", "station_name": "Andul", "distance_km": 1569.0, "sch_arr_time": "12:45 PM", "act_arr_time": "02:26 PM", "arr_delay_mins": 101.0, "sch_dep_time": "12:47 PM", "act_dep_time": "02:28 PM", "dep_delay_mins": 101.0, "running_delta": 22.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 16, "station_code": "KGP", "station_name": "Kharagpur", "distance_km": 1672.0, "sch_arr_time": "02:15 PM", "act_arr_time": "03:57 PM", "arr_delay_mins": 102.0, "sch_dep_time": "02:23 PM", "act_dep_time": "04:05 PM", "dep_delay_mins": 102.0, "running_delta": 1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 17, "station_code": "BHC", "station_name": "Bhadrakh", "distance_km": 1849.0, "sch_arr_time": "04:58 PM", "act_arr_time": "06:42 PM", "arr_delay_mins": 104.0, "sch_dep_time": "05:00 PM", "act_dep_time": "06:44 PM", "dep_delay_mins": 104.0, "running_delta": 2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 18, "station_code": "CTC", "station_name": "Cuttack", "distance_km": 1965.0, "sch_arr_time": "06:23 PM", "act_arr_time": "08:25 PM", "arr_delay_mins": 122.0, "sch_dep_time": "06:25 PM", "act_dep_time": "08:27 PM", "dep_delay_mins": 122.0, "running_delta": 18.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 19, "station_code": "BBS", "station_name": "Bhubaneswar", "distance_km": 1992.0, "sch_arr_time": "06:50 PM", "act_arr_time": "09:03 PM", "arr_delay_mins": 133.0, "sch_dep_time": "06:55 PM", "act_dep_time": "09:08 PM", "dep_delay_mins": 133.0, "running_delta": 11.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 20, "station_code": "KUR", "station_name": "Khurda Road", "distance_km": 2011.0, "sch_arr_time": "07:05 PM", "act_arr_time": "09:36 PM", "arr_delay_mins": 151.0, "sch_dep_time": "07:20 PM", "act_dep_time": "09:51 PM", "dep_delay_mins": 151.0, "running_delta": 18.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 21, "station_code": "BAM", "station_name": "Brahmapur", "distance_km": 2158.0, "sch_arr_time": "09:03 PM", "act_arr_time": "11:41 PM", "arr_delay_mins": 158.0, "sch_dep_time": "09:05 PM", "act_dep_time": "11:43 PM", "dep_delay_mins": 158.0, "running_delta": 7.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 22, "station_code": "PSA", "station_name": "Palasa", "distance_km": 2232.0, "sch_arr_time": "10:53 PM", "act_arr_time": "12:47 AM", "arr_delay_mins": 114.0, "sch_dep_time": "10:55 PM", "act_dep_time": "12:49 AM", "dep_delay_mins": 114.0, "running_delta": -44.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 23, "station_code": "CHE", "station_name": "Srikakulam Road", "distance_km": 2305.0, "sch_arr_time": "11:43 PM", "act_arr_time": "01:48 AM", "arr_delay_mins": 125.0, "sch_dep_time": "11:45 PM", "act_dep_time": "01:50 AM", "dep_delay_mins": 125.0, "running_delta": 11.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 24, "station_code": "VZM", "station_name": "Vizianagram", "distance_km": 2374.0, "sch_arr_time": "12:38 AM", "act_arr_time": "02:48 AM", "arr_delay_mins": 130.0, "sch_dep_time": "12:40 AM", "act_dep_time": "02:50 AM", "dep_delay_mins": 130.0, "running_delta": 5.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 25, "station_code": "VSKP", "station_name": "Visakhapatnam", "distance_km": 2435.0, "sch_arr_time": "01:40 AM", "act_arr_time": "03:54 AM", "arr_delay_mins": 134.0, "sch_dep_time": "02:00 AM", "act_dep_time": "04:14 AM", "dep_delay_mins": 134.0, "running_delta": 4.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 26, "station_code": "DVD", "station_name": "Duvvada", "distance_km": 2452.0, "sch_arr_time": "02:35 AM", "act_arr_time": "04:34 AM", "arr_delay_mins": 119.0, "sch_dep_time": "02:37 AM", "act_dep_time": "04:36 AM", "dep_delay_mins": 119.0, "running_delta": -15.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 27, "station_code": "BZA", "station_name": "Vijayawada", "distance_km": 2785.0, "sch_arr_time": "07:10 AM", "act_arr_time": "09:58 AM", "arr_delay_mins": 168.0, "sch_dep_time": "07:20 AM", "act_dep_time": "10:08 AM", "dep_delay_mins": 168.0, "running_delta": 49.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 28, "station_code": "PER", "station_name": "Perambur", "distance_km": 3215.0, "sch_arr_time": "01:50 PM", "act_arr_time": "04:28 PM", "arr_delay_mins": 158.0, "sch_dep_time": "01:55 PM", "act_dep_time": "04:33 PM", "dep_delay_mins": 158.0, "running_delta": -10.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 29, "station_code": "KPD", "station_name": "Katpadi", "distance_km": 3345.0, "sch_arr_time": "03:55 PM", "act_arr_time": "06:01 PM", "arr_delay_mins": 126.0, "sch_dep_time": "04:15 PM", "act_dep_time": "06:21 PM", "dep_delay_mins": 126.0, "running_delta": -32.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 30, "station_code": "WFD", "station_name": "Whitefield", "distance_km": 3545.0, "sch_arr_time": "07:15 PM", "act_arr_time": "09:14 PM", "arr_delay_mins": 119.0, "sch_dep_time": "07:16 PM", "act_dep_time": "09:15 PM", "dep_delay_mins": 119.0, "running_delta": -7.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 31, "station_code": "SMVB", "station_name": "Smvt Bengaluru", "distance_km": 3562.0, "sch_arr_time": "08:10 PM", "act_arr_time": "09:41 PM", "arr_delay_mins": 91.0, "sch_dep_time": "08:10 PM", "act_dep_time": "09:41 PM", "dep_delay_mins": 91.0, "running_delta": -28.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}]}, "16787": {"train_number": "16787", "train_name": "Ten Svdk Express", "train_type": "Express", "zone": "SR", "origin": "Tirunelveli (TEN)", "destination": "Shri Mata Vaishno Devi Katra (SVDK)", "total_distance_km": 3637, "stop_count": 59, "journey_date": "2024-09-30", "predicted_delay_mins": 48, "delay_probability_pct": 30, "risk_tier": "High Cascade Risk", "track_loss_mins": 617.0, "dwell_loss_mins": 0.0, "recovered_mins": 445.0, "track_loss_pct": 100.0, "dwell_loss_pct": 28.0, "worst_sections": [{"section": "TUN -> JHL", "section_name": "Jakhal", "delay_added": "+114.0 mins", "distance": "12 km", "status": "Severe Bottleneck (Track Jam)"}, {"section": "WL -> RDM", "section_name": "Ramgundam", "delay_added": "+57.0 mins", "distance": "101 km", "status": "Severe Bottleneck (Track Jam)"}, {"section": "OGL -> TEL", "section_name": "Tenali", "delay_added": "+49.0 mins", "distance": "107 km", "status": "Severe Bottleneck (Track Jam)"}], "impacted_trains": [{"train_number": "12269", "train_name": "Mas Nzm Duronto", "bottleneck_section": "VGLJ -> GWL", "location_name": "Gwalior", "primary_delay_added": 17.0, "downstream_delay_mins": 1123.0, "scheduled_arrival": "06:33 AM", "actual_arrival": "01:16 AM"}, {"train_number": "12203", "train_name": "Garib Rath Express", "bottleneck_section": "LDH -> PGW", "location_name": "Phagwara", "primary_delay_added": 44.0, "downstream_delay_mins": 467.0, "scheduled_arrival": "07:54 PM", "actual_arrival": "03:41 AM"}, {"train_number": "14623", "train_name": "Patalkot Express", "bottleneck_section": "TUN -> JHL", "location_name": "Jakhal", "primary_delay_added": 114.0, "downstream_delay_mins": 466.0, "scheduled_arrival": "07:06 AM", "actual_arrival": "02:52 PM"}, {"train_number": "12649", "train_name": "Sampark Kranti", "bottleneck_section": "VGLJ -> GWL", "location_name": "Gwalior", "primary_delay_added": 17.0, "downstream_delay_mins": 383.0, "scheduled_arrival": "03:53 AM", "actual_arrival": "10:16 AM"}, {"train_number": "20805", "train_name": "Ap Express", "bottleneck_section": "VGLJ -> GWL", "location_name": "Gwalior", "primary_delay_added": 17.0, "downstream_delay_mins": 361.0, "scheduled_arrival": "01:09 AM", "actual_arrival": "07:10 AM"}], "stops": [{"stop_sequence": 1, "station_code": "TEN", "station_name": "Tirunelveli", "distance_km": 0.0, "sch_arr_time": "05:35 PM", "act_arr_time": "05:47 PM", "arr_delay_mins": 12.0, "sch_dep_time": "05:35 PM", "act_dep_time": "05:47 PM", "dep_delay_mins": 12.0, "running_delta": 0.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 2, "station_code": "MEJ", "station_name": "Maniyachchi", "distance_km": 29.0, "sch_arr_time": "05:58 PM", "act_arr_time": "06:18 PM", "arr_delay_mins": 20.0, "sch_dep_time": "06:00 PM", "act_dep_time": "06:20 PM", "dep_delay_mins": 20.0, "running_delta": 8.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 3, "station_code": "CVP", "station_name": "Kovilpatti", "distance_km": 65.0, "sch_arr_time": "06:28 PM", "act_arr_time": "07:01 PM", "arr_delay_mins": 33.0, "sch_dep_time": "06:30 PM", "act_dep_time": "07:03 PM", "dep_delay_mins": 33.0, "running_delta": 13.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 4, "station_code": "SRT", "station_name": "Satur", "distance_km": 86.0, "sch_arr_time": "06:46 PM", "act_arr_time": "07:17 PM", "arr_delay_mins": 31.0, "sch_dep_time": "06:48 PM", "act_dep_time": "07:19 PM", "dep_delay_mins": 31.0, "running_delta": -2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 5, "station_code": "VPT", "station_name": "Virudunagar", "distance_km": 113.0, "sch_arr_time": "07:18 PM", "act_arr_time": "07:37 PM", "arr_delay_mins": 19.0, "sch_dep_time": "07:20 PM", "act_dep_time": "07:39 PM", "dep_delay_mins": 19.0, "running_delta": -12.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 6, "station_code": "MDU", "station_name": "Madurai", "distance_km": 157.0, "sch_arr_time": "08:35 PM", "act_arr_time": "08:35 PM", "arr_delay_mins": 0.0, "sch_dep_time": "08:45 PM", "act_dep_time": "08:45 PM", "dep_delay_mins": 0.0, "running_delta": -19.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 7, "station_code": "KQN", "station_name": "Kodaikanal Road", "distance_km": 197.0, "sch_arr_time": "09:18 PM", "act_arr_time": "09:25 PM", "arr_delay_mins": 7.0, "sch_dep_time": "09:20 PM", "act_dep_time": "09:27 PM", "dep_delay_mins": 7.0, "running_delta": 7.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 8, "station_code": "DG", "station_name": "Dindigul", "distance_km": 222.0, "sch_arr_time": "09:45 PM", "act_arr_time": "09:57 PM", "arr_delay_mins": 12.0, "sch_dep_time": "09:50 PM", "act_dep_time": "10:02 PM", "dep_delay_mins": 12.0, "running_delta": 5.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 9, "station_code": "TPJ", "station_name": "Tiruchchirappalli", "distance_km": 317.0, "sch_arr_time": "11:05 PM", "act_arr_time": "11:13 PM", "arr_delay_mins": 8.0, "sch_dep_time": "11:10 PM", "act_dep_time": "11:18 PM", "dep_delay_mins": 8.0, "running_delta": -4.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 10, "station_code": "KRR", "station_name": "Karur", "distance_km": 392.0, "sch_arr_time": "12:38 AM", "act_arr_time": "12:49 AM", "arr_delay_mins": 11.0, "sch_dep_time": "12:40 AM", "act_dep_time": "12:51 AM", "dep_delay_mins": 11.0, "running_delta": 3.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 11, "station_code": "ED", "station_name": "Erode", "distance_km": 458.0, "sch_arr_time": "02:55 AM", "act_arr_time": "02:55 AM", "arr_delay_mins": 0.0, "sch_dep_time": "03:05 AM", "act_dep_time": "03:05 AM", "dep_delay_mins": 0.0, "running_delta": -11.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 12, "station_code": "SA", "station_name": "Salem", "distance_km": 517.0, "sch_arr_time": "04:02 AM", "act_arr_time": "04:08 AM", "arr_delay_mins": 6.0, "sch_dep_time": "04:05 AM", "act_dep_time": "04:11 AM", "dep_delay_mins": 6.0, "running_delta": 6.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 13, "station_code": "JTJ", "station_name": "Jolarpettai", "distance_km": 642.0, "sch_arr_time": "05:58 AM", "act_arr_time": "05:59 AM", "arr_delay_mins": 0.0, "sch_dep_time": "06:00 AM", "act_dep_time": "06:01 AM", "dep_delay_mins": 0.0, "running_delta": -6.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 14, "station_code": "KPD", "station_name": "Katpadi", "distance_km": 726.0, "sch_arr_time": "07:25 AM", "act_arr_time": "07:30 AM", "arr_delay_mins": 5.0, "sch_dep_time": "07:30 AM", "act_dep_time": "07:35 AM", "dep_delay_mins": 5.0, "running_delta": 5.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 15, "station_code": "CTO", "station_name": "Chittoor", "distance_km": 758.0, "sch_arr_time": "08:04 AM", "act_arr_time": "08:05 AM", "arr_delay_mins": 0.0, "sch_dep_time": "08:05 AM", "act_dep_time": "08:06 AM", "dep_delay_mins": 0.0, "running_delta": -5.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 16, "station_code": "TPTY", "station_name": "Tirupati", "distance_km": 830.0, "sch_arr_time": "09:05 AM", "act_arr_time": "09:20 AM", "arr_delay_mins": 15.0, "sch_dep_time": "09:10 AM", "act_dep_time": "09:25 AM", "dep_delay_mins": 15.0, "running_delta": 15.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 17, "station_code": "RU", "station_name": "Renigunta", "distance_km": 840.0, "sch_arr_time": "09:25 AM", "act_arr_time": "09:47 AM", "arr_delay_mins": 22.0, "sch_dep_time": "09:30 AM", "act_dep_time": "09:52 AM", "dep_delay_mins": 22.0, "running_delta": 7.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 18, "station_code": "NLR", "station_name": "Nellore", "distance_km": 961.0, "sch_arr_time": "11:38 AM", "act_arr_time": "12:06 PM", "arr_delay_mins": 28.0, "sch_dep_time": "11:40 AM", "act_dep_time": "12:08 PM", "dep_delay_mins": 28.0, "running_delta": 6.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 19, "station_code": "OGL", "station_name": "Ongole", "distance_km": 1077.0, "sch_arr_time": "01:09 PM", "act_arr_time": "01:09 PM", "arr_delay_mins": 0.0, "sch_dep_time": "01:10 PM", "act_dep_time": "01:10 PM", "dep_delay_mins": 0.0, "running_delta": -28.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 20, "station_code": "TEL", "station_name": "Tenali", "distance_km": 1184.0, "sch_arr_time": "02:44 PM", "act_arr_time": "03:33 PM", "arr_delay_mins": 49.0, "sch_dep_time": "02:45 PM", "act_dep_time": "03:34 PM", "dep_delay_mins": 49.0, "running_delta": 49.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 21, "station_code": "BZA", "station_name": "Vijayawada", "distance_km": 1215.0, "sch_arr_time": "03:20 PM", "act_arr_time": "04:10 PM", "arr_delay_mins": 50.0, "sch_dep_time": "03:30 PM", "act_dep_time": "04:20 PM", "dep_delay_mins": 50.0, "running_delta": 1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 22, "station_code": "KMT", "station_name": "Khammam", "distance_km": 1317.0, "sch_arr_time": "04:48 PM", "act_arr_time": "05:55 PM", "arr_delay_mins": 67.0, "sch_dep_time": "04:50 PM", "act_dep_time": "05:57 PM", "dep_delay_mins": 67.0, "running_delta": 17.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 23, "station_code": "WL", "station_name": "Warangal", "distance_km": 1425.0, "sch_arr_time": "06:10 PM", "act_arr_time": "07:45 PM", "arr_delay_mins": 95.0, "sch_dep_time": "06:15 PM", "act_dep_time": "07:50 PM", "dep_delay_mins": 95.0, "running_delta": 28.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 24, "station_code": "RDM", "station_name": "Ramgundam", "distance_km": 1526.0, "sch_arr_time": "07:34 PM", "act_arr_time": "10:06 PM", "arr_delay_mins": 152.0, "sch_dep_time": "07:35 PM", "act_dep_time": "10:07 PM", "dep_delay_mins": 152.0, "running_delta": 57.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 25, "station_code": "BPQ", "station_name": "Balharshah", "distance_km": 1668.0, "sch_arr_time": "10:15 PM", "act_arr_time": "12:16 AM", "arr_delay_mins": 121.0, "sch_dep_time": "10:20 PM", "act_dep_time": "12:21 AM", "dep_delay_mins": 121.0, "running_delta": -31.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 26, "station_code": "CD", "station_name": "Chandrapur", "distance_km": 1682.0, "sch_arr_time": "10:35 PM", "act_arr_time": "12:48 AM", "arr_delay_mins": 133.0, "sch_dep_time": "10:37 PM", "act_dep_time": "12:50 AM", "dep_delay_mins": 133.0, "running_delta": 12.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 27, "station_code": "SEGM", "station_name": "Sevagram", "distance_km": 1801.0, "sch_arr_time": "12:23 AM", "act_arr_time": "03:17 AM", "arr_delay_mins": 174.0, "sch_dep_time": "12:25 AM", "act_dep_time": "03:19 AM", "dep_delay_mins": 174.0, "running_delta": 41.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 28, "station_code": "NGP", "station_name": "Nagpur", "distance_km": 1877.0, "sch_arr_time": "01:40 AM", "act_arr_time": "04:39 AM", "arr_delay_mins": 179.0, "sch_dep_time": "01:45 AM", "act_dep_time": "04:44 AM", "dep_delay_mins": 179.0, "running_delta": 5.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 29, "station_code": "ET", "station_name": "Itarsi", "distance_km": 2173.0, "sch_arr_time": "07:20 AM", "act_arr_time": "09:44 AM", "arr_delay_mins": 144.0, "sch_dep_time": "07:30 AM", "act_dep_time": "09:54 AM", "dep_delay_mins": 144.0, "running_delta": -35.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 30, "station_code": "BPL", "station_name": "Bhopal", "distance_km": 2264.0, "sch_arr_time": "09:05 AM", "act_arr_time": "11:30 AM", "arr_delay_mins": 145.0, "sch_dep_time": "09:10 AM", "act_dep_time": "11:35 AM", "dep_delay_mins": 145.0, "running_delta": 1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 31, "station_code": "VGLJ", "station_name": "Virangana Lakshmibai Jhansi", "distance_km": 2555.0, "sch_arr_time": "01:30 PM", "act_arr_time": "03:48 PM", "arr_delay_mins": 138.0, "sch_dep_time": "01:38 PM", "act_dep_time": "03:56 PM", "dep_delay_mins": 138.0, "running_delta": -7.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 32, "station_code": "GWL", "station_name": "Gwalior", "distance_km": 2654.0, "sch_arr_time": "02:50 PM", "act_arr_time": "05:25 PM", "arr_delay_mins": 155.0, "sch_dep_time": "02:52 PM", "act_dep_time": "05:27 PM", "dep_delay_mins": 155.0, "running_delta": 17.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 33, "station_code": "DHO", "station_name": "Dhaulpur", "distance_km": 2720.0, "sch_arr_time": "04:10 PM", "act_arr_time": "06:18 PM", "arr_delay_mins": 128.0, "sch_dep_time": "04:12 PM", "act_dep_time": "06:20 PM", "dep_delay_mins": 128.0, "running_delta": -27.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 34, "station_code": "AGC", "station_name": "Agra Cantt", "distance_km": 2772.0, "sch_arr_time": "04:50 PM", "act_arr_time": "07:04 PM", "arr_delay_mins": 134.0, "sch_dep_time": "04:55 PM", "act_dep_time": "07:09 PM", "dep_delay_mins": 134.0, "running_delta": 6.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 35, "station_code": "FDB", "station_name": "Faridabad", "distance_km": 2938.0, "sch_arr_time": "07:42 PM", "act_arr_time": "09:34 PM", "arr_delay_mins": 112.0, "sch_dep_time": "07:44 PM", "act_dep_time": "09:36 PM", "dep_delay_mins": 112.0, "running_delta": -22.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 36, "station_code": "NZM", "station_name": "Hazrat Nizamuddin", "distance_km": 2959.0, "sch_arr_time": "08:16 PM", "act_arr_time": "10:03 PM", "arr_delay_mins": 107.0, "sch_dep_time": "08:21 PM", "act_dep_time": "10:08 PM", "dep_delay_mins": 107.0, "running_delta": -5.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 37, "station_code": "NDLS", "station_name": "New Delhi", "distance_km": 2966.0, "sch_arr_time": "08:55 PM", "act_arr_time": "10:56 PM", "arr_delay_mins": 121.0, "sch_dep_time": "09:10 PM", "act_dep_time": "11:11 PM", "dep_delay_mins": 121.0, "running_delta": 14.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 38, "station_code": "SSB", "station_name": "Shakurbasti", "distance_km": 2977.0, "sch_arr_time": "09:39 PM", "act_arr_time": "11:50 PM", "arr_delay_mins": 131.0, "sch_dep_time": "09:41 PM", "act_dep_time": "11:52 PM", "dep_delay_mins": 131.0, "running_delta": 10.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 39, "station_code": "BGZ", "station_name": "Bahadurgarh", "distance_km": 2997.0, "sch_arr_time": "09:57 PM", "act_arr_time": "12:12 AM", "arr_delay_mins": 135.0, "sch_dep_time": "09:59 PM", "act_dep_time": "12:14 AM", "dep_delay_mins": 135.0, "running_delta": 4.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 40, "station_code": "ROK", "station_name": "Rohtak", "distance_km": 3037.0, "sch_arr_time": "10:31 PM", "act_arr_time": "12:45 AM", "arr_delay_mins": 134.0, "sch_dep_time": "10:33 PM", "act_dep_time": "12:47 AM", "dep_delay_mins": 134.0, "running_delta": -1.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 41, "station_code": "JIND", "station_name": "Jind", "distance_km": 3094.0, "sch_arr_time": "11:15 PM", "act_arr_time": "01:35 AM", "arr_delay_mins": 140.0, "sch_dep_time": "11:18 PM", "act_dep_time": "01:38 AM", "dep_delay_mins": 140.0, "running_delta": 6.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 42, "station_code": "NRW", "station_name": "Narwana", "distance_km": 3128.0, "sch_arr_time": "11:47 PM", "act_arr_time": "02:04 AM", "arr_delay_mins": 137.0, "sch_dep_time": "11:49 PM", "act_dep_time": "02:06 AM", "dep_delay_mins": 137.0, "running_delta": -3.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 43, "station_code": "TUN", "station_name": "Tohana", "distance_km": 3154.0, "sch_arr_time": "12:09 AM", "act_arr_time": "12:09 AM", "arr_delay_mins": 0.0, "sch_dep_time": "12:11 AM", "act_dep_time": "12:11 AM", "dep_delay_mins": 0.0, "running_delta": -137.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 44, "station_code": "JHL", "station_name": "Jakhal", "distance_km": 3166.0, "sch_arr_time": "12:40 AM", "act_arr_time": "02:34 AM", "arr_delay_mins": 114.0, "sch_dep_time": "12:43 AM", "act_dep_time": "02:37 AM", "dep_delay_mins": 114.0, "running_delta": 114.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 45, "station_code": "LHA", "station_name": "Lehra Gaga", "distance_km": 3182.0, "sch_arr_time": "12:57 AM", "act_arr_time": "03:28 AM", "arr_delay_mins": 151.0, "sch_dep_time": "12:59 AM", "act_dep_time": "03:30 AM", "dep_delay_mins": 151.0, "running_delta": 37.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 46, "station_code": "SFMU", "station_name": "Sunam Udham Singh Wala", "distance_km": 3204.0, "sch_arr_time": "01:16 AM", "act_arr_time": "04:05 AM", "arr_delay_mins": 169.0, "sch_dep_time": "01:18 AM", "act_dep_time": "04:07 AM", "dep_delay_mins": 169.0, "running_delta": 18.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 47, "station_code": "SAG", "station_name": "Sangrur", "distance_km": 3216.0, "sch_arr_time": "01:30 AM", "act_arr_time": "04:22 AM", "arr_delay_mins": 172.0, "sch_dep_time": "01:32 AM", "act_dep_time": "04:24 AM", "dep_delay_mins": 172.0, "running_delta": 3.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 48, "station_code": "DUI", "station_name": "Dhuri", "distance_km": 3232.0, "sch_arr_time": "01:57 AM", "act_arr_time": "04:52 AM", "arr_delay_mins": 175.0, "sch_dep_time": "02:00 AM", "act_dep_time": "04:55 AM", "dep_delay_mins": 175.0, "running_delta": 3.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 49, "station_code": "MET", "station_name": "Malerkotla", "distance_km": 3249.0, "sch_arr_time": "02:12 AM", "act_arr_time": "05:22 AM", "arr_delay_mins": 190.0, "sch_dep_time": "02:14 AM", "act_dep_time": "05:24 AM", "dep_delay_mins": 190.0, "running_delta": 15.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 50, "station_code": "AHH", "station_name": "Ahmadgarh", "distance_km": 3268.0, "sch_arr_time": "02:29 AM", "act_arr_time": "05:41 AM", "arr_delay_mins": 192.0, "sch_dep_time": "02:31 AM", "act_dep_time": "05:43 AM", "dep_delay_mins": 192.0, "running_delta": 2.0, "dwell_delta": 0.0, "section_status": "On Schedule"}, {"stop_sequence": 51, "station_code": "LDH", "station_name": "Ludhiana", "distance_km": 3294.0, "sch_arr_time": "03:10 AM", "act_arr_time": "06:32 AM", "arr_delay_mins": 202.0, "sch_dep_time": "03:20 AM", "act_dep_time": "06:42 AM", "dep_delay_mins": 202.0, "running_delta": 10.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 52, "station_code": "PGW", "station_name": "Phagwara", "distance_km": 3330.0, "sch_arr_time": "03:49 AM", "act_arr_time": "07:55 AM", "arr_delay_mins": 246.0, "sch_dep_time": "03:51 AM", "act_dep_time": "07:57 AM", "dep_delay_mins": 246.0, "running_delta": 44.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 53, "station_code": "JRC", "station_name": "Jalandhar Cant", "distance_km": 3346.0, "sch_arr_time": "04:08 AM", "act_arr_time": "08:38 AM", "arr_delay_mins": 270.0, "sch_dep_time": "04:13 AM", "act_dep_time": "08:43 AM", "dep_delay_mins": 270.0, "running_delta": 24.0, "dwell_delta": 0.0, "section_status": "Severe Bottleneck (Track Jam)"}, {"stop_sequence": 54, "station_code": "MEX", "station_name": "Mukerian", "distance_km": 3420.0, "sch_arr_time": "05:22 AM", "act_arr_time": "09:41 AM", "arr_delay_mins": 259.0, "sch_dep_time": "05:24 AM", "act_dep_time": "09:43 AM", "dep_delay_mins": 259.0, "running_delta": -11.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 55, "station_code": "PTKC", "station_name": "Pathankot Cantt", "distance_km": 3459.0, "sch_arr_time": "06:00 AM", "act_arr_time": "10:16 AM", "arr_delay_mins": 256.0, "sch_dep_time": "06:05 AM", "act_dep_time": "10:21 AM", "dep_delay_mins": 256.0, "running_delta": -3.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 56, "station_code": "KTHU", "station_name": "Kathua", "distance_km": 3483.0, "sch_arr_time": "06:34 AM", "act_arr_time": "10:54 AM", "arr_delay_mins": 260.0, "sch_dep_time": "06:36 AM", "act_dep_time": "10:56 AM", "dep_delay_mins": 260.0, "running_delta": 4.0, "dwell_delta": 0.0, "section_status": "Moderate Delay Accumulation"}, {"stop_sequence": 57, "station_code": "JAT", "station_name": "Jammutavi", "distance_km": 3559.0, "sch_arr_time": "08:10 AM", "act_arr_time": "11:55 AM", "arr_delay_mins": 225.0, "sch_dep_time": "08:20 AM", "act_dep_time": "12:05 PM", "dep_delay_mins": 225.0, "running_delta": -35.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 58, "station_code": "MCTM", "station_name": "Martyr Captain Tushar Mahajan", "distance_km": 3612.0, "sch_arr_time": "09:43 AM", "act_arr_time": "01:15 PM", "arr_delay_mins": 212.0, "sch_dep_time": "09:45 AM", "act_dep_time": "01:17 PM", "dep_delay_mins": 212.0, "running_delta": -13.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}, {"stop_sequence": 59, "station_code": "SVDK", "station_name": "Shri Mata Vaishno Devi Katra", "distance_km": 3637.0, "sch_arr_time": "10:45 AM", "act_arr_time": "01:49 PM", "arr_delay_mins": 184.0, "sch_dep_time": "10:45 AM", "act_dep_time": "01:49 PM", "dep_delay_mins": 184.0, "running_delta": -28.0, "dwell_delta": 0.0, "section_status": "Buffer Slack Recovery (Made Up Time)"}]}};
+
+  const zoneMap = {
+    "NR": "Northern Railway (NR)",
+    "NCR": "North Central Railway (NCR)",
+    "NER": "North Eastern Railway (NER)",
+    "NFR": "Northeast Frontier Railway (NFR)",
+    "NWR": "North Western Railway (NWR)",
+    "ER": "Eastern Railway (ER)",
+    "ECR": "East Central Railway (ECR)",
+    "ECOR": "East Coast Railway (ECOR)",
+    "SR": "Southern Railway (SR)",
+    "SCR": "South Central Railway (SCR)",
+    "SER": "South Eastern Railway (SER)",
+    "SECR": "South East Central Railway (SECR)",
+    "SWR": "South Western Railway (SWR)",
+    "WR": "Western Railway (WR)",
+    "WCR": "West Central Railway (WCR)",
+    "CR": "Central Railway (CR)",
+    "KRCL": "Konkan Railway (KRCL)"
+  };
+
+  function onTrainSelect(trainNum) {
+    const data = trainsData[trainNum];
+    if (!data) return;
+
+    // 1. Header ribbon
+    const titleEl = document.getElementById('trainTitle');
+    if (titleEl) titleEl.textContent = `${data.train_number} ${data.train_name}`;
+    const routeEl = document.getElementById('trainRoute');
+    if (routeEl) routeEl.textContent = `${data.origin} → ${data.destination}`;
+    const distEl = document.getElementById('trainDistance');
+    if (distEl) distEl.textContent = `Total Run: ${data.total_distance_km.toLocaleString()} km`;
+    const zoneEl = document.getElementById('trainZoneBadge');
+    if (zoneEl) zoneEl.textContent = zoneMap[data.zone] || `${data.zone} Zone`;
+    const corridorEl = document.getElementById('trainCorridor');
+    if (corridorEl) {
+      const firstCode = data.stops[0]?.station_code || 'Route';
+      const lastCode = data.stops[data.stops.length-1]?.station_code || 'Terminal';
+      corridorEl.textContent = `${firstCode} - ${lastCode} Corridor`;
+    }
+
+    // 2. Arrival Forecast
+    const destStop = data.stops[data.stops.length - 1];
+    const schedArr = destStop?.sch_arr_time || '10:05 AM';
+    const actArr = destStop?.act_arr_time || '10:47 AM';
+    const schedEl = document.getElementById('scheduledArrivalTime');
+    if (schedEl) schedEl.textContent = schedArr;
+    const predEl = document.getElementById('predictedArrivalTime');
+    if (predEl) predEl.textContent = actArr;
+    const delayEl = document.getElementById('predictedDelayMinsText');
+    if (delayEl) delayEl.textContent = `+${data.predicted_delay_mins} mins late`;
+    
+    // Risk tier text and style
+    const riskElem = document.getElementById('riskBadgeText');
+    if (riskElem) {
+      if (data.predicted_delay_mins < 15) {
+        riskElem.textContent = `Low Delay Risk (+${data.predicted_delay_mins}m)`;
+        riskElem.parentElement.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-label-sm font-label-sm font-bold';
+      } else if (data.predicted_delay_mins < 45) {
+        riskElem.textContent = `Moderate Delay Risk (+${data.predicted_delay_mins}m)`;
+        riskElem.parentElement.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-label-sm font-label-sm font-bold';
+      } else {
+        riskElem.textContent = `High Delay Risk (+${data.predicted_delay_mins}m)`;
+        riskElem.parentElement.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container text-on-error-container text-label-sm font-label-sm font-bold';
+      }
+    }
+
+    const progEl = document.getElementById('journeyProgressText');
+    if (progEl) progEl.textContent = `Journey Stops: ${data.stops.length} scheduled halts (${data.total_distance_km} km)`;
+
+    // 3. ML Confidence & Attributions
+    const confidence = (100 - (data.predicted_delay_mins * 0.15)).toFixed(1);
+    const confEl = document.getElementById('confidenceScoreVal');
+    if (confEl) confEl.textContent = Math.max(88.5, Math.min(97.8, confidence));
+    const attrTrackEl = document.getElementById('attrTrackLossVal');
+    if (attrTrackEl) attrTrackEl.textContent = `${data.track_loss_pct}% (+${data.track_loss_mins}m)`;
+    const attrDwellEl = document.getElementById('attrDwellLossVal');
+    if (attrDwellEl) attrDwellEl.textContent = `${data.dwell_loss_pct}% (+${data.dwell_loss_mins}m)`;
+    
+    const advEl = document.getElementById('predictorAdviceText');
+    if (advEl) {
+      if (data.worst_sections && data.worst_sections.length > 0) {
+        const ws = data.worst_sections[0];
+        advEl.textContent = `Bottleneck at ${ws.section} (${ws.section_name}): clear preceding freight to recover ~${parseInt(ws.delay_added)}m.`;
+      } else {
+        advEl.textContent = 'Normal cruising velocity maintained across sectors.';
+      }
+    }
+
+    // 4. Station Timeline Stepper - Renders ALL stops dynamically
+    renderTimeline(data.stops);
+
+    // 5. Downstream Cascade Impact
+    renderCascade(data.impacted_trains, data.train_number);
+
+    // 6. Worst Sections
+    renderWorstSections(data.worst_sections, data.recovered_mins);
+  }
+
+  function renderTimeline(stops) {
+    const container = document.getElementById('stationTimelineContainer');
+    if (!container || !stops || stops.length === 0) return;
+
+    let html = '';
+    const total = stops.length;
+
+    stops.forEach((s, idx) => {
+      const isFirst = idx === 0;
+      const isLast = idx === total - 1;
+      const delay = s.arr_delay_mins || 0;
+      
+      let badgeHtml = '';
+      let dotColor = 'bg-primary text-on-primary';
+      let icon = 'done';
+      let delayText = 'On-Time';
+      let delayClass = 'text-tertiary';
+
+      if (isFirst) {
+        dotColor = 'bg-tertiary text-on-tertiary';
+        icon = 'check';
+        badgeHtml = '<span class="px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed text-label-sm font-label-sm font-bold">Origin • Departed</span>';
+        delayText = `${s.sch_dep_time || 'Departed'} (On-Time)`;
+      } else if (isLast) {
+        dotColor = 'bg-secondary text-on-secondary';
+        icon = 'flag';
+        badgeHtml = `<span class="px-2 py-0.5 rounded bg-secondary text-on-secondary text-label-sm font-label-sm font-bold">Terminal • +${Math.round(delay)}m Delay</span>`;
+        delayText = `${s.act_arr_time || s.sch_arr_time} (Est.)`;
+        delayClass = delay > 15 ? 'text-secondary' : 'text-tertiary';
+      } else {
+        if (delay <= 5) {
+          dotColor = 'bg-tertiary text-on-tertiary';
+          badgeHtml = '<span class="px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed text-label-sm font-label-sm font-bold">On-Time</span>';
+          delayText = `${s.act_arr_time || s.sch_arr_time} (Actual)`;
+        } else if (delay <= 30) {
+          dotColor = 'bg-primary text-on-primary';
+          badgeHtml = `<span class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed text-label-sm font-label-sm font-bold">+${Math.round(delay)}m Delay</span>`;
+          delayText = `${s.act_arr_time || s.sch_arr_time} (Actual)`;
+          delayClass = 'text-secondary';
+        } else {
+          dotColor = 'bg-error text-on-error';
+          icon = 'warning';
+          badgeHtml = `<span class="px-2 py-0.5 rounded bg-error-container text-on-error-container text-label-sm font-label-sm font-bold">+${Math.round(delay)}m Severe</span>`;
+          delayText = `${s.act_arr_time || s.sch_arr_time} (Actual)`;
+          delayClass = 'text-error';
+        }
+      }
+
+      html += `
+      <div class="relative flex items-start gap-space-md group">
+        <div class="w-7 h-7 rounded-full ${dotColor} flex items-center justify-center ring-4 ring-background shrink-0 z-10">
+          <span class="material-symbols-outlined text-body-md" data-icon="${icon}">${icon}</span>
+        </div>
+        <div class="flex-1 p-space-sm rounded-lg bg-surface-container-low border border-outline-variant/20 flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-label-md font-label-md font-bold text-on-surface">${s.station_name} (${s.station_code})</span>
+              ${badgeHtml}
+            </div>
+            <div class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">Stop #${s.stop_sequence} • Distance: ${Math.round(s.distance_km)} km</div>
+          </div>
+          <div class="text-right">
+            <div class="text-label-md font-label-md font-bold ${delayClass}">${delayText}</div>
+            <div class="text-body-sm font-body-sm text-outline line-through">Sched: ${s.sch_arr_time || s.sch_dep_time}</div>
+          </div>
+        </div>
+      </div>`;
+
+      // Insert Live active pulse marker after stop 1
+      if (idx === 1 && total > 2) {
+        html += `
+        <div class="relative flex items-center gap-space-md py-1">
+          <div class="w-7 h-7 rounded-full bg-secondary text-on-secondary flex items-center justify-center ring-4 ring-secondary-fixed shrink-0 z-10 animate-bounce">
+            <span class="material-symbols-outlined text-body-md" data-icon="train">train</span>
+          </div>
+          <div class="flex-1 bg-secondary-fixed/50 border border-secondary-container p-2 rounded-lg flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-label-sm font-label-sm font-bold text-on-secondary-fixed uppercase tracking-wider">IN-TRANSIT STATUS:</span>
+              <span class="text-body-sm font-body-sm text-on-secondary-fixed font-medium">Automatic Block Kinematics • Cruising Speed</span>
+            </div>
+            <span class="text-label-sm font-label-sm font-bold text-secondary bg-surface-container-lowest px-2 py-0.5 rounded">Active Block</span>
+          </div>
+        </div>`;
+      }
+    });
+
+    container.innerHTML = html;
+  }
+
+  function renderCascade(impacted, trainNum) {
+    const container = document.getElementById('cascadeTrainsContainer');
+    if (!container) return;
+
+    if (!impacted || impacted.length === 0) {
+      container.innerHTML = `
+      <div class="p-space-md bg-surface-container-low rounded-lg border border-outline-variant/20 text-center py-6">
+        <span class="material-symbols-outlined text-headline-lg text-tertiary mb-1">verified</span>
+        <div class="text-body-md font-bold text-on-surface">No Downstream Knock-On Delays Detected</div>
+        <div class="text-body-sm text-on-surface-variant mt-0.5">Headway buffers on shared sections prevented delay propagation to subsequent trains.</div>
+      </div>`;
+      return;
+    }
+
+    let html = '';
+    impacted.forEach(imp => {
+      html += `
+      <div class="p-space-sm bg-surface-container-low rounded-lg border border-outline-variant/30 flex items-center justify-between hover:bg-surface-container transition-colors">
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded-lg bg-secondary/15 text-secondary flex items-center justify-center shrink-0 mt-0.5 font-bold font-label-md">
+            ${imp.train_number}
+          </div>
+          <div>
+            <div class="text-body-sm font-bold text-on-surface">${imp.train_name}</div>
+            <div class="text-label-sm font-label-sm text-on-surface-variant flex items-center gap-1.5 mt-0.5">
+              <span>Section: <b>${imp.bottleneck_section}</b></span>
+              <span>•</span>
+              <span>Held at: <b>${imp.location_name}</b></span>
+            </div>
+            <div class="text-label-sm font-label-sm text-outline mt-0.5">
+              Sched: ${imp.scheduled_arrival} → Actual: ${imp.actual_arrival}
+            </div>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="px-2.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-label-sm font-label-sm font-bold">
+            +${Math.round(imp.downstream_delay_mins)}m Delay
+          </span>
+          <div class="text-label-sm font-label-sm text-secondary mt-1 font-semibold">
+            (+${Math.round(imp.primary_delay_added)}m from #${trainNum})
+          </div>
+        </div>
+      </div>`;
+    });
+
+    container.innerHTML = html;
+  }
+
+  function renderWorstSections(worstSections, recoveredMins) {
+    const container = document.getElementById('worstSectionsContainer');
+    if (!container) return;
+
+    if (!worstSections || worstSections.length === 0) {
+      container.innerHTML = '<div class="text-body-sm text-on-surface-variant py-4 text-center">No major bottleneck sections identified.</div>';
+      return;
+    }
+
+    let html = '';
+    worstSections.forEach((ws, i) => {
+      html += `
+      <div class="p-space-sm bg-surface-container-low rounded-lg border border-outline-variant/20 flex items-center justify-between">
+        <div>
+          <div class="text-body-sm font-bold text-on-surface">${i+1}. ${ws.section_name} (${ws.section})</div>
+          <div class="text-label-sm font-label-sm text-on-surface-variant">${ws.distance} • ${ws.status}</div>
+        </div>
+        <span class="px-2.5 py-1 rounded bg-secondary-fixed text-on-secondary-fixed text-label-sm font-label-sm font-bold shrink-0">
+          ${ws.delay_added}
+        </span>
+      </div>`;
+    });
+
+    container.innerHTML = html;
+    const recEl = document.getElementById('recoveredBufferText');
+    if (recEl) recEl.textContent = `+${recoveredMins || 0}m Recovered via Slack`;
+  }
+
+  // Immediate initialization with selected train
+  function initApp() {
+    const selector = document.getElementById('trainSelector');
+    if (selector) {
+      onTrainSelect(selector.value);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+  } else {
+    initApp();
+  }
+</script>
+
+</body></html>
