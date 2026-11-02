@@ -332,6 +332,20 @@ with tab1:
                     note(f"<b>{i}. {w['section_name']}</b> ({w['section']}): "
                          f"adds <b>{w['delay_added']}</b> over {w['distance']}. {w['status']}", RED)
 
+            # ── Knock-On Cascade: Specific trains delayed by this service ─────
+            impacted_trains = profiler.get_downstream_impacted_trains(selected_train_num, date=m.get("journey_date"), limit=5)
+            if impacted_trains:
+                st.markdown('<div class="step">5. Other trains delayed because of this train (Cascade Effect)</div>', unsafe_allow_html=True)
+                st.caption("When this train slowed down on shared tracks, following trains sharing those blocks were forced to wait:")
+                for imp in impacted_trains:
+                    note(
+                        f"🔴 <b>Train {imp['train_number']} — {imp['train_name']}</b><br>"
+                        f"• Accumulated delay: <b>+{imp['downstream_delay_mins']:.0f} mins</b> at {imp['location_name']}<br>"
+                        f"• Shared chokepoint section: <b>{imp['bottleneck_section']}</b> (where this train added +{imp['primary_delay_added']:.0f} mins)<br>"
+                        f"• Scheduled: {imp['scheduled_arrival']} → Actual: {imp['actual_arrival']}",
+                        AMBER
+                    )
+
             with st.expander("See every station"):
                 cols = [c for c in ["stop_sequence", "station_name", "sch_arr_time", "act_arr_time",
                                     "arr_delay_mins"] if c in traj_df.columns]

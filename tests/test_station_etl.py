@@ -39,3 +39,16 @@ def test_trajectory_profiler():
     assert "dwell_delay_delta" in traj_df.columns
     assert "total_stops" in metrics
     assert metrics["total_stops"] >= 5
+
+def test_downstream_impacted_trains():
+    profiler = TrajectoryProfiler()
+    # Test with train 14217 on known date
+    impacted = profiler.get_downstream_impacted_trains('14217', date='2024-09-05', limit=5)
+    assert isinstance(impacted, list), "Expected list of impacted trains"
+    if impacted:
+        first = impacted[0]
+        assert "train_number" in first
+        assert "train_name" in first
+        assert "bottleneck_section" in first
+        assert "downstream_delay_mins" in first
+        assert first["downstream_delay_mins"] >= 15

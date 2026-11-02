@@ -197,6 +197,78 @@ class TrajectoryProfiler:
         con.close()
         return df
 
+    def get_downstream_impacted_trains(self, train_number, date=None, min_primary_delay=8, limit=5):
+        """
+        Identifies specific downstream trains delayed due to knock-on cascade effects
+        from this train occupying shared track bottleneck sections on the same date.
+        
+        Returns:
+            list of dicts containing impacted train numbers, names, sections, and delays.
+        """
+        con = duckdb.connect(str(self.db_path), read_only=True)
+        train_str = str(train_number)
+        
+        if not date:
+            date_query = """
+                SELECT journey_date
+                FROM station_stops
+                WHERE train_number = ?
+                GROUP BY journey_date
+                ORDER BY count(*) DESC, journey_date DESC
+                LIMIT 1;
+            """
+            best_date = con.execute(date_query, [train_str]).fetchone()
+            if not best_date:
+                con.close()
+                return []
+            date = str(best_date[0])
+            
+        query = f"""
+            WITH primary_bottlenecks AS (
+                SELECT 
+                    prev_station_code, station_code, station_name,
+                    running_delay_delta
+                FROM station_stops
+                WHERE train_number = ? AND journey_date = ?
+                  AND prev_station_code IS NOT NULL
+                  AND running_delay_delta >= {min_primary_delay}
+            )
+            SELECT DISTINCT
+                s2.train_number,
+                s2.train_name,
+                pb.prev_station_code || ' -> ' || pb.station_code as bottleneck_section,
+                pb.station_name as location_name,
+                round(pb.running_delay_delta, 1) as primary_delay_added,
+                round(s2.arr_delay_mins, 1) as downstream_delay_mins,
+                s2.sch_arr_time as scheduled_arrival,
+                s2.act_arr_time as actual_arrival
+            FROM primary_bottlenecks pb
+            JOIN station_stops s2
+              ON s2.journey_date = ?
+             AND s2.prev_station_code = pb.prev_station_code
+             AND s2.station_code = pb.station_code
+             AND s2.train_number != ?
+             AND s2.arr_delay_mins >= 15
+            ORDER BY downstream_delay_mins DESC
+            LIMIT {limit};
+        """
+        rows = con.execute(query, [train_str, date, date, train_str]).fetchall()
+        con.close()
+        
+        impacted = []
+        for r in rows:
+            impacted.append({
+                "train_number": r[0],
+                "train_name": r[1],
+                "bottleneck_section": r[2],
+                "location_name": r[3],
+                "primary_delay_added": r[4],
+                "downstream_delay_mins": r[5],
+                "scheduled_arrival": r[6],
+                "actual_arrival": r[7]
+            })
+        return impacted
+
 if __name__ == "__main__":
     profiler = TrajectoryProfiler()
     trains = profiler.get_available_trains(limit=5)
