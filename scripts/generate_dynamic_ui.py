@@ -50,7 +50,43 @@ content = re.sub(
     '',
     content
 )
-content = content.replace('GPS Synchronized', 'Active Block Telemetry')
+content = content.replace('GPS Synchronized', 'Block Kinematics')
+content = content.replace('Live Kinematics:', 'Scheduled Speed:')
+content = content.replace('LIVE POSITION:', 'ROUTE SECTION:')
+content = content.replace('Live NTES telemetry', 'NTES Historical Telemetry Ground Truth')
+content = content.replace('Model: Ensemble-v4.8', 'Algorithm: LightGBM Regressor')
+
+# Replace fake Preceding Headway and Track Temperature with true data fields
+content = content.replace(
+    '''<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-label-md" data-icon="alt_route">alt_route</span>
+                    Preceding Train Headway
+                  </span>
+<span class="font-label-md font-bold text-on-surface">11.4 mins</span>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-label-md" data-icon="thermostat">thermostat</span>
+                    Track Temperature
+                  </span>
+<span class="font-label-md font-bold text-on-surface">19.2°C (Optimal)</span>
+</div>''',
+    '''<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-label-md" data-icon="straighten">straighten</span>
+                    Average Stop Spacing
+                  </span>
+<span id="cardStopSpacing" class="font-label-md font-bold text-on-surface">71.5 km / halt</span>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-label-md" data-icon="speed">speed</span>
+                    Zone Congestion Baseline
+                  </span>
+<span id="cardZonePressure" class="font-label-md font-bold text-on-surface">45 mins delay</span>
+</div>'''
+)
 
 # 3. Train selector in Hero Banner
 train_options_html = "".join([
@@ -303,6 +339,11 @@ script_js = f'''
     if (attrTrackEl) attrTrackEl.textContent = `${{data.track_loss_pct}}% (+${{data.track_loss_mins}}m)`;
     const attrDwellEl = document.getElementById('attrDwellLossVal');
     if (attrDwellEl) attrDwellEl.textContent = `${{data.dwell_loss_pct}}% (+${{data.dwell_loss_mins}}m)`;
+    
+    const stopSpacingEl = document.getElementById('cardStopSpacing');
+    if (stopSpacingEl) stopSpacingEl.textContent = `${{data.stop_spacing_km || 71.5}} km / halt`;
+    const zonePressEl = document.getElementById('cardZonePressure');
+    if (zonePressEl) zonePressEl.textContent = `${{data.zone_pressure || 42}} mins zonal baseline`;
     
     const advEl = document.getElementById('predictorAdviceText');
     if (advEl) {{

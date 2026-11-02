@@ -20,6 +20,7 @@ This system addresses that gap through a dual-granularity architecture:
 | Document | Description |
 | :--- | :--- |
 | 📑 [NetworkX vs. Neo4j & Feature Originality](README_NETWORKX_AND_FEATURE_ENGINEERING.md) | Technical justification for NetworkX over Neo4j, and original domain feature engineering vs. literature. |
+| 🎯 [Prediction Reliability & Ground-Truth Audit](docs/PREDICTION_RELIABILITY_AND_GROUND_TRUTH.md) | Explanation of ML confidence mechanics, variance calibration, and fact-grounded telemetry audit. |
 | 🏗️ [Architecture and Workflow](docs/ARCHITECTURE_AND_WORKFLOW.md) | Dual-layer architecture, DuckDB schemas, kinematic equations, and sequence diagrams. |
 | 🔍 [Exploratory Data Analysis (EDA)](docs/EXPLORATORY_DATA_ANALYSIS.md) | Full-scale analysis across 1.5M records, data quality, distributions, and class balance. |
 | 🔬 [Scientific Benchmarking & Findings](docs/SCIENTIFIC_BENCHMARKING_AND_FINDINGS.md) | Multi-model evaluation, LightGBM champion metrics, and cascade ablation study. |
