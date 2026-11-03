@@ -78,7 +78,7 @@ flowchart TD
 * **Goal**: Modern, responsive web interface for delay forecasting, network intelligence, and simulation.
 * **Deliverables**:
   1. `app/dashboard.py`:
-     * **Tab 1: 🎯 Check My Train**: Commuter zero-effort mode (auto diagnostics for rake, weather, and congestion) + What-If mode + AI forecast card + station waterfall map + worst bottleneck cards + timing log expander.
+     * **Tab 1: 🎯 Check My Train**: Commuter zero-effort mode (factual telemetry: stop spacing, visibility factor, zone delay baseline) + AI forecast card (dynamic residual confidence) + station waterfall map + worst bottleneck cards + timing log expander.
      * **Tab 2: 🗺️ Network Hotspots**: Zone rankings vs. betweenness centrality + Top 10 Chronic National Track Bottlenecks.
      * **Tab 3: 📊 AI Performance**: Multi-model comparison leaderboard and evaluation metric charts.
      * **Tab 4: ⚡ Cascade Simulator**: Rake turnaround knock-on delay sandbox.
@@ -89,5 +89,5 @@ flowchart TD
 ### ✅ Phase 7: Verification & Automated Quality Assurance (COMPLETED)
 * **Goal**: Comprehensive automated testing.
 * **Deliverables**:
-  1. 9 unit tests across `test_etl.py`, `test_graph.py`, `test_model.py`, and `test_station_etl.py` all passing.
+  1. 10 unit tests across `test_etl.py`, `test_graph.py`, `test_model.py`, and `test_station_etl.py` all passing.
   2. Complete documentation suite with EDA findings, architectural specifications, and benchmark analyses.

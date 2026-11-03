@@ -82,7 +82,7 @@ $env:PYTHONPATH="."
 $env:PYTHONPATH="."
 .\.venv\Scripts\python.exe -m pytest
 ```
-*Executes all 9 automated unit tests across ETL, Graph Modeling, ML Inference, and Station Trajectory Profiling.*
+*Executes all 10 automated unit tests across ETL, Graph Modeling, ML Inference, and Station Trajectory Profiling.*
 
 ---
 

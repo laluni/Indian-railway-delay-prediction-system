@@ -26,7 +26,7 @@ A **Predictive Intelligence System** running on local Big Data tooling (**Polars
 | **Graph Topology** | **NetworkX** (`3.6.1`) | 16-node graph modeling Indian Railway zones & High Density Network (HDN) corridors to compute betweenness and degree centrality. |
 | **Station Kinematics & Profiling** | **TrajectoryProfiler** | Service calculating route waterfall trajectories, track running deceleration vs. platform dwell loss, and identifying the worst chronic bottleneck segments. |
 | **Predictive ML** | **LightGBM** (`4.7.0`) | CPU-optimized gradient boosting; proved superior in empirical benchmarking against Ridge, Random Forest, and XGBoost. |
-| **User Interface** | **Streamlit** (`1.64.0`) + **Plotly** | Clean, responsive 5-tab web dashboard featuring Commuter Zero-Effort mode, What-If simulation, Network Hotspots, AI benchmarks, Rake Turnaround simulator, and Festival Rush analytics. |
+| **User Interface** | **Streamlit** (`1.64.0`) + **Plotly** | Clean, responsive 5-tab web dashboard featuring Commuter Zero-Effort mode with grounded telemetry, Network Hotspots, AI benchmarks, Rake Turnaround simulator, and Festival Rush analytics. |
 
 ---
 
@@ -119,6 +119,8 @@ Indian-railway-delay-prediction-system/
 │   ├── SCIENTIFIC_BENCHMARKING_AND_FINDINGS.md # Scientific metrics and ablation findings
 │   ├── USAGE_AND_REQUIREMENTS.md         # Complete installation, setup, & usage guide
 │   ├── PPT_PRESENTATION_CONTEXT.md       # Slide deck blueprints & defense talking points
+│   ├── PREDICTION_RELIABILITY_AND_GROUND_TRUTH.md # Dynamic ML confidence & telemetry audit
+│   ├── VIVA_EVALUATOR_DEFENSE_GUIDE.md   # NetworkX vs Neo4j rationale & feature novelty
 │   └── phased_implementation_plan.md     # Milestone tracking & status
 ├── tests/
 │   ├── __init__.py
@@ -137,7 +139,7 @@ Indian-railway-delay-prediction-system/
 
 1. **Tab 1: 🎯 Check My Train**:
    * **Passenger / Commuter View (Zero-Effort Default)**: Select a Train Number. The backend automatically auto-populates route specs, inspects incoming rake status, checks seasonal weather alerts, and evaluates corridor congestion pressure.
-   * **What-If Mode (Advanced)**: Manual sliders for operational parameters to test custom scenarios.
+   * **Grounded Telemetry Audit**: Purely verifiable parameters (Average Stop Spacing, Zone Delay Baseline, Visibility Factor) replacing mock sensor telemetry.
    * **AI Delay Forecast**: Dual-target prediction card (estimated delay minutes + % probability of exceeding 15 min threshold + risk tier).
    * **Journey Delay Map (Station-by-Station)**: Interactive Plotly waterfall chart showing cumulative arrival delay vs. section-by-section delay additions ($\Delta_{\text{running}}$) and buffer time recoveries.
    * **Bottleneck Cards**: Highlights the top 3 worst delay-inducing track segments along the selected train's journey.
@@ -162,7 +164,7 @@ To run tests and launch the system:
 # 1. Run full station & kinematic ETL pipeline
 .\.venv\Scripts\python.exe src/station_etl.py
 
-# 2. Run automated test suite (All 9 tests pass in ~3.3s)
+# 2. Run automated test suite (All 10 tests pass in ~3.3s)
 $env:PYTHONPATH="."
 .\.venv\Scripts\python.exe -m pytest
 

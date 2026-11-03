@@ -179,7 +179,7 @@ The layout is built upon an **Adaptive Fluid Dashboard Split-View** combining a 
 ### Spatial Architecture
 - **Desktop (1280px+):** Tri-pane layout comprising an 80px compressed icon rail (or 240px expanded navigation), a 420px fixed-width journey analytical inspection and search panel, and a fluid spatial route map canvas with floating floating telemetry overlays.
 - **Tablet (768px - 1279px):** Bi-pane layout. Navigation collapses into an off-canvas drawer or bottom app bar. Inspection panel slides over the map with a toggleable 50/50 vertical or horizontal split.
-- **Mobile (<768px):** Single-pane layout with bottom-sheet journey inspector cards docked over the full-bleed live GPS map, utilizing a snap-to-bottom gesture drawer.
+- **Mobile (<768px):** Single-pane layout with bottom-sheet journey inspector cards docked over the full-bleed route track progression canvas, utilizing a snap-to-bottom gesture drawer.
 
 ### Rhythmic Grid
 All margins and paddings adhere strictly to an 8-point harmonic base scale (with 4px micro-increments via `space-xs`). Dense operational data cards utilize `space-sm` (8px) interior gap tokens, while dashboard module separators utilize `space-lg` (24px) for distinct ocular parsing.
